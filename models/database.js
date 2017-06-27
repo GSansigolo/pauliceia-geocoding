@@ -1,7 +1,18 @@
-const pg = require('pg');
-const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/db_pauliceia';
+console.log(". result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]result.rows[0]")
+const pg = require('pg')  
+const conString = 'postgres://postgres:teste@localhost/db_pauliceia' // make sure to match your own database's credentials
 
-const client = new pg.Client(connectionString);
-client.connect();
-//const query = client.query( 'CREATE TABLE items(id SERIAL PRIMARY KEY, text VARCHAR(40) not null, complete BOOLEAN)');
-//query.on('end', () => { client.end(); });
+pg.connect(conString, function (err, client, done) {  
+  if (err) {
+    return console.error('error fetching client from pool', err)
+  }
+  client.query('select * from tb_street', ['db_pauliceia'], function (err, result) {
+    done()
+
+    if (err) {
+      return console.error('error happened during query', err)
+    }
+    console.log(result.rows[0])
+    process.exit(0)
+  })
+})
