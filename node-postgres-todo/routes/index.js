@@ -1,18 +1,21 @@
-var express = require('express');
-var router = express.Router();
+//Variaveis padrões
 
-const pg = require('pg');
-const connectionString = process.env.DATABASE_URL || 'postgres://postgres:teste@localhost/db_pauliceia';
+	var express = require('express');
+	var router = express.Router();
 
-const client = new pg.Client(connectionString);
-client.connect();
+//Variaveis Connection
+	const pg = require('pg');
+	const connectionString = process.env.DATABASE_URL || 'postgres://postgres:teste@localhost/db_pauliceia';
 
+	const client = new pg.Client(connectionString);
+	client.connect();
 
+//URLS
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/api/v1/getAllStreets', (req, res, next) => {
+router.get('/getAllStreets', (req, res, next) => {
   const results = [];
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
