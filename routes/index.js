@@ -4,17 +4,18 @@
 +---------------------------------------------------+*/
 	var express = require('express');
 	var router = express.Router();
+  var GeoJSON = require('geojson');
+  var postgeo = require("postgeo");
 
 /*  
 +---------------------------------------------------+
 |Connection
 +---------------------------------------------------+*/
 	const pg = require('pg');
-	const connectionString = process.env.DATABASE_URL || 'postgres://postgres:teste@localhost/db_pauliceia';
-
+  const connectionString = process.env.DATABASE_URL || 'postgres://postgres:teste@localhost/db_pauliceia';
 	const client = new pg.Client(connectionString);
 	client.connect();
-
+  
 /*  
 +---------------------------------------------------+
 |Urls
@@ -32,8 +33,10 @@ router.get('/', function(req, res, next) {
 +---------------------------------------------------+
 |getAllStreets
 +---------------------------------------------------+*/
+
 router.get('/getAllStreets', (req, res, next) => {
   const results = [];
+
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
@@ -44,6 +47,7 @@ router.get('/getAllStreets', (req, res, next) => {
     }
     // SQL Query > Select Data
     const query = client.query('select * from tb_street order by id ASC;');
+    
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
@@ -51,10 +55,15 @@ router.get('/getAllStreets', (req, res, next) => {
     // After all data is returned, close connection and return results
     query.on('end', () => {
       done();
-      return res.json(results);
+
+      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      console.log(results2);
+      
+      return res.json(results2);
     });
   });
 });
+
 
 /*  
 +---------------------------------------------------+
@@ -84,7 +93,11 @@ router.get('/getSingleStreet/:street_id', (req, res, next) => {
     // After all data is returned, close connection and return results
     query.on('end', () => {
       done();
-      return res.json(results);
+
+      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      console.log(results2);
+
+      return res.json(results2);
     });
   });
 });
