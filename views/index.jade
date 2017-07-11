@@ -3,3 +3,25 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  br
+  b Index of Pages:
+  br
+  br
+  | getAllStreets - Json: 
+  a(href='http://localhost:3000/getAllStreets/json') http://localhost:3000/getAllStreets/json
+  br
+  | getAllStreets - GeoJson: 
+  a(href='http://localhost:3000/getAllStreets/geojson') http://localhost:3000/getAllStreets/geojson
+  br
+  | getAllStreets - Xml: 
+  a(href='http://localhost:3000/getAllStreets/xml') http://localhost:3000/getAllStreets/xml
+  br
+  br
+  | getSingleStreet - Json: 
+  a(href='http://localhost:3000/getSingleStreet/json/515') http://localhost:3000/getSingleStreet/json/515
+  br
+  | getSingleStreet - GeoJson: 
+  a(href='http://localhost:3000/getSingleStreet/geojson/515') http://localhost:3000/getSingleStreet/geojson/515
+  br
+  | getSingleStreet - Xml: 
+  a(href='http://localhost:3000/getSingleStreet/xml/515') http://localhost:3000/getSingleStreet/xml/515
