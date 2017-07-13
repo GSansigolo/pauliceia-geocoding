@@ -1,27 +1,49 @@
 extends layout
-
 block content
   h1= title
-  p Welcome to #{title}
-  br
   b Index of Pages:
   br
   br
-  | getAllStreets - Json: 
-  a(href='http://localhost:3000/getAllStreets/json') http://localhost:3000/getAllStreets/json
+  | getAllStreets:
   br
-  | getAllStreets - GeoJson: 
-  a(href='http://localhost:3000/getAllStreets/geojson') http://localhost:3000/getAllStreets/geojson
+  a(href='http://localhost:3000/street/all/json') http://localhost:3000/street/all/json
   br
-  | getAllStreets - Xml: 
-  a(href='http://localhost:3000/getAllStreets/xml') http://localhost:3000/getAllStreets/xml
+  a(href='http://localhost:3000/street/all/geojson') http://localhost:3000/street/all/geojson
   br
   br
-  | getSingleStreet - Json: 
-  a(href='http://localhost:3000/getSingleStreet/json/515') http://localhost:3000/getSingleStreet/json/515
+  | getSingleStreet:
   br
-  | getSingleStreet - GeoJson: 
-  a(href='http://localhost:3000/getSingleStreet/geojson/515') http://localhost:3000/getSingleStreet/geojson/515
+  a(href='http://localhost:3000/street/1/json/') http://localhost:3000/street/id/json
   br
-  | getSingleStreet - Xml: 
-  a(href='http://localhost:3000/getSingleStreet/xml/515') http://localhost:3000/getSingleStreet/xml/515
+  a(href='http://localhost:3000/street/1/geojson/') http://localhost:3000/street/id/geojson
+  br
+  br
+  | getNameSingleStreet:
+  br
+  a(href='http://localhost:3000/street/1/name/json') http://localhost:3000/street/id/name/json
+  br
+  a(href='http://localhost:3000/street/1/name/geojson') http://localhost:3000/street/id/name/geojson
+  br
+  br
+  | getGeomSingleStreet:
+  br
+  a(href='http://localhost:3000/street/1/geom/json') http://localhost:3000/street/id/geom/json
+  br
+  a(href='http://localhost:3000/street/1/geom/geojson') http://localhost:3000/street/id/geom/geojson
+  br
+  br
+  | getTypeSingleStreet:
+  br
+  a(href='http://localhost:3000/street/1/type/json') http://localhost:3000/street/id/type/json
+  br
+  a(href='http://localhost:3000/street/1/type/geojson') http://localhost:3000/street/id/type/geojson
+  br
+  br
+  | getPerimeterSingleStreet:
+  br
+  a(href='http://localhost:3000/street/1/perimeter/json') http://localhost:3000/street/id/perimeter/json
+  br
+  a(href='http://localhost:3000/street/1/perimeter/geojson') http://localhost:3000/street/id/perimeter/geojson
+
+
+  
