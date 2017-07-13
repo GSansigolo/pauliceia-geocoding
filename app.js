@@ -1,8 +1,7 @@
 /*  
 +---------------------------------------------------+
 |Var
-+---------------------------------------------------+
-*/
++---------------------------------------------------+*/
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -18,8 +17,7 @@ var app = express();
 /*  
 +---------------------------------------------------+
 |ViewSetup
-+---------------------------------------------------+
-*/
++---------------------------------------------------+*/
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -41,8 +39,10 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// error handlers
-
+/*  
++---------------------------------------------------+
+|errorHandlers
++---------------------------------------------------+*/
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -66,4 +66,8 @@ app.use(function(err, req, res, next) {
 });
 
 
+/*  
++---------------------------------------------------+
+|moduleExports 
++---------------------------------------------------+*/
 module.exports = app;

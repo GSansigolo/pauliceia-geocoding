@@ -70,7 +70,6 @@ const results = [];
 +---------------------------------------------------+
 |getAllStreets - Json
 +---------------------------------------------------+*/
-
 router.get('/street/all/json', (req, res, next) => {
 const results = [];
 
@@ -102,7 +101,6 @@ const results = [];
 +---------------------------------------------------+
 |getAllStreets - Xml
 +---------------------------------------------------+*/
-
 router.get('/street/all/xml', (req, res, next) => {
 const results = [];
 
