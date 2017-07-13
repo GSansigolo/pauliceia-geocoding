@@ -24,7 +24,7 @@
 
 /*  
 +---------------------------------------------------+
-|HomePage
+|HomePage - Index of Pages
 +---------------------------------------------------+*/
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Pauliceia 2.0 WebService' });
@@ -33,7 +33,7 @@ router.get('/', function(req, res, next) {
 
 /*  
 +---------------------------------------------------+
-|getAllStreets-GeoJson
+|getAllStreets - GeoJson
 +---------------------------------------------------+*/
 
 router.get('/street/all/geojson', (req, res, next) => {
@@ -68,7 +68,7 @@ const results = [];
 
 /*  
 +---------------------------------------------------+
-|getAllStreets-Json
+|getAllStreets - Json
 +---------------------------------------------------+*/
 
 router.get('/street/all/json', (req, res, next) => {
@@ -100,7 +100,7 @@ const results = [];
 
 /*  
 +---------------------------------------------------+
-|getAllStreets-Xml
+|getAllStreets - Xml
 +---------------------------------------------------+*/
 
 router.get('/street/all/xml', (req, res, next) => {
@@ -135,7 +135,7 @@ const results = [];
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet-Json
+|getSingleStreet - Json
 +---------------------------------------------------+*/
 router.get('/street/:street_id/json/', (req, res, next) => {
   
@@ -172,7 +172,7 @@ router.get('/street/:street_id/json/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet-GeoJson
+|getSingleStreet - GeoJson
 +---------------------------------------------------+*/
 router.get('/street/:street_id/geojson/', (req, res, next) => {
   
@@ -209,7 +209,7 @@ router.get('/street/:street_id/geojson/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet-Xml
+|getSingleStreet - Xml
 +---------------------------------------------------+*/
 router.get('/street/:street_id/xml/', (req, res, next) => {
   
@@ -244,10 +244,9 @@ router.get('/street/:street_id/xml/', (req, res, next) => {
   });
 });
 
-
 /*  
 +---------------------------------------------------+
-|getSingleStreet/name-Json
+|getSingleStreet/name - Json
 +---------------------------------------------------+*/
 router.get('/street/:street_id/name/json/', (req, res, next) => {
   
@@ -284,7 +283,7 @@ router.get('/street/:street_id/name/json/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/name-GeoJson
+|getSingleStreet/name - GeoJson
 +---------------------------------------------------+*/
 router.get('/street/:street_id/name/geojson/', (req, res, next) => {
   
@@ -321,7 +320,7 @@ router.get('/street/:street_id/name/geojson/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/name-Xml
+|getSingleStreet/name - Xml
 +---------------------------------------------------+*/
 router.get('/street/:street_id/name/xml/', (req, res, next) => {
   
@@ -358,7 +357,7 @@ router.get('/street/:street_id/name/xml/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/geom-Json
+|getSingleStreet/geom - Json
 +---------------------------------------------------+*/
 router.get('/street/:street_id/geom/json/', (req, res, next) => {
   
@@ -395,7 +394,7 @@ router.get('/street/:street_id/geom/json/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/geom-GeoJson
+|getSingleStreet/geom - GeoJson
 +---------------------------------------------------+*/
 router.get('/street/:street_id/geom/geojson/', (req, res, next) => {
   
@@ -432,7 +431,7 @@ router.get('/street/:street_id/geom/geojson/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/geom-Xml
+|getSingleStreet/geom - Xml
 +---------------------------------------------------+*/
 router.get('/street/:street_id/geom/json/', (req, res, next) => {
   
@@ -469,7 +468,7 @@ router.get('/street/:street_id/geom/json/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/type-Json
+|getSingleStreet/type - Json
 +---------------------------------------------------+*/
 router.get('/street/:street_id/type/json/', (req, res, next) => {
   
@@ -506,7 +505,7 @@ router.get('/street/:street_id/type/json/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/type-GeoJson
+|getSingleStreet/type - GeoJson
 +---------------------------------------------------+*/
 router.get('/street/:street_id/type/geojson/', (req, res, next) => {
   
@@ -543,7 +542,7 @@ router.get('/street/:street_id/type/geojson/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/type-Xml
+|getSingleStreet/type - Xml
 +---------------------------------------------------+*/
 router.get('/street/:street_id/type/json/', (req, res, next) => {
   
@@ -580,7 +579,7 @@ router.get('/street/:street_id/type/json/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/perimeter-Json
+|getSingleStreet/perimeter - Json
 +---------------------------------------------------+*/
 router.get('/street/:street_id/perimeter/json/', (req, res, next) => {
   
@@ -617,7 +616,7 @@ router.get('/street/:street_id/perimeter/json/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/perimeter-GeoJson
+|getSingleStreet/perimeter - GeoJson
 +---------------------------------------------------+*/
 router.get('/street/:street_id/perimeter/geojson/', (req, res, next) => {
   
@@ -654,7 +653,7 @@ router.get('/street/:street_id/perimeter/geojson/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/perimeter-Xml
+|getSingleStreet/perimeter - Xml
 +---------------------------------------------------+*/
 router.get('/street/:street_id/perimeter/json/', (req, res, next) => {
   
