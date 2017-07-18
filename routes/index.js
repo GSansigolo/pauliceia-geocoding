@@ -688,6 +688,89 @@ router.get('/street/:street_id/perimeter/json/', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
+|getCenterOf-Json
++---------------------------------------------------+*/
+router.get('/street/query/centerof/:streetOneName/json', (req, res, next) => {
+  const results = [];
+  const textStreetOne = req.params.streetOneName;
+  
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+      const query = client.query('select gid, name, st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1', ['%' + textStreetOne + '%']);
+      
+// Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      //console.log(results2);
+
+      return res.json(results);
+    });
+  });
+});
+
+/*  
++---------------------------------------------------+
+|calcDistanceStreets-Json
++---------------------------------------------------+*/
+router.get('/street/query/distance/:streetOneName/to/:streetTwoName/json', (req, res, next) => {
+  const results1 = [];
+  const results2 = [];
+  const results = [];
+  const textStreetOne = req.params.streetOneName;
+  const textStreetTwo = req.params.streetTwoName;
+  
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+      const query1 = client.query('select st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1', ['%' + textStreetOne + '%']);
+      query1.on('row', (row) => {
+      results1.push(row);
+    });
+      const query2 = client.query('select st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1',['%' + textStreetTwo + '%']);
+      query2.on('row', (row) => {
+      results2.push(row);
+    });
+    //select st_distance(ST_Transform(ST_GeomFromText('POINT(333245.172929466, 7395139.22384525)',4326),26986), ST_Transform(ST_GeomFromText('POINT(333226.588661885, 7395031.25106589)',4326),26986))from tb_street;
+   
+    const query = client.query('',[results1, results2]);
+
+// Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      //console.log(results2);
+
+      return res.json(results1);
+    });
+  });
+});
+
+/*  
++---------------------------------------------------+
 |consoleLog
 +---------------------------------------------------+*/
 console.log('Listening on port 3000.');
