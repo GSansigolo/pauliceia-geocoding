@@ -723,6 +723,41 @@ router.get('/street/query/centerof/:streetOneName/json', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
+|getCenterOf-GeoJson
++---------------------------------------------------+*/
+router.get('/street/query/centerof/:streetOneName/geojson', (req, res, next) => {
+  const results = [];
+  const textStreetOne = req.params.streetOneName;
+  
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+      const query = client.query('select gid, name, st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1', ['%' + textStreetOne + '%']);
+      
+// Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+      const results2 = GeoJSON.parse(results, {Point: ['st_x', 'st_y']});
+      //console.log(results2);
+
+      return res.json(results2);
+    });
+  });
+});
+
+/*  
++---------------------------------------------------+
 |calcDistanceStreets-Json
 +---------------------------------------------------+*/
 router.get('/street/query/distance/:streetOneName/to/:streetTwoName/json', (req, res, next) => {
