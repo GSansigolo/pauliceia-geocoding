@@ -749,8 +749,8 @@ router.get('/street/query/distance/:streetOneName/to/:streetTwoName/json', (req,
       query2.on('row', (row) => {
       results2.push(row);
     });
+    //DO IT 
     //select st_distance(ST_Transform(ST_GeomFromText('POINT(333245.172929466, 7395139.22384525)',4326),26986), ST_Transform(ST_GeomFromText('POINT(333226.588661885, 7395031.25106589)',4326),26986))from tb_street;
-   
     const query = client.query('',[results1, results2]);
 
 // Stream results back one row at a time
