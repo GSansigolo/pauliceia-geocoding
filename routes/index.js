@@ -431,7 +431,7 @@ router.get('/street/:street_id/geom/geojson', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/geom - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/geom/json', (req, res, next) => {
+router.get('/street/:street_id/geom/xml', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -542,7 +542,7 @@ router.get('/street/:street_id/type/geojson', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/type - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/type/json', (req, res, next) => {
+router.get('/street/:street_id/type/xml', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -653,7 +653,7 @@ router.get('/street/:street_id/perimeter/geojson', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/perimeter - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/perimeter/json', (req, res, next) => {
+router.get('/street/:street_id/perimeter/xml', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -760,7 +760,7 @@ router.get('/street/query/centerof/:streetOneName/geojson', (req, res, next) => 
 +---------------------------------------------------+
 |getCenterOf-Xml
 +---------------------------------------------------+*/
-router.get('/street/query/centerof/:streetOneName/geojson', (req, res, next) => {
+router.get('/street/query/centerof/:streetOneName/xml', (req, res, next) => {
   const results = [];
   const textStreetOne = req.params.streetOneName;
   
@@ -786,7 +786,7 @@ router.get('/street/query/centerof/:streetOneName/geojson', (req, res, next) => 
       const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
-      return res.json(results2);
+      return res.write(results2);
     });
   });
 });
@@ -860,6 +860,44 @@ router.get('/street/query/centerof/:streetOneName/to/:streetTwoName/geojson', (r
       const results2 = GeoJSON.parse(results, {Point: ['st_x', 'st_y']});
 
       return res.json(results2);
+    });
+  });
+});
+
+/*  
++---------------------------------------------------+
+|getCenterOftwoStreets-Xml
++---------------------------------------------------+*/
+router.get('/street/query/centerof/:streetOneName/to/:streetTwoName/xml', (req, res, next) => {
+ const results = [];
+  const textStreetOne = req.params.streetOneName;
+  const textStreetTwo = req.params.streetTwoName;
+  
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+
+   const query = client.query('select st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1 union select st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $2', ['%' + textStreetOne + '%', '%' + textStreetTwo + '%']);
+
+   // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      //console.log(results2);
+      const results2 = js2xmlparser.parse("tb_street", results);
+      //console.log(results2);
+
+      return res.write(results2);
     });
   });
 });
