@@ -126,7 +126,7 @@ const results = [];
       const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
-      return res.write(results2);;
+      return res.end(results2);;
     });
   });
 });
@@ -237,7 +237,7 @@ router.get('/street/:street_id/xml', (req, res, next) => {
       const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
-      return res.write(results2);;
+      return res.end(results2);;
     });
   });
 });
@@ -348,7 +348,7 @@ router.get('/street/:street_id/name/xml', (req, res, next) => {
       const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
-      return res.write(results2);;
+      return res.end(results2);;
     });
   });
 });
@@ -459,7 +459,7 @@ router.get('/street/:street_id/geom/xml', (req, res, next) => {
       const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
-      return res.write(results2);;
+      return res.end(results2);;
     });
   });
 });
@@ -570,7 +570,7 @@ router.get('/street/:street_id/type/xml', (req, res, next) => {
       const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
-      return res.write(results2);;
+      return res.end(results2);;
     });
   });
 });
@@ -681,7 +681,7 @@ router.get('/street/:street_id/perimeter/xml', (req, res, next) => {
       const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
-      return res.write(results2);;
+      return res.end(results2);;
     });
   });
 });
@@ -786,7 +786,7 @@ router.get('/street/query/centerof/:streetOneName/xml', (req, res, next) => {
       const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
-      return res.write(results2);
+      return res.end(results2);
     });
   });
 });
@@ -897,7 +897,7 @@ router.get('/street/query/centerof/:streetOneName/to/:streetTwoName/xml', (req, 
       const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
-      return res.write(results2);
+      return res.end(results2);
     });
   });
 });
