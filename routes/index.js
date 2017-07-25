@@ -135,7 +135,7 @@ const results = [];
 +---------------------------------------------------+
 |getSingleStreet - Json
 +---------------------------------------------------+*/
-router.get('/street/:street_id/json/', (req, res, next) => {
+router.get('/street/:street_id/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -172,7 +172,7 @@ router.get('/street/:street_id/json/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet - GeoJson
 +---------------------------------------------------+*/
-router.get('/street/:street_id/geojson/', (req, res, next) => {
+router.get('/street/:street_id/geojson', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -209,7 +209,7 @@ router.get('/street/:street_id/geojson/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/xml/', (req, res, next) => {
+router.get('/street/:street_id/xml', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -246,7 +246,7 @@ router.get('/street/:street_id/xml/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/name - Json
 +---------------------------------------------------+*/
-router.get('/street/:street_id/name/json/', (req, res, next) => {
+router.get('/street/:street_id/name/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -283,7 +283,7 @@ router.get('/street/:street_id/name/json/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/name - GeoJson
 +---------------------------------------------------+*/
-router.get('/street/:street_id/name/geojson/', (req, res, next) => {
+router.get('/street/:street_id/name/geojson', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -320,7 +320,7 @@ router.get('/street/:street_id/name/geojson/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/name - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/name/xml/', (req, res, next) => {
+router.get('/street/:street_id/name/xml', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -357,7 +357,7 @@ router.get('/street/:street_id/name/xml/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/geom - Json
 +---------------------------------------------------+*/
-router.get('/street/:street_id/geom/json/', (req, res, next) => {
+router.get('/street/:street_id/geom/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -394,7 +394,7 @@ router.get('/street/:street_id/geom/json/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/geom - GeoJson
 +---------------------------------------------------+*/
-router.get('/street/:street_id/geom/geojson/', (req, res, next) => {
+router.get('/street/:street_id/geom/geojson', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -431,7 +431,7 @@ router.get('/street/:street_id/geom/geojson/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/geom - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/geom/json/', (req, res, next) => {
+router.get('/street/:street_id/geom/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -468,7 +468,7 @@ router.get('/street/:street_id/geom/json/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/type - Json
 +---------------------------------------------------+*/
-router.get('/street/:street_id/type/json/', (req, res, next) => {
+router.get('/street/:street_id/type/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -505,7 +505,7 @@ router.get('/street/:street_id/type/json/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/type - GeoJson
 +---------------------------------------------------+*/
-router.get('/street/:street_id/type/geojson/', (req, res, next) => {
+router.get('/street/:street_id/type/geojson', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -542,7 +542,7 @@ router.get('/street/:street_id/type/geojson/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/type - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/type/json/', (req, res, next) => {
+router.get('/street/:street_id/type/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -579,7 +579,7 @@ router.get('/street/:street_id/type/json/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/perimeter - Json
 +---------------------------------------------------+*/
-router.get('/street/:street_id/perimeter/json/', (req, res, next) => {
+router.get('/street/:street_id/perimeter/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -616,7 +616,7 @@ router.get('/street/:street_id/perimeter/json/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/perimeter - GeoJson
 +---------------------------------------------------+*/
-router.get('/street/:street_id/perimeter/geojson/', (req, res, next) => {
+router.get('/street/:street_id/perimeter/geojson', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -653,7 +653,7 @@ router.get('/street/:street_id/perimeter/geojson/', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet/perimeter - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/perimeter/json/', (req, res, next) => {
+router.get('/street/:street_id/perimeter/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -749,6 +749,41 @@ router.get('/street/query/centerof/:streetOneName/geojson', (req, res, next) => 
       done();
 
       const results2 = GeoJSON.parse(results, {Point: ['st_x', 'st_y']});
+      //console.log(results2);
+
+      return res.json(results2);
+    });
+  });
+});
+
+/*  
++---------------------------------------------------+
+|getCenterOf-Xml
++---------------------------------------------------+*/
+router.get('/street/query/centerof/:streetOneName/geojson', (req, res, next) => {
+  const results = [];
+  const textStreetOne = req.params.streetOneName;
+  
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+      const query = client.query('select gid, name, st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1', ['%' + textStreetOne + '%']);
+      
+// Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+      const results2 = js2xmlparser.parse("tb_street", results);
       //console.log(results2);
 
       return res.json(results2);
