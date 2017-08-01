@@ -131,6 +131,107 @@ const results = [];
   });
 });
 
+
+/*  
++---------------------------------------------------+
+|getAllPlaces - GeoJson
++---------------------------------------------------+*/
+
+router.get('/places/all/geojson', (req, res, next) => {
+const results = [];
+
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+    const query = client.query('select *, st_astext(geom) as geom from tb_places order by id ASC;');
+    
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+      const results2 = GeoJSON.parse(results, {'Point': 'geom'});
+      //console.log(results2);
+      
+      return res.json(results2);
+    });
+  });
+});
+
+/*  
++---------------------------------------------------+
+|getAllPlaces - Json
++---------------------------------------------------+*/
+router.get('/places/all/json', (req, res, next) => {
+const results = [];
+
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+    const query = client.query('select *, st_astext(geom) as geom from tb_places order by id ASC;');
+    
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      
+      return res.json(results);
+    });
+  });
+});
+
+/*  
++---------------------------------------------------+
+|getAllPlaces - Xml
++---------------------------------------------------+*/
+router.get('/places/all/xml', (req, res, next) => {
+const results = [];
+
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+    const query = client.query('select *, st_astext(geom) as geom from tb_places order by id ASC;');
+    
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      
+      const results2 = js2xmlparser.parse("tb_places", results);
+      //console.log(results2);
+
+      return res.end(results2);;
+    });
+  });
+});
+
 /*  
 +---------------------------------------------------+
 |getSingleStreet - Json
@@ -797,9 +898,8 @@ router.get('/street/query/centerof/:streetOneName/to/:streetTwoName/xml', (req, 
 +---------------------------------------------------+
 |ClosestPoint-Json
 +---------------------------------------------------+*/
-router.get('/places/query/ClosestPoint/:streetId/:pointId/json', (req, res, next) => {
+router.get('/places/query/ClosestPoint/:pointId/json', (req, res, next) => {
   const results = [];
-  const textstreetId = req.params.streetId;
   const textpointId = req.params.pointId;
 
   // Get a Postgres client from the connection pool
@@ -811,9 +911,10 @@ router.get('/places/query/ClosestPoint/:streetId/:pointId/json', (req, res, next
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-      const query = client.query('select st_astext(geom) as geom from tb_street where id=($1)',[textstreetId]);
-      
-// Stream results back one row at a time
+      //const query = client.query('select st_astext(geom) as geom from tb_street where id=($1)',[textstreetId]);
+      const query = client.query('select id, id_street, st_astext(geom) as geom, number from tb_places where id=($1)',[textpointId]);
+
+      // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
     });

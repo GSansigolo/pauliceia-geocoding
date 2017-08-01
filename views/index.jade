@@ -13,6 +13,15 @@ block content
   a(href='http://localhost:3000/street/all/xml') http://localhost:3000/street/all/xml
   br
   br
+  | getAllPoints:
+  br
+  a(href='http://localhost:3000/places/all/json') http://localhost:3000/places/all/json
+  br
+  a(href='http://localhost:3000/places/all/geojson') http://localhost:3000/places/all/geojson
+  br
+  a(href='http://localhost:3000/places/all/xml') http://localhost:3000/places/all/xml
+  br
+  br
   | getSingleStreet:
   br
   a(href='http://localhost:3000/street/1/json') http://localhost:3000/street/id/json
@@ -22,40 +31,13 @@ block content
   a(href='http://localhost:3000/street/1/xml') http://localhost:3000/street/id/xml
   br
   br
-  | getNameSingleStreet:
+  | getTableSingleStreet:
   br
-  a(href='http://localhost:3000/street/1/name/json') http://localhost:3000/street/id/name/json
+  a(href='http://localhost:3000/street/1/name/json') http://localhost:3000/street/id/tableName/json
   br
-  a(href='http://localhost:3000/street/1/name/geojson') http://localhost:3000/street/id/name/geojson
+  a(href='http://localhost:3000/street/1/name/geojson') http://localhost:3000/street/id/tableName/geojson
   br
-  a(href='http://localhost:3000/street/1/name/xml') http://localhost:3000/street/id/name/xml
-  br
-  br
-  | getGeomSingleStreet:
-  br
-  a(href='http://localhost:3000/street/1/geom/json') http://localhost:3000/street/id/geom/json
-  br
-  a(href='http://localhost:3000/street/1/geom/geojson') http://localhost:3000/street/id/geom/geojson
-  br
-  a(href='http://localhost:3000/street/1/geom/xml') http://localhost:3000/street/id/geom/xml
-  br
-  br
-  | getPerimeterSingleStreet:
-  br
-  a(href='http://localhost:3000/street/1/perimeter/json') http://localhost:3000/street/id/perimeter/json
-  br
-  a(href='http://localhost:3000/street/1/perimeter/geojson') http://localhost:3000/street/id/perimeter/geojson
-  br
-  a(href='http://localhost:3000/street/1/perimeter/xml') http://localhost:3000/street/id/perimeter/xml
-  br
-  br
-  | getCenterofStreet:
-  br
-  a(href='http://localhost:3000/street/query/centerof/rua boa vista/json') http://localhost:3000/street/query/centerof/name/json
-  br
-  a(href='http://localhost:3000/street/query/centerof/rua boa vista/geojson') http://localhost:3000/street/query/centerof/name/geojson
-  br
-  a(href='http://localhost:3000/street/query/centerof/rua boa vista/xml') http://localhost:3000/street/query/centerof/name/xml
+  a(href='http://localhost:3000/street/1/name/xml') http://localhost:3000/street/id/tableName/xml
   br
   br
   | getCenterofTwoStreets:
@@ -64,10 +46,12 @@ block content
   br
   a(href='http://localhost:3000/street/query/centerof/rua boa vista/to/rua tres de dezembro/geojson') http://localhost:3000/street/query/centerof/name/to/name/geojson
   br
+  a(href='http://localhost:3000/street/query/centerof/rua boa vista/to/rua tres de dezembro/xml') http://localhost:3000/street/query/centerof/name/to/name/xml
+  br
   br
   | getClosestPoint:
   br
-  a(href='http://localhost:3000//places/query/ClosestPoint/1/1/json') http://localhost:3000//places/query/ClosestPoint/streetId/pointId/json
+  a(href='http://localhost:3000/places/query/ClosestPoint/5/json') http://localhost:3000/places/query/id/json
   
 
 
