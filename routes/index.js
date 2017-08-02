@@ -345,9 +345,9 @@ router.get('/street/:street_id/xml', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/name - Json
+|getSinglePoint - Json
 +---------------------------------------------------+*/
-router.get('/street/:street_id/name/json', (req, res, next) => {
+router.get('/places/:street_id/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -361,7 +361,7 @@ router.get('/street/:street_id/name/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select id, name from tb_street where id=($1)',[id]);
+    const query = client.query('select *, st_astext(geom) as geom from tb_places where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -382,9 +382,9 @@ router.get('/street/:street_id/name/json', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/name - GeoJson
+|getSinglePoint - GeoJson
 +---------------------------------------------------+*/
-router.get('/street/:street_id/name/geojson', (req, res, next) => {
+router.get('/places/:street_id/geojson', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -398,7 +398,7 @@ router.get('/street/:street_id/name/geojson', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select  id, name from tb_street where id=($1)',[id]);
+    const query = client.query('select *, st_astext(geom) as geom from tb_places where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -409,7 +409,7 @@ router.get('/street/:street_id/name/geojson', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      const results2 = GeoJSON.parse(results, {'Point': 'geom'});
       //console.log(results2);
 
       return res.json(results2);
@@ -419,9 +419,9 @@ router.get('/street/:street_id/name/geojson', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSingleStreet/name - Xml
+|getSinglePlace - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/name/xml', (req, res, next) => {
+router.get('/places/:street_id/xml', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -435,7 +435,7 @@ router.get('/street/:street_id/name/xml', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select  id, name from tb_street where id=($1)',[id]);
+    const query = client.query('select *, st_astext(geom) as geom from tb_places where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -446,450 +446,10 @@ router.get('/street/:street_id/name/xml', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      const results2 = js2xmlparser.parse("tb_street", results);
+      const results2 = js2xmlparser.parse("tb_places", results);
       //console.log(results2);
 
       return res.end(results2);;
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getSingleStreet/geom - Json
-+---------------------------------------------------+*/
-router.get('/street/:street_id/geom/json', (req, res, next) => {
-  
-  const results = [];
-  const id = req.params.street_id;
-
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('select id, st_astext(geom) as geom from tb_street where id=($1)',[id]);
-    //const query = client.query('select * from tb_street where id=($1)', id);
-
-// Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
-
-      return res.json(results);
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getSingleStreet/geom - GeoJson
-+---------------------------------------------------+*/
-router.get('/street/:street_id/geom/geojson', (req, res, next) => {
-  
-  const results = [];
-  const id = req.params.street_id;
-
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('select id, st_astext(geom) as geom from tb_street where id=($1)',[id]);
-    //const query = client.query('select * from tb_street where id=($1)', id);
-
-// Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
-
-      return res.json(results2);
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getSingleStreet/geom - Xml
-+---------------------------------------------------+*/
-router.get('/street/:street_id/geom/xml', (req, res, next) => {
-  
-  const results = [];
-  const id = req.params.street_id;
-
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('select id, st_astext(geom) as geom from tb_street where id=($1)',[id]);
-    //const query = client.query('select * from tb_street where id=($1)', id);
-
-// Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      const results2 = js2xmlparser.parse("tb_street", results);
-      //console.log(results2);
-
-      return res.end(results2);;
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getSingleStreet/perimeter - Json
-+---------------------------------------------------+*/
-router.get('/street/:street_id/perimeter/json', (req, res, next) => {
-  
-  const results = [];
-  const id = req.params.street_id;
-
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('select id, perimeter from tb_street where id=($1)',[id]);
-    //const query = client.query('select * from tb_street where id=($1)', id);
-
-// Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
-
-      return res.json(results);
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getSingleStreet/perimeter - GeoJson
-+---------------------------------------------------+*/
-router.get('/street/:street_id/perimeter/geojson', (req, res, next) => {
-  
-  const results = [];
-  const id = req.params.street_id;
-
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('select id, perimeter from tb_street where id=($1)',[id]);
-    //const query = client.query('select * from tb_street where id=($1)', id);
-
-// Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
-
-      return res.json(results2);
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getSingleStreet/perimeter - Xml
-+---------------------------------------------------+*/
-router.get('/street/:street_id/perimeter/xml', (req, res, next) => {
-  
-  const results = [];
-  const id = req.params.street_id;
-
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('select id, perimeter from tb_street where id=($1)',[id]);
-    //const query = client.query('select * from tb_street where id=($1)', id);
-
-// Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      const results2 = js2xmlparser.parse("tb_street", results);
-      //console.log(results2);
-
-      return res.end(results2);;
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getCenterOf-Json
-+---------------------------------------------------+*/
-router.get('/street/query/centerof/:streetOneName/json', (req, res, next) => {
-  const results = [];
-  const textStreetOne = req.params.streetOneName;
-  
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-      const query = client.query('select id, name, st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1', ['%' + textStreetOne + '%']);
-      
-// Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
-
-      return res.json(results);
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getCenterOf-GeoJson
-+---------------------------------------------------+*/
-router.get('/street/query/centerof/:streetOneName/geojson', (req, res, next) => {
-  const results = [];
-  const textStreetOne = req.params.streetOneName;
-  
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-      const query = client.query('select id, name, st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1', ['%' + textStreetOne + '%']);
-      
-// Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      const results2 = GeoJSON.parse(results, {Point: ['st_x', 'st_y']});
-      //console.log(results2);
-
-      return res.json(results2);
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getCenterOf-Xml
-+---------------------------------------------------+*/
-router.get('/street/query/centerof/:streetOneName/xml', (req, res, next) => {
-  const results = [];
-  const textStreetOne = req.params.streetOneName;
-  
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-      const query = client.query('select id, name, st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1', ['%' + textStreetOne + '%']);
-      
-// Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      const results2 = js2xmlparser.parse("tb_street", results);
-      //console.log(results2);
-
-      return res.end(results2);
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getCenterOftwoStreets-Json
-+---------------------------------------------------+*/
-router.get('/street/query/centerof/:streetOneName/to/:streetTwoName/json', (req, res, next) => {
- const results = [];
-  const textStreetOne = req.params.streetOneName;
-  const textStreetTwo = req.params.streetTwoName;
-  
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-
-   const query = client.query('select st_x(st_astext(st_centroid(geom))) as CenterofStreet1x, st_y(st_astext(st_centroid(geom))) as CenterofStreet1y from tb_street where name like $1 union select st_x(st_astext(st_centroid(geom))) as CenterofStreet2x , st_y(st_astext(st_centroid(geom))) as CenterofStreet2y from tb_street where name like $2', ['%' + textStreetOne + '%', '%' + textStreetTwo + '%']);
-
-   // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
-
-      return res.json(results);
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
-|getCenterOftwoStreets-GeoJson
-+---------------------------------------------------+*/
-router.get('/street/query/centerof/:streetOneName/to/:streetTwoName/geojson', (req, res, next) => {
- const results = [];
-  const textStreetOne = req.params.streetOneName;
-  const textStreetTwo = req.params.streetTwoName;
-  
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-
-   const query = client.query('select st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1 union select st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $2', ['%' + textStreetOne + '%', '%' + textStreetTwo + '%']);
-
-   // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
-      const results2 = GeoJSON.parse(results, {Point: ['st_x', 'st_y']});
-
-      return res.json(results2);
-    });
-  });
-});
-
-
-
-/*  
-+---------------------------------------------------+
-|getCenterOftwoStreets-Xml
-+---------------------------------------------------+*/
-router.get('/street/query/centerof/:streetOneName/to/:streetTwoName/xml', (req, res, next) => {
- const results = [];
-  const textStreetOne = req.params.streetOneName;
-  const textStreetTwo = req.params.streetTwoName;
-  
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-
-   const query = client.query('select st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $1 union select st_x(st_astext(st_centroid(geom))), st_y(st_astext(st_centroid(geom))) from tb_street where name like $2', ['%' + textStreetOne + '%', '%' + textStreetTwo + '%']);
-
-   // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
-      const results2 = js2xmlparser.parse("tb_street", results);
-      //console.log(results2);
-
-      return res.end(results2);
     });
   });
 });
@@ -912,7 +472,7 @@ router.get('/places/query/ClosestPoint/:pointId/json', (req, res, next) => {
     }
     // SQL Query > Select Data
       //const query = client.query('select st_astext(geom) as geom from tb_street where id=($1)',[textstreetId]);
-      const query = client.query('select geom from tb_places where id=($1)',[textpointId]);
+      const query = client.query('',[textpointId]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -923,10 +483,9 @@ router.get('/places/query/ClosestPoint/:pointId/json', (req, res, next) => {
       done();
 
       //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results);
-      //return res.json(results);
 
-      const query = client.query('UPDATE tb_placesclosestpoint SET geom = ST_ClosestPoint(pt,line) WHERE where id=($3); ',[resultstext, pointId]);
+      //console.log(results);
+      return res.json(results);
     });
   });
 });
