@@ -471,8 +471,8 @@ router.get('/places/query/ClosestPoint/:pointId/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-      //const query = client.query('select st_astext(geom) as geom from tb_street where id=($1)',[textstreetId]);
-      const query = client.query('',[textpointId]);
+      //TESTE SELECT a.geom AS geomtb_placesclosestpoint, b.geom AS geomtb_places FROM tb_placesclosestpoint AS a, tb_places AS b WHERE a.id = 5;
+      const query = client.query('SELECT ST_ClosestPoint((SELECT geom FROM tb_places AS b WHERE b.id = ($1)),(SELECT geom FROM tb_street AS c WHERE b.id_street = c.id)) FROM tb_places AS b, tb_street AS c WHERE b.id = ($1);',[textpointId]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
