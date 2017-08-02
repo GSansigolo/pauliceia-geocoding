@@ -912,7 +912,7 @@ router.get('/places/query/ClosestPoint/:pointId/json', (req, res, next) => {
     }
     // SQL Query > Select Data
       //const query = client.query('select st_astext(geom) as geom from tb_street where id=($1)',[textstreetId]);
-      const query = client.query('select id, id_street, st_astext(geom) as geom, number from tb_places where id=($1)',[textpointId]);
+      const query = client.query('select geom from tb_places where id=($1)',[textpointId]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -923,9 +923,10 @@ router.get('/places/query/ClosestPoint/:pointId/json', (req, res, next) => {
       done();
 
       //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
+      //console.log(results);
+      //return res.json(results);
 
-      return res.json(results);
+      const query = client.query('UPDATE tb_placesclosestpoint SET geom = ST_ClosestPoint(pt,line) WHERE where id=($3); ',[resultstext, pointId]);
     });
   });
 });
