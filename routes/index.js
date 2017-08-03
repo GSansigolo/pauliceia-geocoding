@@ -467,16 +467,7 @@ router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
     if(textpoint.match(/^[0-9]+$/) != null){
 
     console.log("O 'textpoint' digitado é composto por numeros");
-    typeofsearch = "number";   
-
-    } else {
-
-    console.log("O 'textpoint' digitado é composto por letras");
-    typeofsearch = "name";
-
-    }
-
-  // Get a Postgres client from the connection pool
+      // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
     if(err) {
@@ -485,8 +476,36 @@ router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-      //TESTE SELECT a.geom AS geomtb_placesclosestpoint, b.geom AS geomtb_places FROM tb_placesclosestpoint AS a, tb_places AS b WHERE a.id = 5;
-      const query = client.query('select St_astext(geom) from tb_places where $1 = $2',[typeofsearch,textpoint]);
+      const query = client.query('select St_astext(geom) from tb_places where number = ($1)',[textpoint]);
+
+      // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+
+      //console.log(results);
+      return res.json(results);
+    });
+  });  
+
+    } else {
+
+    console.log("O 'textpoint' digitado é composto por letras");
+      // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+      const query = client.query('select St_astext(geom) from tb_places where name = ($1);',[textpoint]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -502,6 +521,9 @@ router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
       return res.json(results);
     });
   });
+
+    }
+
 });
 
 /*  
