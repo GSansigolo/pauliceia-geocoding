@@ -456,11 +456,15 @@ router.get('/places/:street_id/xml', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|ClosestPoint-Json
+|PointFromInput-Json
 +---------------------------------------------------+*/
-router.get('/places/query/ClosestPoint/:pointId/json', (req, res, next) => {
+router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
   const results = [];
-  const textpointId = req.params.pointId;
+  const textpoint = req.params.textpoint;
+  const typeofsearch = "";
+
+  //Condição que determina o tipo do texto.
+  if (textpoint )
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -472,7 +476,7 @@ router.get('/places/query/ClosestPoint/:pointId/json', (req, res, next) => {
     }
     // SQL Query > Select Data
       //TESTE SELECT a.geom AS geomtb_placesclosestpoint, b.geom AS geomtb_places FROM tb_placesclosestpoint AS a, tb_places AS b WHERE a.id = 5;
-      const query = client.query('SELECT ST_ClosestPoint((SELECT geom FROM tb_places AS b WHERE b.id = ($1)),(SELECT geom FROM tb_street AS c WHERE b.id_street = c.id)) FROM tb_places AS b, tb_street AS c WHERE b.id = ($1);',[textpointId]);
+      const query = client.query('select St_astext(geom) from tb_places where $1 = $2',[typeofsearch,textpoint]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
