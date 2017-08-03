@@ -476,7 +476,7 @@ router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-      const query = client.query('select St_astext(geom) from tb_places where number = ($1)',[textpoint]);
+      const query = client.query('select St_astext(geom) from tb_places where number = ($1) order by geom desc limit 1',[textpoint]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -505,7 +505,7 @@ router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-      const query = client.query('select St_astext(geom) from tb_places where name = ($1);',[textpoint]);
+      const query = client.query('select St_astext(geom) from tb_places where name like ($1) order by geom desc limit 1;',['%'+textpoint+'%']);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
