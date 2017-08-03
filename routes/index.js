@@ -466,7 +466,7 @@ router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
   //Condição que determina o tipo do texto.
     if(textpoint.match(/^[0-9]+$/) != null){
 
-    console.log("O 'textpoint' digitado é composto por numeros");
+    //console.log("O 'textpoint' digitado é composto por numeros");
       // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
@@ -495,7 +495,7 @@ router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
 
     } else {
 
-    console.log("O 'textpoint' digitado é composto por letras");
+    //console.log("O 'textpoint' digitado é composto por letras");
       // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
