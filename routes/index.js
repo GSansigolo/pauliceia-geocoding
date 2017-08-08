@@ -36,7 +36,7 @@ router.get('/', function(req, res, next) {
 |getAllStreets - GeoJson
 +---------------------------------------------------+*/
 
-router.get('/street/all/geojson', (req, res, next) => {
+router.get('/api/street/all/geojson', (req, res, next) => {
 const results = [];
 
   // Get a Postgres client from the connection pool
@@ -70,7 +70,7 @@ const results = [];
 +---------------------------------------------------+
 |getAllStreets - Json
 +---------------------------------------------------+*/
-router.get('/street/all/json', (req, res, next) => {
+router.get('/api/street/all/json', (req, res, next) => {
 const results = [];
 
   // Get a Postgres client from the connection pool
@@ -101,7 +101,7 @@ const results = [];
 +---------------------------------------------------+
 |getAllStreets - Xml
 +---------------------------------------------------+*/
-router.get('/street/all/xml', (req, res, next) => {
+router.get('/api/street/all/xml', (req, res, next) => {
 const results = [];
 
   // Get a Postgres client from the connection pool
@@ -137,7 +137,7 @@ const results = [];
 |getAllPlaces - GeoJson
 +---------------------------------------------------+*/
 
-router.get('/places/all/geojson', (req, res, next) => {
+router.get('/api/places/all/geojson', (req, res, next) => {
 const results = [];
 
   // Get a Postgres client from the connection pool
@@ -171,7 +171,7 @@ const results = [];
 +---------------------------------------------------+
 |getAllPlaces - Json
 +---------------------------------------------------+*/
-router.get('/places/all/json', (req, res, next) => {
+router.get('/api/places/all/json', (req, res, next) => {
 const results = [];
 
   // Get a Postgres client from the connection pool
@@ -202,7 +202,7 @@ const results = [];
 +---------------------------------------------------+
 |getAllPlaces - Xml
 +---------------------------------------------------+*/
-router.get('/places/all/xml', (req, res, next) => {
+router.get('/api/places/all/xml', (req, res, next) => {
 const results = [];
 
   // Get a Postgres client from the connection pool
@@ -236,7 +236,7 @@ const results = [];
 +---------------------------------------------------+
 |getSingleStreet - Json
 +---------------------------------------------------+*/
-router.get('/street/:street_id/json', (req, res, next) => {
+router.get('/api/street/:street_id/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -273,7 +273,7 @@ router.get('/street/:street_id/json', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet - GeoJson
 +---------------------------------------------------+*/
-router.get('/street/:street_id/geojson', (req, res, next) => {
+router.get('/api/street/:street_id/geojson', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -310,7 +310,7 @@ router.get('/street/:street_id/geojson', (req, res, next) => {
 +---------------------------------------------------+
 |getSingleStreet - Xml
 +---------------------------------------------------+*/
-router.get('/street/:street_id/xml', (req, res, next) => {
+router.get('/api/street/:street_id/xml', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -347,7 +347,7 @@ router.get('/street/:street_id/xml', (req, res, next) => {
 +---------------------------------------------------+
 |getSinglePoint - Json
 +---------------------------------------------------+*/
-router.get('/places/:street_id/json', (req, res, next) => {
+router.get('/api/places/:street_id/json', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -384,7 +384,7 @@ router.get('/places/:street_id/json', (req, res, next) => {
 +---------------------------------------------------+
 |getSinglePoint - GeoJson
 +---------------------------------------------------+*/
-router.get('/places/:street_id/geojson', (req, res, next) => {
+router.get('/api/places/:street_id/geojson', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -421,7 +421,7 @@ router.get('/places/:street_id/geojson', (req, res, next) => {
 +---------------------------------------------------+
 |getSinglePlace - Xml
 +---------------------------------------------------+*/
-router.get('/places/:street_id/xml', (req, res, next) => {
+router.get('/api/places/:street_id/xml', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -456,9 +456,9 @@ router.get('/places/:street_id/xml', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|PointFromInput-Json
+|Geolocation-Json
 +---------------------------------------------------+*/
-router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
+router.get('/api/geolocation/:textpoint/json', (req, res, next) => {
   const results = [];
   const textpoint = req.params.textpoint;
   const typeofsearch = "";
@@ -504,6 +504,7 @@ router.get('/places/query/PointFromInput/:textpoint/json', (req, res, next) => {
       console.log(err);
       return res.status(500).json({success: false, data: err});
     }
+    
     // SQL Query > Select Data
       const query = client.query('select St_astext(geom) from tb_places where name like ($1) order by geom desc limit 1;',['%'+textpoint+'%']);
 
