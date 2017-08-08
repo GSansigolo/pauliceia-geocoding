@@ -36,7 +36,7 @@ router.get('/', function(req, res, next) {
 |searchPage
 +---------------------------------------------------+*/
 router.get('/search', function(req, res, next) {
-  res.render('search', { title: 'Search' });
+  res.render('search', { title: 'Pauliceia 2.0' });
 
 });
 
