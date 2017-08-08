@@ -33,9 +33,18 @@ router.get('/', function(req, res, next) {
 
 /*  
 +---------------------------------------------------+
+|searchPage
++---------------------------------------------------+*/
+router.get('/search', function(req, res, next) {
+  res.render('search', { title: 'Search' });
+
+});
+
+
+/*  
++---------------------------------------------------+
 |getAllStreets - GeoJson
 +---------------------------------------------------+*/
-
 router.get('/api/street/all/geojson', (req, res, next) => {
 const results = [];
 
