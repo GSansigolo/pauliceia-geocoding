@@ -40,6 +40,14 @@ router.get('/search', function(req, res, next) {
 
 });
 
+/*  
++---------------------------------------------------+
+|searchPage 2
++---------------------------------------------------+*/
+router.get('/search2', function(req, res, next) {
+  res.render('search2', { title: 'Pauliceia 2.0 2' });
+
+});
 
 /*  
 +---------------------------------------------------+
