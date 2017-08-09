@@ -7,10 +7,8 @@
   var GeoJSON = require('geojson');
   var postgeo = require("postgeo");
   var js2xmlparser = require("js2xmlparser");
-  var http = require('http');
-  var fs = require('fs');
 
-/*  
+  /*  
 +---------------------------------------------------+
 |Connection
 +---------------------------------------------------+*/
@@ -42,18 +40,6 @@ router.get('/search', function(req, res, next) {
 
 });
 
-/*  
-+---------------------------------------------------+
-|searchPage 2
-+---------------------------------------------------+*/
-router.get('/search2', function(req, res, next) {
-  
-  var str = __dirname;
-  str = str.slice(0, -7);
-
-  str +'/views/html/index.html'
-
-});
 /*  
 +---------------------------------------------------+
 |getAllStreets - GeoJson

@@ -1,60 +1,64 @@
 extends layout
 block content
-  h1= title
-  b Index of:
-  br
-  br
-  | searchPage
-  br
-  a(href='http://localhost:3000/search') http://localhost:3000/search
-  br
-  br
-  | searchPage 2
-  br
-  a(href='http://localhost:3000/search2') http://localhost:3000/search2
-  br
-  br
-  | getAllStreets:
-  br
-  a(href='http://localhost:3000/api/street/all/json') http://localhost:3000/api/street/all/json
-  br
-  a(href='http://localhost:3000/api/street/all/geojson') http://localhost:3000/api/street/all/geojson
-  br
-  a(href='http://localhost:3000/api/street/all/xml') http://localhost:3000/api/street/all/xml
-  br
-  br
-  | getAllPlaces:
-  br
-  a(href='http://localhost:3000/api/places/all/json') http://localhost:3000/api/places/all/json
-  br
-  a(href='http://localhost:3000/api/places/all/geojson') http://localhost:3000/api/places/all/geojson
-  br
-  a(href='http://localhost:3000/api/places/all/xml') http://localhost:3000/api/places/all/xml
-  br
-  br
-  | getSingleStreet:
-  br
-  a(href='http://localhost:3000/api/street/1/json') http://localhost:3000/api/street/id/json
-  br
-  a(href='http://localhost:3000/api/street/1/geojson') http://localhost:3000/api/street/id/geojson
-  br
-  a(href='http://localhost:3000/api/street/1/xml') http://localhost:3000/api/street/id/xml
-  br
-  br
-  | getSinglePlaces:
-  br
-  a(href='http://localhost:3000/api/places/5/json') http://localhost:3000/api/places/id/json
-  br
-  a(href='http://localhost:3000/api/places/5/geojson') http://localhost:3000/api/places/id/geojson
-  br
-  a(href='http://localhost:3000/api/places/5/xml') http://localhost:3000/api/places/id/xml
-  br
-  br
-  | geolocation:
-  br
-  a(href='http://localhost:3000/api/geolocation/Collegio Santa Ignez/json') http://localhost:3000/api/geolocation/text/json
-  
-
-
-
-  
+  head
+    script.
+        function myFunction() {
+        var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+        var URL = "https://www.linkedin.com/cws/share?mini=true&amp;url=" + location.href;
+        var win = window.open(URL, "_blank", strWindowFeatures);
+        }
+    h1= title
+  body
+    b Index of:
+    br
+    br
+    | searchPage
+    br
+    a(href='http://localhost:3000/search') http://localhost:3000/search
+    br
+    br
+    | searchPage 2
+    br
+    a(href='javascript:myFunction();') http://localhost:3000/search2
+    br
+    br
+    | getAllStreets:
+    br
+    a(href='http://localhost:3000/api/street/all/json') http://localhost:3000/api/street/all/json
+    br
+    a(href='http://localhost:3000/api/street/all/geojson') http://localhost:3000/api/street/all/geojson
+    br
+    a(href='http://localhost:3000/api/street/all/xml') http://localhost:3000/api/street/all/xml
+    br
+    br
+    | getAllPlaces:
+    br
+    a(href='http://localhost:3000/api/places/all/json') http://localhost:3000/api/places/all/json
+    br
+    a(href='http://localhost:3000/api/places/all/geojson') http://localhost:3000/api/places/all/geojson
+    br
+    a(href='http://localhost:3000/api/places/all/xml') http://localhost:3000/api/places/all/xml
+    br
+    br
+    | getSingleStreet:
+    br
+    a(href='http://localhost:3000/api/street/1/json') http://localhost:3000/api/street/id/json
+    br
+    a(href='http://localhost:3000/api/street/1/geojson') http://localhost:3000/api/street/id/geojson
+    br
+    a(href='http://localhost:3000/api/street/1/xml') http://localhost:3000/api/street/id/xml
+    br
+    br
+    | getSinglePlaces:
+    br
+    a(href='http://localhost:3000/api/places/5/json') http://localhost:3000/api/places/id/json
+    br
+    a(href='http://localhost:3000/api/places/5/geojson') http://localhost:3000/api/places/id/geojson
+    br
+    a(href='http://localhost:3000/api/places/5/xml') http://localhost:3000/api/places/id/xml
+    br
+    br
+    | geolocation:
+    br
+    a(href='http://localhost:3000/api/geolocation/Collegio Santa Ignez/json') http://localhost:3000/api/geolocation/text/json
+    
