@@ -23,7 +23,7 @@ request.onreadystatechange = function(response) {
       });
       
       // Update the placeholder text.
-      input.placeholder = "e.g. datalist";
+      input.placeholder = "";
     } else {
       // An error occured :(
       input.placeholder = "Couldn't load datalist options :(";
