@@ -212,6 +212,7 @@ const results = [];
 +---------------------------------------------------+*/
 router.get('/api/places/all/name/json', (req, res, next) => {
 const results = [];
+const newResults = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -222,24 +223,19 @@ const results = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select original_number as number from tb_places UNION select name as name from tb_places;');
+    const query = client.query('SELECT original_number AS number FROM tb_places UNION SELECT name AS name FROM tb_places;');
 
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
     });
+
     // After all data is returned, close connection and return results
     query.on('end', () => {
       done();
-        
-    for (var i = 0; i < jsonData.counters.length; i++) {
-        var counter = jsonData.counters[i];
-        console.log(counter.number);
-    }
 
-      console.log(jsonData);
+    return res.json(results);
 
-      return res.json(results);
     });
   });
 });
