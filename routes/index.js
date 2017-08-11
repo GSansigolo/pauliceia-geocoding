@@ -222,7 +222,7 @@ const results = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select original_number from tb_places UNION select name from tb_places;');
+    const query = client.query('select original_number as number from tb_places UNION select name as name from tb_places;');
 
     // Stream results back one row at a time
     query.on('row', (row) => {
