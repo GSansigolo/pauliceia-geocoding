@@ -35,5 +35,5 @@ request.onreadystatechange = function(response) {
 input.placeholder = "Loading options...";
 
 // Set up and make the request.
-request.open('GET', 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/html-elements.json', true);
+request.open('GET', 'http://localhost:3000/api/places/all/name/json', true);
 request.send();
