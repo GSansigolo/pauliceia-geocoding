@@ -17,7 +17,7 @@ request.onreadystatechange = function(response) {
         // Create a new <option> element.
         var option = document.createElement('option');
         // Set the value using the item in the JSON array.
-        option.value = item;
+        option.value = item.number;
         // Add the <option> element to the <datalist>.
         dataList.appendChild(option);
       });
