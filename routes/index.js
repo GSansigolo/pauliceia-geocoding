@@ -231,7 +231,14 @@ const results = [];
     // After all data is returned, close connection and return results
     query.on('end', () => {
       done();
-      
+        
+    for (var i = 0; i < jsonData.counters.length; i++) {
+        var counter = jsonData.counters[i];
+        console.log(counter.number);
+    }
+
+      console.log(jsonData);
+
       return res.json(results);
     });
   });
