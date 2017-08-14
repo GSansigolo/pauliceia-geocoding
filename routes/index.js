@@ -505,7 +505,7 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
   const textpoint = req.params.textpoint;
   const typeofsearch = "";
   const year = req.params.year;
-
+  
   //Condição que determina o tipo do texto.
     if(textpoint.match(/^[0-9]+$/) != null){
 
@@ -519,8 +519,9 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-      const query = client.query('select St_astext(geom) from tb_places where number = ($1), first_year <= $2 or last_year >= $2 order by geom desc limit 1',[textpoint, year]);
 
+      const query = client.query('select St_astext(geom) from tb_places where number = ($1) and first_year <= $2 or last_year >= $2 order by geom desc limit 1',[textpoint, year]);
+    console.log(query);
       // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
@@ -547,7 +548,7 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     }
     
     // SQL Query > Select Data
-      const query = client.query('select St_astext(geom) from tb_places where name like ($1) order by geom desc limit 1;',['%'+textpoint+'%']);
+      const query = client.query('select St_astext(geom) from tb_places where name = ($1) and first_year <= $2 or last_year >= $2 order by geom desc limit 1;',['%'+textpoint+'%', year]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
