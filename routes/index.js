@@ -500,10 +500,11 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
 +---------------------------------------------------+
 |Geolocation-Json
 +---------------------------------------------------+*/
-router.get('/api/geolocation/:textpoint/json', (req, res, next) => {
+router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
   const results = [];
   const textpoint = req.params.textpoint;
   const typeofsearch = "";
+  const year = req.params.year;
 
   //Condição que determina o tipo do texto.
     if(textpoint.match(/^[0-9]+$/) != null){
@@ -518,7 +519,7 @@ router.get('/api/geolocation/:textpoint/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-      const query = client.query('select St_astext(geom) from tb_places where number = ($1) order by geom desc limit 1',[textpoint]);
+      const query = client.query('select St_astext(geom) from tb_places where number = ($1), first_year <= $2 or last_year >= $2 order by geom desc limit 1',[textpoint, year]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -534,9 +535,7 @@ router.get('/api/geolocation/:textpoint/json', (req, res, next) => {
       return res.json(results);
     });
   });  
-
     } else {
-
     //console.log("O 'textpoint' digitado é composto por letras");
       // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -564,9 +563,7 @@ router.get('/api/geolocation/:textpoint/json', (req, res, next) => {
       return res.json(results);
     });
   });
-
     }
-
 });
 
 /*  
