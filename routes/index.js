@@ -223,7 +223,7 @@ const newResults = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('SELECT original_number AS number FROM tb_places UNION SELECT name AS name FROM tb_places;');
+    const query = client.query('');
 
     // Stream results back one row at a time
     query.on('row', (row) => {
@@ -522,7 +522,6 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     // SQL Query > Select Data
 
       const query = client.query('select St_astext(geom) from tb_places where number = ($1) and first_year >= ($2) or last_year <= ($2) order by geom desc limit 1',[textpoint,year]);
-      console.log(query);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -551,7 +550,7 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     
     // SQL Query > Select Data
        const query = client.query('select St_astext(geom) from tb_places where name like ($1) and first_year >= ($2) or last_year <= ($2) order by geom desc limit 1',['%'+textpoint+'%',year]);
-      console.log(query);
+
       // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
