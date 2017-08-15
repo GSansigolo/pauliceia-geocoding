@@ -208,40 +208,6 @@ const results = [];
 
 /*  
 +---------------------------------------------------+
-|getAllPlacesNameandNumber - Json
-+---------------------------------------------------+*/
-router.get('/api/places/all/name/json', (req, res, next) => {
-const results = [];
-const newResults = [];
-
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('');
-
-    // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-    return res.json(results);
-
-    });
-  });
-});
-
-/*  
-+---------------------------------------------------+
 |getAllPlaces - Xml
 +---------------------------------------------------+*/
 router.get('/api/places/all/xml', (req, res, next) => {
@@ -498,7 +464,41 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|Geolocation-Json
+|getListNomeYear - Json
++---------------------------------------------------+*/
+router.get('/api/places/all/name/json', (req, res, next) => {
+const results = [];
+const newResults = [];
+
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+    const query = client.query('select * from tb_places union select * from tb_places union select * from tb_places union select * from tb_places');
+
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+    return res.json(results);
+
+    });
+  });
+});
+
+/*  
++---------------------------------------------------+
+|geolocation-Json
 +---------------------------------------------------+*/
 router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
   const results = [];
