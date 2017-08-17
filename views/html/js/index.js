@@ -35,8 +35,8 @@ request.onreadystatechange = function(response) {
 input.placeholder = "Loading options...";
 
 // Set up and make the request.
-request.open('GET', 'https://api.myjson.com/bins/gd1ix', true);
+request.open('GET', 'https://api.myjson.com/bins/1dipqx', true);
 
-//exemple right json:https://api.myjson.com/bins/gd1ix
+//exemple right json: https://api.myjson.com/bins/1dipqx
 
 request.send();
