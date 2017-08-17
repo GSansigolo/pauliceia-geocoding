@@ -56,7 +56,7 @@ const results = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
+    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street order by id ASC;');
     
     // Stream results back one row at a time
     query.on('row', (row) => {
@@ -90,7 +90,7 @@ const results = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
+    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street order by id ASC;');
     
     // Stream results back one row at a time
     query.on('row', (row) => {
@@ -121,7 +121,7 @@ const results = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
+    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street order by id ASC;');
     
     // Stream results back one row at a time
     query.on('row', (row) => {
@@ -258,7 +258,7 @@ router.get('/api/street/:street_id/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
+    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -295,7 +295,7 @@ router.get('/api/street/:street_id/geojson', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
+    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -332,7 +332,7 @@ router.get('/api/street/:street_id/xml', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
+    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -369,7 +369,7 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(geom) as geom from tb_places where id=($1)',[id]);
+    const query = client.query('select id, id_street, st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng, number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -406,7 +406,7 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(geom) as geom from tb_places where id=($1)',[id]);
+    const query = client.query('select id, id_street, (st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng), number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -417,7 +417,7 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      const results2 = GeoJSON.parse(results, {'Point': 'geom'});
+      const results2 = GeoJSON.parse(results, {Point: ['lat', 'lng']});
       //console.log(results2);
 
       return res.json(results2);
@@ -443,7 +443,7 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(geom) as geom from tb_places where id=($1)',[id]);
+    const query = client.query('select id, id_street, st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng, number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -521,7 +521,7 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     }
     // SQL Query > Select Data
 
-      const query = client.query('SELECT ST_ASTEXT(geom) FROM tb_places WHERE number = ($1) AND first_year >= ($2) OR last_year <= ($2) ORDER BY geom DESC LIMIT 1',[textpoint,year]);
+      const query = client.query("SELECT number, ST_ASTEXT(geom) FROM tb_places WHERE number = ($1) AND first_year >= ($2) OR last_year <= ($2) AND number != null ",[textpoint,year]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -531,10 +531,10 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
 
       //console.log(results);
-      return res.json(results);
+      return res.json(results2);
     });
   });  
 } else {
@@ -549,7 +549,7 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     }
     
     // SQL Query > Select Data
-       const query = client.query("SELECT name, ST_ASTEXT(geom) FROM tb_places WHERE name LIKE ($1) AND first_year >= ($2) OR last_year <= ($2) AND name != '' UNION SELECT name, ST_ASTEXT(geom) FROM tb_street WHERE name LIKE ($1) AND first_year = ($2) AND name != '' ",['%'+textpoint+'%',year]);
+       const query = client.query("SELECT name, ST_ASTEXT(geom) FROM tb_places WHERE name LIKE ($1) AND first_year >= ($2) OR last_year <= ($2) AND name != '' UNION SELECT name, ST_ASTEXT(st_transform(geom,4326)) FROM tb_street WHERE name LIKE ($1) AND first_year = ($2) AND name != '' ",['%'+textpoint+'%',year]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -559,9 +559,9 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
 
-      return res.json(results);
+      return res.json(results2);
     });
   }); 
 }
