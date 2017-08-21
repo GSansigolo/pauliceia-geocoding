@@ -1,6 +1,6 @@
 # Web Service para Geo Codificação de Endereços em Banco de Dados Espaços Temporais.<br>
 
-Gabriel Sansigolo<br><br>
+**Integrante:** Gabriel Sansigolo<br>
 
 **Orientador:** Luis Antonio Coelho Ferla, Doutor, UNIFESP<br>
 **Orientadora:** Karine Reis Ferreira, Doutora, INPE<br>
