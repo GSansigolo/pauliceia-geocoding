@@ -1,11 +1,12 @@
-# Web Service para Geo Codificação de Endereços em Banco de Dados Espaços Temporais.
+# Web Service para Geo Codificação de Endereços em Banco de Dados Espaços Temporais.<br>
 
 **Integrantes: Gabriel Sansigolo**<br>
-**Orientador: Luis Antonio Coelho Ferla, Doutor, UNIFESP**
-**Orientadora: Karine Reis Ferreira, Doutora, INPE**
+**Orientador: Luis Antonio Coelho Ferla, Doutor, UNIFESP**<br>
+**Orientadora: Karine Reis Ferreira, Doutora, INPE**<br>
 **Orientadora: Juliana Forin Pasquini Martinez, Mestre, FATEC**<br>
 
 **Objetivo Geral**
+
 O objetivo geral deste trabalho é o planejamento, arquitetura e desenvolvimento de um web service, que possibilite a colaboração com o mapeamento histórico geográfico do município de São Paulo durante os anos 1870-1940.
 
 
