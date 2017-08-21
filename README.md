@@ -1,9 +1,18 @@
-# WEB SERVICE PARA GEO CODIFICAÇÃO DE ENDEREÇOS EM BANCO DE DADOS ESPAÇO TEMPORAIS.
+# Web Service para Geo Codificação de Endereços em Banco de Dados Espaços Temporais.
 
 **Integrantes: Gabriel Sansigolo**<br>
-**Orientador: Giuliano Bertoti**
+**Orientador: Luis Antonio Coelho Ferla, Doutor, UNIFESP**
+**Orientadora: Karine Reis Ferreira, Doutora, INPE**
+**Orientadora: Juliana Forin Pasquini Martinez, Mestre, FATEC**<br>
 
-Web Services vem ganhando cada vez mais espaço no mercado da computação, isso se deve principalmente pela sua eficiência no que diz respeito a integração de sistemas e comunicação entre aplicações diferentes. Com a transição do publico de aplicações locais para  aplicações web permitiu-se uma evolução na questão de compartilhamento de dados e uma necessidade de melhor distribuição na internet. Este trabalho tem como principal objetivo o desenvolvimento de um web service para distribuição dos dados do  projeto de mapeamento histórico da cidade de São Paulo. O serviço vai oferecer, além de acesso aos dados, ferramentas de geocodificação de endereços já desenvolvidas para trabalhar com o banco de dados histórico do projeto. Esse projeto está associado ao projeto: “Pauliceia 2.0: Geo Codificação de Endereços em Banco de Dados Espaço Temporais.”
+**Objetivo Geral**
+O objetivo geral deste trabalho é o planejamento, arquitetura e desenvolvimento de um web service, que possibilite a colaboração com o mapeamento histórico geográfico do município de São Paulo durante os anos 1870-1940.
 
 
+**Diagramas de Sequência**
+
+O projeto prevê que o web service seja acessado através de:
+a) Ferramentas GIS: Através de ferramentas GIS o usuário poderá visualizar todos os dados já disponíveis no banco de dados.
+b) Portal: O portal será o meio mais utilizado, por ter sido projetado para o publico não familiarizado com as ferramentas GIS, o portal vai permitir pesquisa, acesso, visualização e análise de todos os dados disponíveis.
+c) Web service: Será também possível acessar os dados através da própria página do web service em forma textual.
 
