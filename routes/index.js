@@ -27,7 +27,7 @@
 |HomePage - Index of Pages
 +---------------------------------------------------+*/
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Pauliceia 2.0 WebService' });
+  res.render('index', { title: 'Pauliceia 2.0: API REST' });
 
 });
 
@@ -353,7 +353,7 @@ router.get('/api/street/:street_id/xml', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSinglePoint - Json
+|getSinglePlace - Json
 +---------------------------------------------------+*/
 router.get('/api/places/:street_id/json', (req, res, next) => {
   
@@ -390,7 +390,7 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getSinglePoint - GeoJson
+|getSinglePlace- GeoJson
 +---------------------------------------------------+*/
 router.get('/api/places/:street_id/geojson', (req, res, next) => {
   
@@ -464,9 +464,9 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
-|getListNomeYear - Json
+|getList - Json
 +---------------------------------------------------+*/
-router.get('/api/places/all/name/json', (req, res, next) => {
+router.get('/api/listQuickSearch', (req, res, next) => {
 const results = [];
 const newResults = [];
 
@@ -479,11 +479,11 @@ const newResults = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select * from tb_places union select * from tb_places union select * from tb_places union select * from tb_places');
-
+    const query = client.query("select b.name, b.first_year from tb_street as b union select a.name, a.first_year from tb_places as a where a.name != ''");
+    
     // Stream results back one row at a time
     query.on('row', (row) => {
-      results.push(row);
+      results.push(row.name +', '+ row.first_year);
     });
 
     // After all data is returned, close connection and return results
@@ -492,7 +492,7 @@ const newResults = [];
 
     return res.json(results);
 
-    });
+   });
   });
 });
 
@@ -531,10 +531,10 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
 
       //console.log(results);
-      return res.json(results2);
+      return res.json(results);
     });
   });  
 } else {
@@ -559,9 +559,9 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
 
-      return res.json(results2);
+      return res.json(results);
     });
   }); 
 }

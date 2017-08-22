@@ -9,51 +9,42 @@ block content
         }
     h1= title
   body
-    b Index of:
+    | A API REST proverá acesso para leitura dos dados geográficos do projeto. Segue abaixo a lista de rotas que a API REST possui. Logo 
+    br
+    | abaixo pode ser visto uma descrição de cada uma das rotas contendo o nome da mesma, o endereço, uma descri ação, as variáveis
+    br
+    | que ela recebe e o formato do dado de saída.
     br
     br
-    | searchPage
+    a(href='javascript:myFunction();') > SearchPage
     br
-    a(href='javascript:myFunction();') https://cdn.rawgit.com/.../html/index.html
+    a(href='http://localhost:3000/api/street/all/json') > GetAllStreetsJson
     br
+    a(href='http://localhost:3000/api/street/all/geojson') > GetAllStreetsGeoJson
     br
-    | getAllStreets:
+    a(href='http://localhost:3000/api/street/all/xml') > GetAllStreetsXML
     br
-    a(href='http://localhost:3000/api/street/all/json') http://localhost:3000/api/street/all/json
+    a(href='http://localhost:3000/api/places/all/json') > GetAllPlacesJson
     br
-    a(href='http://localhost:3000/api/street/all/geojson') http://localhost:3000/api/street/all/geojson
+    a(href='http://localhost:3000/api/places/all/geojson') > GetAllPlacesGeoJson
     br
-    a(href='http://localhost:3000/api/street/all/xml') http://localhost:3000/api/street/all/xml
+    a(href='http://localhost:3000/api/places/all/xml') > GetAllPlacesXML
     br
+    a(href='http://localhost:3000/api/street/1/json') > GetSingleStreetJson
     br
-    | getAllPlaces:
+    a(href='http://localhost:3000/api/street/1/geojson') > GetSingleStreetGeoJson
     br
-    a(href='http://localhost:3000/api/places/all/json') http://localhost:3000/api/places/all/json
+    a(href='http://localhost:3000/api/street/1/xml') > GetSingleStreetXML
     br
-    a(href='http://localhost:3000/api/places/all/geojson') http://localhost:3000/api/places/all/geojson
+    a(href='http://localhost:3000/api/places/71/json') > GetSinglePlaceJson
     br
-    a(href='http://localhost:3000/api/places/all/xml') http://localhost:3000/api/places/all/xml
+    a(href='http://localhost:3000/api/places/71/geojson') > GetSinglePlaceGeoJson
     br
+    a(href='http://localhost:3000/api/places/71/xml') > GetSinglePlaceXML
     br
-    | getSingleStreet:
+    a(href='http://localhost:3000/api/listQuickSearch') > getListQuickSearchJson
     br
-    a(href='http://localhost:3000/api/street/1/json') http://localhost:3000/api/street/id/json
-    br
-    a(href='http://localhost:3000/api/street/1/geojson') http://localhost:3000/api/street/id/geojson
-    br
-    a(href='http://localhost:3000/api/street/1/xml') http://localhost:3000/api/street/id/xml
-    br
-    br
-    | getSinglePlaces:
-    br
-    a(href='http://localhost:3000/api/places/71/json') http://localhost:3000/api/places/id/json
-    br
-    a(href='http://localhost:3000/api/places/71/geojson') http://localhost:3000/api/places/id/geojson
-    br
-    a(href='http://localhost:3000/api/places/71/xml') http://localhost:3000/api/places/id/xml
-    br
-    br
-    | geolocation:
-    br
-    a(href='http://localhost:3000/api/geolocation/rua lucrecia leme, 1930/json') http://localhost:3000/api/geolocation/text, year/json
+    a(href='http://localhost:3000/api/geolocation/Quartel General da 2° região Militar, 1931/json') > getGeolocationJson
+
+
     
