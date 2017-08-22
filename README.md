@@ -13,6 +13,8 @@ O objetivo geral deste trabalho é o planejamento, arquitetura e desenvolvimento
 
 **Diagramas de Sequência**
 
+http://imgur.com/a/WezFp
+
 O projeto prevê que o web service seja acessado através de:
 a) Ferramentas GIS: Através de ferramentas GIS o usuário poderá visualizar todos os dados já disponíveis no banco de dados.
 b) Portal: O portal será o meio mais utilizado, por ter sido projetado para o publico não familiarizado com as ferramentas GIS, o portal vai permitir pesquisa, acesso, visualização e análise de todos os dados disponíveis.

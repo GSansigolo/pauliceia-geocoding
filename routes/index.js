@@ -521,7 +521,7 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     }
     // SQL Query > Select Data
 
-      const query = client.query("SELECT number, ST_ASTEXT(geom) FROM tb_places WHERE number = ($1) AND first_year >= ($2) OR last_year <= ($2) AND number != null ",[textpoint,year]);
+      const query = client.query("SELECT number, ST_ASTEXT(geom) as geom FROM tb_places WHERE number = ($1) AND first_year >= ($2) OR last_year <= ($2) AND number != null ",[textpoint,year]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -549,7 +549,7 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     }
     
     // SQL Query > Select Data
-       const query = client.query("SELECT name, ST_ASTEXT(geom) FROM tb_places WHERE name LIKE ($1) AND first_year >= ($2) OR last_year <= ($2) AND name != '' UNION SELECT name, ST_ASTEXT(st_transform(geom,4326)) FROM tb_street WHERE name LIKE ($1) AND first_year = ($2) AND name != '' ",['%'+textpoint+'%',year]);
+       const query = client.query("SELECT name, ST_ASTEXT(geom) as geom FROM tb_places WHERE name LIKE ($1) AND first_year >= ($2) OR last_year <= ($2) AND name != '' UNION SELECT name, ST_ASTEXT(st_transform(geom,4326)) FROM tb_street WHERE name LIKE ($1) AND first_year = ($2) AND name != '' ",['%'+textpoint+'%',year]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
