@@ -9,6 +9,7 @@ block content
         }
     h1= title
   body
+    h1 API REST
     | A API REST proverá acesso para leitura dos dados geográficos do projeto. Segue abaixo a lista de rotas que a API REST possui. Logo 
     br
     | abaixo pode ser visto uma descrição de cada uma das rotas contendo o nome da mesma, o endereço, uma descri ação, as variáveis
@@ -16,7 +17,8 @@ block content
     | que ela recebe e o formato do dado de saída.
     br
     br
-    a(href='javascript:myFunction();') > SearchPage
+    h1 Visão geral
+    | Abaixo se encontra o endereço das APIs REST para acesso rápido.
     br
     br
     a(href='http://localhost:3000/api/street/all/json') > getAllStreetsJson
@@ -46,6 +48,1241 @@ block content
     a(href='http://localhost:3000/api/listQuickSearch') > getListQuickSearchJson
     br
     a(href='http://localhost:3000/api/geolocation/Quartel General da 2° região Militar, 1931/json') > getGeolocationJson
+    br
+    a(href='javascript:myFunction();') > SearchPage
+    br
+    br
+    h1 APIs
+    table(cellspacing='0', border='0')
+      colgroup(span='4', width='85')
+      colgroup(width='109')
+      colgroup(width='85')
+      colgroup(width='115')
+         tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getAllStreetsJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/street/all/json
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') JSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações de todas as ruas em JSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') All (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para recolher todas as ruas cadastradas.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Json (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left', valign='middle')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getAllStreetsGeoJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/street/all/geojson
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') GEOJSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações de todas as ruas em GEOJSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') All (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para recolher todas as ruas cadastradas.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Geojson (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getAllStreetsXml
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/street/all/xml
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') XML
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações de todas as ruas em XML.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') All (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para recolher todas as ruas cadastradas.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') xml (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getAllPlacesGeoJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/places/all/geojson
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') GEOJSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações dos lugares em GEOJSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') All (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para recolher todos os locais cadastrados.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Geojson (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getAllPlacesJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/places/all/json
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') JSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações dos lugares em GEOJSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') All (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para recolher todos os locais cadastrados.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Json (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getAllPlacesXml
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/places/all/xml
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') XML
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações dos lugares em GEOJSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') All (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para recolher todos os locais cadastrados.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') xml (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getSingleStreetGeoJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/street/:id/geojson
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') GEOJSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações da rua de :id em GEOJSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Id (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') O id da rua usado para retornar os resultado.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Geojson (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getSingleStreetJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/street/:id/json
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') JSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações da rua de :id em JSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Id (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') O id da rua usado para retornar os resultado.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Json (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getSingleStreetXml
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/street/:id/xml
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') XML
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações da rua de :id em XML.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Id (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') O id da rua usado para retornar os resultado.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') xml (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getSinglePlaceGeoJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/place/:numero/geojson
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') GEOJSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações do local de :número em GEOJSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Número (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') O numero do local usado para retornar os resultado.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Geojson (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getSinglePlaceJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/place/:numero/json
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') JSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações do local de :número em JSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Número (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') O numero do local usado para retornar os resultado.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Json (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getSinglePlaceXml
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/place/:numero/xml
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') XML
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todas as informações do local de :número em XML.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Número (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') O numero do local usado para retornar os resultado.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') xml (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Comando usado para  definir o formato de exibição dos dados.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getListQuickSearchJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/listQuickSearch
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') JSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna todos os nomes e ano dos locais e das ruas em  JSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') ListQuickSearch (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left', valign='middle')
+          font(face='Times New Roman', size='3') O numero do local usado para retornar os resultado.
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(height='29', align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='3', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') getGeolocationJson
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+        td(align='left')
+          font(face='Times New Roman', size='3')
+            br
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') URL:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='4', align='left')
+          font(face='Times New Roman', size='3') https://website.com/api/geolocation/:texto,:ano/json
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Formato:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', align='left', valign='middle')
+          font(face='Times New Roman', size='3') JSON
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Descrição:
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='6', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Retorna o localização a partir de do :texto no :ano em JSON.
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='7', height='29', align='left', valign='middle')
+          b
+            font(face='Times New Roman', size='3') Parâmetros
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Texto (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Texto da pesquisa (nome do local, nome da rua ou numero do local).
+      tr
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Ano (Requerido)
+        td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
+          font(face='Times New Roman', size='3') Ano da pesquisa (local ou rua).
 
 
     

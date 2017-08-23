@@ -27,7 +27,7 @@
 |HomePage - Index of Pages
 +---------------------------------------------------+*/
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Pauliceia 2.0: API REST' });
+  res.render('index', { title: 'Pauliceia 2.0' });
 
 });
 
