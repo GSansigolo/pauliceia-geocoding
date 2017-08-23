@@ -27,16 +27,7 @@
 |HomePage - Index of Pages
 +---------------------------------------------------+*/
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Pauliceia 2.0' });
-
-});
-
-/*  
-+---------------------------------------------------+
-|searchPage
-+---------------------------------------------------+*/
-router.get('/search', function(req, res, next) {
-  res.render('search', { title: 'Pauliceia 2.0' });
+  res.render('index', { title: 'Documentação do Desenvolvedor Pauliceia 2.0' });
 
 });
 
