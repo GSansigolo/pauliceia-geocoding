@@ -1,20 +1,15 @@
 ![image](https://raw.githubusercontent.com/GSansigolo/PauliceiaAPI/master/logo.png)
 # Web Service para Geo Codificação de Endereços em Banco de Dados Espaços Temporais.
 
-Gabriel Sansigolo<br>
+##Gabriel Sansigolo<br>
 
-O deste trabalho é o planejamento, arquitetura e desenvolvimento de um web service, que possibilite a colaboração com o mapeamento histórico geográfico do município de São Paulo durante os anos 1870-1940.
+Esse projeto se consiste no planejamento, arquitetura e desenvolvimento de um web service, que possibilite a colaboração com o mapeamento histórico geográfico do município de São Paulo durante os anos 1870-1940.
 
 ### Orientadores:
 
-Luis Antonio Coelho Ferla, Doutor, UNIFESP
-Karine Reis Ferreira, Doutora, INPE
-Juliana Forin Pasquini Martinez, Mestre, FATEC
-
-
-## Diagramas de Sequência:
-
-http://imgur.com/a/WezFp
+Luis Antonio Coelho Ferla, Doutor, UNIFESP<br>
+Karine Reis Ferreira, Doutora, INPE<br>
+Juliana Forin Pasquini Martinez, Mestre, FATEC<br>
 
 ## Prerequisitos
 
