@@ -1,7 +1,7 @@
 ![image](https://raw.githubusercontent.com/GSansigolo/PauliceiaAPI/master/logo.png)
 # Web Service para Geo Codificação de Endereços em Banco de Dados Espaços Temporais.
 
-##Gabriel Sansigolo<br>
+## Gabriel Sansigolo<br>
 
 Esse projeto se consiste no planejamento, arquitetura e desenvolvimento de um web service, que possibilite a colaboração com o mapeamento histórico geográfico do município de São Paulo durante os anos 1870-1940.
 
