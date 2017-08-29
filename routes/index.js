@@ -47,7 +47,7 @@ const results = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street order by id ASC;');
+    const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
     
     // Stream results back one row at a time
     query.on('row', (row) => {
@@ -81,7 +81,7 @@ const results = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street order by id ASC;');
+    const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
     
     // Stream results back one row at a time
     query.on('row', (row) => {
@@ -112,7 +112,7 @@ const results = [];
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street order by id ASC;');
+    const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
     
     // Stream results back one row at a time
     query.on('row', (row) => {
@@ -249,7 +249,7 @@ router.get('/api/street/:street_id/json', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street where id=($1)',[id]);
+    const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -286,7 +286,7 @@ router.get('/api/street/:street_id/geojson', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street where id=($1)',[id]);
+    const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -323,7 +323,7 @@ router.get('/api/street/:street_id/xml', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select *, st_astext(st_transform(geom,4326)) as geom from tb_street where id=($1)',[id]);
+    const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -385,7 +385,7 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
 +---------------------------------------------------+*/
 router.get('/api/places/:street_id/geojson', (req, res, next) => {
   
-  const results = [];
+    const results = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -397,7 +397,7 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select id, id_street, (st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng), number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
+    const query = client.query('select id, id_street, st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng, number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
 // Stream results back one row at a time
@@ -408,7 +408,7 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      const results2 = GeoJSON.parse(results, {Point: ['lat', 'lng']});
+      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
       //console.log(results2);
 
       return res.json(results2);
@@ -469,12 +469,12 @@ const newResults = [];
       console.log(err);
       return res.status(500).json({success: false, data: err});
     }
-    // SQL Query > Select Data
-    const query = client.query("select b.name, b.first_year from tb_street as b union select a.name, a.first_year from tb_places as a where a.name != ''");
+    // SQL Query > Select Data avenida tiradentes, 1, 1931
+    const query = client.query("select b.name, a.number, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 union select b.name, a.number, a.last_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.last_year >= 1 order by number;");
     
     // Stream results back one row at a time
     query.on('row', (row) => {
-      results.push(row.name +', '+ row.first_year);
+      results.push(row.name +', '+ row.number+', '+ row.year);
     });
 
     // After all data is returned, close connection and return results
@@ -491,44 +491,14 @@ const newResults = [];
 +---------------------------------------------------+
 |geolocation-Json
 +---------------------------------------------------+*/
-router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
+router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
   const results = [];
   const textpoint = req.params.textpoint;
   const year = req.params.year;
-  const typeofsearch = "";
-  //console.log(textpoint);
-  //console.log(year);
-  
-  //Condição que determina o tipo do texto.
-    if(textpoint.match(/^[0-9]+$/) != null){
-    //console.log("O 'textpoint' digitado é composto por numeros");
-      // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
+  const number = req.params.number;
+ 
+  //if(textpoint.match(/^[0-9]+$/) != null){
 
-      const query = client.query("SELECT number, ST_ASTEXT(geom) as geom FROM tb_places WHERE number = ($1) AND first_year >= ($2) OR last_year <= ($2) AND number != null ",[textpoint,year]);
-
-      // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-
-      //console.log(results);
-      return res.json(results);
-    });
-  });  
-} else {
     //console.log("O 'textpoint' digitado é composto por letras");
       // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -540,7 +510,7 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
     }
     
     // SQL Query > Select Data
-       const query = client.query("SELECT name, ST_ASTEXT(geom) as geom FROM tb_places WHERE name LIKE ($1) AND first_year >= ($2) OR last_year <= ($2) AND name != '' UNION SELECT name, ST_ASTEXT(st_transform(geom,4326)) FROM tb_street WHERE name LIKE ($1) AND first_year = ($2) AND name != '' ",['%'+textpoint+'%',year]);
+       const query = client.query("SELECT tb_places.name, tb_places.number, ST_ASTEXT(tb_places.geom) AS geom, Tb_street.name FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year >= ($2);",['%'+textpoint+'%', year, number]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
@@ -555,7 +525,6 @@ router.get('/api/geolocation/:textpoint,:year/json', (req, res, next) => {
       return res.json(results);
     });
   }); 
-}
 });
 
 /*  
