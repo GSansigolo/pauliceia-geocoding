@@ -510,7 +510,7 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
     }
     
     // SQL Query > Select Data
-       const query = client.query("SELECT tb_places.name, tb_places.number, ST_ASTEXT(tb_places.geom) AS geom, Tb_street.name FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year >= ($2);",['%'+textpoint+'%', year, number]);
+       const query = client.query("SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year <= ($2);",['%'+textpoint+'%', year, number]);
 
       // Stream results back one row at a time
     query.on('row', (row) => {
