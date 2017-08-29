@@ -8,6 +8,35 @@
   var postgeo = require("postgeo");
   var js2xmlparser = require("js2xmlparser");
 
+/*  
++---------------------------------------------------+
+|getDateTime
++---------------------------------------------------+*/
+  function getDateTime() {
+
+    var date = new Date();
+
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+
+    var min  = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+
+    var sec  = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" : "") + month;
+
+    var day  = date.getDate();
+    day = (day < 10 ? "0" : "") + day;
+
+    return  hour + ":" + min + ":" + sec+ " "+ day + "/" + month  + "/" + year;
+
+}
+  
   /*  
 +---------------------------------------------------+
 |Connection
@@ -138,7 +167,6 @@ const results = [];
 
 router.get('/api/places/all/geojson', (req, res, next) => {
 const results = [];
-
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
@@ -236,7 +264,7 @@ const results = [];
 |getSingleStreet - Json
 +---------------------------------------------------+*/
 router.get('/api/street/:street_id/json', (req, res, next) => {
-  
+
   const results = [];
   const id = req.params.street_id;
 
@@ -273,7 +301,7 @@ router.get('/api/street/:street_id/json', (req, res, next) => {
 |getSingleStreet - GeoJson
 +---------------------------------------------------+*/
 router.get('/api/street/:street_id/geojson', (req, res, next) => {
-  
+
   const results = [];
   const id = req.params.street_id;
 
@@ -310,7 +338,7 @@ router.get('/api/street/:street_id/geojson', (req, res, next) => {
 |getSingleStreet - Xml
 +---------------------------------------------------+*/
 router.get('/api/street/:street_id/xml', (req, res, next) => {
-  
+
   const results = [];
   const id = req.params.street_id;
 
@@ -385,7 +413,7 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
 +---------------------------------------------------+*/
 router.get('/api/places/:street_id/geojson', (req, res, next) => {
   
-    const results = [];
+  const results = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -458,9 +486,9 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
 |getList - Json
 +---------------------------------------------------+*/
 router.get('/api/listQuickSearch', (req, res, next) => {
-const results = [];
-const newResults = [];
-
+  const results = [];
+  const newResults = [];
+  
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
@@ -493,10 +521,13 @@ const newResults = [];
 +---------------------------------------------------+*/
 router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
   const results = [];
+  const head = [];
   const textpoint = req.params.textpoint;
   const year = req.params.year;
   const number = req.params.number;
- 
+  const total = []
+
+
   //if(textpoint.match(/^[0-9]+$/) != null){
 
     //console.log("O 'textpoint' digitado é composto por letras");
@@ -510,9 +541,13 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
     }
     
     // SQL Query > Select Data
-       const query = client.query("SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year <= ($2);",['%'+textpoint+'%', year, number]);
+       const query = client.query("SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year <= ($2) UNION SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.last_year >= ($2);",['%'+textpoint+'%', year, number]);
 
       // Stream results back one row at a time
+    
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -522,7 +557,9 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
 
       //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
 
-      return res.json(results);
+    head.push(results);
+
+      return res.json(head);
     });
   }); 
 });
