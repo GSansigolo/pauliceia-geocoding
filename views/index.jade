@@ -8,7 +8,8 @@ block content
         var URL = "https://rawgit.com/GSansigolo/PauliceiaAPI/master/views/html/index.html";
         var win = window.open(URL, "_self", strWindowFeatures);
         }
-    h1= title
+    div
+      h1= title
   body
     h1 APIs REST
     | As APIs REST proverão acesso para leitura dos dados geográficos do projeto. Segue abaixo a lista de rotas que a API REST possui. Logo 
@@ -18,7 +19,7 @@ block content
     | que ela recebe e o formato do dado de saída.
     br
     br
-    h1 Visão geral
+    h1 Visão Geral
     | Abaixo se encontra o endereço das APIs REST para acesso rápido.
     br
     br
@@ -75,8 +76,7 @@ block content
           font(size='3', style='font-size: 12pt')
               
     h1 Exemplo Resposta:
-    br
-    img(src= "http://" + row.Image)
+    img.className#IdName(src="https://raw.githubusercontent.com/GSansigolo/PauliceiaAPI/master/views/img/Code.png" alt="Image Title")
     br
     //p.codebox
       | [
