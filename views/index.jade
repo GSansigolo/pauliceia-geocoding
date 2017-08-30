@@ -1,6 +1,7 @@
 extends layout
 block content
   head
+    link(href='/css/style.css', rel='stylesheet')
     script.
         function myFunction() {
         var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
@@ -47,11 +48,57 @@ block content
     br
     a(href='http://localhost:3000/api/listQuickSearch') > getListQuickSearchJson
     br
-    a(href='http://localhost:3000/api/geolocation/Quartel General da 2° região Militar, 1931/json') > getGeolocationJson
+    a(href='http://localhost:3000/api/geolocation/rua monsenhor andrade, 120, 1931/json') > getGeolocationJson
     br
     a(href='javascript:myFunction();') > SearchPage
     br
+    div
+      div
+            h1 Exemplo de Chamadas:
+        p(style='margin-top: 0.12cm; margin-bottom: 0cm; font-weight: normal; line-height: 100%')
+          br
+        dl
+          dd
+            table(width='585', cellpadding='4', cellspacing='0')
+              col(width='575')
+              tr
+                td(width='575', valign='top', style='border: 1px solid #000000; padding: 0.1cm')
+                  p(style='margin-top: 0.05cm')
+                    cite
+                      font(size='3', style='font-size: 12pt')
+                        span(style='font-weight: normal')
+                          | GET
+                          | /api/geolocation/rua%20dos%20gusmoes,%2086,%201931/json
+        p(style='margin-top: 0.05cm; margin-bottom: 0cm; line-height: 100%')
+          br
+        p(style='margin-top: 0.05cm; margin-bottom: 0cm; line-height: 100%')
+          font(size='3', style='font-size: 12pt')
+              
+    h1 Exemplo Resposta:
     br
+    img(src= "http://" + row.Image)
+    br
+    //p.codebox
+      | [
+      br
+      |   &nbsp&nbsp&nbsp&nbsp"created_at: 15:19:36 30/08/2017",
+      br
+      |   &nbsp&nbsp&nbsp&nbsp"type: 'GET'",
+      br
+      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp[
+      br
+      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{
+      br
+      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"name":"Gabinete de Investigações",
+      br
+      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"geom":"POINT(-46.6399904062294 -23.5375939502085)"
+      br
+      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp}
+      br
+      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp]
+      br
+      |   ]
+      br
     h1 APIs
     table(cellspacing='0', border='0')
       colgroup(span='4', width='85')

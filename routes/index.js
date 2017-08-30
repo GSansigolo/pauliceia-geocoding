@@ -65,7 +65,9 @@ router.get('/', function(req, res, next) {
 |getAllStreets - GeoJson
 +---------------------------------------------------+*/
 router.get('/api/street/all/geojson', (req, res, next) => {
+
 const results = [];
+const head = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -78,7 +80,9 @@ const results = [];
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
     
-    // Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -89,7 +93,9 @@ const results = [];
       const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
       //console.log(results2);
       
-      return res.json(results2);
+      head.push(results);
+
+      return res.json(head);
     });
   });
 });
@@ -99,7 +105,9 @@ const results = [];
 |getAllStreets - Json
 +---------------------------------------------------+*/
 router.get('/api/street/all/json', (req, res, next) => {
+
 const results = [];
+const head = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -112,7 +120,9 @@ const results = [];
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
     
-    // Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -120,7 +130,9 @@ const results = [];
     query.on('end', () => {
       done();
       
-      return res.json(results);
+      head.push(results);
+
+      return res.json(head);
     });
   });
 });
@@ -130,7 +142,9 @@ const results = [];
 |getAllStreets - Xml
 +---------------------------------------------------+*/
 router.get('/api/street/all/xml', (req, res, next) => {
+
 const results = [];
+const head = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -143,7 +157,9 @@ const results = [];
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
     
-    // Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -151,10 +167,11 @@ const results = [];
     query.on('end', () => {
       done();
       
-      const results2 = js2xmlparser.parse("tb_street", results);
+      const results2 = js2xmlparser.parse("data", results);
+      
       //console.log(results2);
-
-      return res.end(results2);;
+      
+      return res.end(results2);
     });
   });
 });
@@ -164,9 +181,11 @@ const results = [];
 +---------------------------------------------------+
 |getAllPlaces - GeoJson
 +---------------------------------------------------+*/
-
 router.get('/api/places/all/geojson', (req, res, next) => {
+
 const results = [];
+const head = [];
+
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
@@ -178,7 +197,9 @@ const results = [];
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_places order by id ASC;');
     
-    // Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -189,7 +210,9 @@ const results = [];
       const results2 = GeoJSON.parse(results, {'Point': 'geom'});
       //console.log(results2);
       
-      return res.json(results2);
+      head.push(results);
+
+      return res.json(head);
     });
   });
 });
@@ -199,7 +222,9 @@ const results = [];
 |getAllPlaces - Json
 +---------------------------------------------------+*/
 router.get('/api/places/all/json', (req, res, next) => {
+
 const results = [];
+const head = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -212,15 +237,19 @@ const results = [];
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_places order by id ASC;');
     
-    // Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
     // After all data is returned, close connection and return results
     query.on('end', () => {
       done();
+
+      head.push(results);
       
-      return res.json(results);
+      return res.json(head);
     });
   });
 });
@@ -230,7 +259,9 @@ const results = [];
 |getAllPlaces - Xml
 +---------------------------------------------------+*/
 router.get('/api/places/all/xml', (req, res, next) => {
-const results = [];
+
+  const results = [];
+const head = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -243,7 +274,9 @@ const results = [];
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_places order by id ASC;');
     
-    // Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -251,10 +284,12 @@ const results = [];
     query.on('end', () => {
       done();
       
-      const results2 = js2xmlparser.parse("tb_places", results);
+      const results2 = js2xmlparser.parse("data", results);
+      
       //console.log(results2);
+      
+      return res.end(results2);
 
-      return res.end(results2);;
     });
   });
 });
@@ -266,6 +301,7 @@ const results = [];
 router.get('/api/street/:street_id/json', (req, res, next) => {
 
   const results = [];
+  const head = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -280,7 +316,9 @@ router.get('/api/street/:street_id/json', (req, res, next) => {
     const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
-// Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -291,7 +329,9 @@ router.get('/api/street/:street_id/json', (req, res, next) => {
       //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
       //console.log(results2);
 
-      return res.json(results);
+      head.push(results);
+
+      return res.json(head);
     });
   });
 });
@@ -303,6 +343,7 @@ router.get('/api/street/:street_id/json', (req, res, next) => {
 router.get('/api/street/:street_id/geojson', (req, res, next) => {
 
   const results = [];
+  const head = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -317,7 +358,9 @@ router.get('/api/street/:street_id/geojson', (req, res, next) => {
     const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
-// Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -328,7 +371,9 @@ router.get('/api/street/:street_id/geojson', (req, res, next) => {
       const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
       //console.log(results2);
 
-      return res.json(results2);
+      head.push(results);
+
+      return res.json(head);
     });
   });
 });
@@ -340,6 +385,7 @@ router.get('/api/street/:street_id/geojson', (req, res, next) => {
 router.get('/api/street/:street_id/xml', (req, res, next) => {
 
   const results = [];
+  const head = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -352,9 +398,10 @@ router.get('/api/street/:street_id/xml', (req, res, next) => {
     }
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
-    //const query = client.query('select * from tb_street where id=($1)', id);
 
-// Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -362,10 +409,11 @@ router.get('/api/street/:street_id/xml', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      const results2 = js2xmlparser.parse("tb_street", results);
+      const results2 = js2xmlparser.parse("data", results);
+      
       //console.log(results2);
-
-      return res.end(results2);;
+      
+      return res.end(results2);
     });
   });
 });
@@ -377,6 +425,7 @@ router.get('/api/street/:street_id/xml', (req, res, next) => {
 router.get('/api/places/:street_id/json', (req, res, next) => {
   
   const results = [];
+  const head = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -391,7 +440,9 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
     const query = client.query('select id, id_street, st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng, number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
-// Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -402,7 +453,9 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
       //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
       //console.log(results2);
 
-      return res.json(results);
+      head.push(results);      
+
+      return res.json(head);
     });
   });
 });
@@ -414,6 +467,7 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
 router.get('/api/places/:street_id/geojson', (req, res, next) => {
   
   const results = [];
+  const head = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -428,7 +482,9 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
     const query = client.query('select id, id_street, st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng, number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
-// Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -439,7 +495,9 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
       const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
       //console.log(results2);
 
-      return res.json(results2);
+      head.push(results);
+
+      return res.json(head);
     });
   });
 });
@@ -451,6 +509,7 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
 router.get('/api/places/:street_id/xml', (req, res, next) => {
   
   const results = [];
+  const head = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -463,9 +522,10 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
     }
     // SQL Query > Select Data
     const query = client.query('select id, id_street, st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng, number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
-    //const query = client.query('select * from tb_street where id=($1)', id);
 
-// Stream results back one row at a time
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
     query.on('row', (row) => {
       results.push(row);
     });
@@ -473,10 +533,11 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      const results2 = js2xmlparser.parse("tb_places", results);
+      const results2 = js2xmlparser.parse("data", results);
+
       //console.log(results2);
 
-      return res.end(results2);;
+      return res.end(results2);
     });
   });
 });
@@ -488,6 +549,7 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
 router.get('/api/listQuickSearch', (req, res, next) => {
   const results = [];
   const newResults = [];
+  const head = [];
   
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -499,8 +561,7 @@ router.get('/api/listQuickSearch', (req, res, next) => {
     }
     // SQL Query > Select Data avenida tiradentes, 1, 1931
     const query = client.query("select b.name, a.number, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 union select b.name, a.number, a.last_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.last_year >= 1 order by number;");
-    
-    // Stream results back one row at a time
+
     query.on('row', (row) => {
       results.push(row.name +', '+ row.number+', '+ row.year);
     });
@@ -557,7 +618,7 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
 
       //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
 
-    head.push(results);
+      head.push(results);
 
       return res.json(head);
     });
