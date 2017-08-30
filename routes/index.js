@@ -56,7 +56,7 @@
 |HomePage - Index of Pages
 +---------------------------------------------------+*/
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'DOCUMENTAÇÃO DO DESENVOLVEDOR PAULICEIA 2.0' });
+  res.render('index', {title: 'Documentação do Desenvolvedor Pauliceia 2.0' });
 
 });
 
