@@ -48,9 +48,12 @@ button {
   color: white;
   -webkit-font-smoothing: antialiased;
   font-weight: bold;
-  margin: 0;
-  width: 100%;
+  margin: 10;
+  width: 46%;
   text-align: center;
+  margin-left: 2%;
+  margin-right: 2%;
+  
 }
 
 button:hover, button:focus {

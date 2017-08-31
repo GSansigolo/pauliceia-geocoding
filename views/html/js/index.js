@@ -40,3 +40,18 @@ request.open('GET', 'https://api.myjson.com/bins/mgez9', true);
 //exemple right json: https://api.myjson.com/bins/mgez9
 
 request.send();
+
+function getData(){
+  var requestURL = 'http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json';
+  var request = new XMLHttpRequest();
+  request.open('GET', requestURL);
+  request.responseType = 'json';
+  request.send();
+}
+function CallURL(){
+  request.onload = getData();{
+    var jsondatatext = request.response;
+    var jsondata = JSON.parse(jsondatatext);
+  }
+  alert(jsondata);
+}
