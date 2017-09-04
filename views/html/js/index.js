@@ -4,6 +4,7 @@ var input = document.getElementById('ajax');
 
 // Create a new XMLHttpRequest.
 var request = new XMLHttpRequest();
+var request2 = new XMLHttpRequest();
 
 // Handle state changes for the request.
 request.onreadystatechange = function(response) {
@@ -26,7 +27,7 @@ request.onreadystatechange = function(response) {
       input.placeholder = "";
     } else {
       // An error occured :(
-      input.placeholder = "Couldn't load datalist options :(";
+      input.placeholder = "Couldn't load datalist options";
     }
   }
 };
@@ -37,20 +38,17 @@ input.placeholder = "Loading options...";
 // Set up and make the request.
 request.open('GET', 'https://api.myjson.com/bins/mgez9', true);
 
-//exemple right json: https://api.myjson.com/bins/mgez9
-
 request.send();
 
 function getData(){
   var requestURL = 'http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json';
-  var request = new XMLHttpRequest();
-  request.open('GET', requestURL);
-  request.responseType = 'json';
-  request.send();
+  request2.open('GET', requestURL, true);
+  request2.responseType = 'json';
+  request2.send();
 }
 function CallURL(){
-  request.onload = getData();{
-    var jsondatatext = request.response;
+  request2.onload = getData();{
+    var jsondatatext = request2.geom;
     var jsondata = JSON.parse(jsondatatext);
   }
   alert(jsondata);
