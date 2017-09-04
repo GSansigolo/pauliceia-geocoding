@@ -1,6 +1,7 @@
 // Get the <datalist> and <input> elements.
 var dataList = document.getElementById('json-datalist');
 var input = document.getElementById('ajax');
+var rp = require('request-promise');
 
 // Create a new XMLHttpRequest.
 var request = new XMLHttpRequest();
@@ -37,19 +38,22 @@ input.placeholder = "Loading options...";
 
 // Set up and make the request.
 request.open('GET', 'https://api.myjson.com/bins/mgez9', true);
-
 request.send();
 
-function getData(){
-  var requestURL = 'http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json';
-  request2.open('GET', requestURL, true);
-  request2.responseType = 'json';
-  request2.send();
-}
+var options = {
+  uri: 'http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json',
+  json: true // Automatically parses the JSON string in the response
+};
+
 function CallURL(){
-  request2.onload = getData();{
-    var jsondatatext = request2.geom;
-    var jsondata = JSON.parse(jsondatatext);
-  }
-  alert(jsondata);
+  rp(options)
+  .then(function (data) {
+      alert(data.geom);
+  })
+  .catch(function (err) {
+      // API call failed...
+  });
 }
+
+
+

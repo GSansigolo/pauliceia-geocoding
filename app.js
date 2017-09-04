@@ -29,6 +29,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//app.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//app.setHeader('Access-Control-Allow-Headers', '*');
+
+
 app.use('/', routes);
 app.use('/users', users);
 

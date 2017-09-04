@@ -16,7 +16,7 @@ Juliana Forin Pasquini Martinez, Mestre, FATEC<br>
 ```
 PostgreSQL 9.5.8
 PostGIS 2.3
-nodejs 4.2.6
+NodeJS 4.2.6
 
 ```
 ## Instalação
@@ -29,5 +29,7 @@ npm install pg@6.1.0 --save
 npm install geojson
 npm install postgeo
 npm install js2xmlparser
+npm install --save request
+npm install --save request-promise
 
 ```
