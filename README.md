@@ -31,5 +31,12 @@ npm install postgeo
 npm install js2xmlparser
 npm install --save request
 npm install --save request-promise
+npm install express
+npm install serve-favicon
+npm install morgan
+npm install cookie-parser
+npm install body-parser
+npm install debug
+npm install jade
 
 ```
