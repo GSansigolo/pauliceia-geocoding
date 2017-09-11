@@ -1,7 +1,6 @@
 // Get the <datalist> and <input> elements.
 var dataList = document.getElementById('json-datalist');
 var input = document.getElementById('ajax');
-var rp = require('request-promise');
 
 // Create a new XMLHttpRequest.
 var request = new XMLHttpRequest();
@@ -27,7 +26,7 @@ request.onreadystatechange = function(response) {
       input.placeholder = "";
     } else {
       // An error occured :(
-      input.placeholder = "Couldn't load datalist options";
+      input.placeholder = "Couldn't load datalist options :(";
     }
   }
 };
@@ -36,13 +35,11 @@ request.onreadystatechange = function(response) {
 input.placeholder = "Loading options...";
 
 // Set up and make the request.
-request.open('GET', 'https://api.myjson.com/bins/mgez9', true);
-request.send();
+request.open('GET', 'http://localhost:3000/api/listQuickSearch', true);
 
-var options = {
-  uri: 'http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json',
-  json: true // Automatically parses the JSON string in the response
-};
+//exemple right json: http://localhost:3000/api/listQuickSearch
+
+request.send();
 
 function CallURL(){
 }
