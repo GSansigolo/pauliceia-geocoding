@@ -36,13 +36,23 @@ input.placeholder = "Loading options...";
 
 // Set up and make the request.
 request.open('GET', 'https://api.myjson.com/bins/1fmidh', true);
-
-//exemple right json: http://localhost:3000/api/listQuickSearch
+//http://localhost:3000/api/listQuickSearch
 
 request.send();
 
-function CallURL(){
+function getData(){
+  var requestURL = 'http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json';
+  var request2 = new XMLHttpRequest();
+  request2.open('GET', requestURL);
+  request2.responseType = 'json';
+  request2.send();
 }
+function CallURL(){
+  request2.onload = getData();{
+    var jsondatatext = request2.response;
+    var jsondata = JSON.parse(jsondatatext);
+  }
+  alert(jsondata);
 
-
+}
 
