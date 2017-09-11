@@ -5,7 +5,6 @@ var rp = require('request-promise');
 
 // Create a new XMLHttpRequest.
 var request = new XMLHttpRequest();
-var request2 = new XMLHttpRequest();
 
 // Handle state changes for the request.
 request.onreadystatechange = function(response) {
@@ -46,13 +45,6 @@ var options = {
 };
 
 function CallURL(){
-  rp(options)
-  .then(function (data) {
-      alert(data.geom);
-  })
-  .catch(function (err) {
-      // API call failed...
-  });
 }
 
 
