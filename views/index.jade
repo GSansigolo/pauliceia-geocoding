@@ -11,16 +11,20 @@ block content
     div.pledged(style="width:100%")
       img.className#IdName(src="https://raw.githubusercontent.com/GSansigolo/PauliceiaAPI/master/views/img/header.png" alt="Image Title")
   body
-    h1 APIs REST
-    | As APIs REST proverão acesso para leitura dos dados geográficos do projeto. Segue abaixo a lista de rotas que a API REST possui. Logo 
+    h1 APIs Especificações
+    | As APIs REST vão prover acesso, para leitura, dos dados geográficos do projeto Pauliceia. Segue abaixo a lista de rotas que o projeto 
     br
-    | abaixo pode ser visto uma descrição de cada uma das rotas contendo o nome da mesma, o endereço, uma descri ação, as variáveis
+    | possui, cada uma das rotas para acesso aos dados possui três formatos para leitura dos dados, JSON, GeoJSON e XML. O formato 
     br
-    | que ela recebe e o formato do dado de saída.
+    | de leitura dos dados se encontra após a última '/'. 
     br
     br
     h1 Visão Geral
-    | Abaixo se encontra o endereço das APIs REST para acesso rápido.
+    | Abaixo você pode encontrar todas as rotas da API, para acesso rápido. Os tipos de dados geometricos que serão exibidos pelo 
+    br
+    | projeto são: Point, LineString,Polygon, MultiPoint, MultiLineString, and MultiPolygon. No caso do GeoJSON os objetos geometricos 
+    br
+    |  com propriedades adicionais são 'Feature objects'. Um grupo desses objetos são contidos em um objeto 'FeatureCollection'.
     br
     br
     a(href='http://localhost:3000/api/street/all/json') > getAllStreetsJson
@@ -53,9 +57,15 @@ block content
     br
     a(href='javascript:myFunction();') > SearchPage
     br
+    h1 Exemplo de Chamadas:
+    | Segue os exemplos de chamada e de resposta, a função selecionada foi a 'getGeolocationJson', no exemplo foi inserido o endereço  
+    br
+    | 'rua dos gusmoes,86, 1931' a primeiro item é o nome da rua 'rua dos gusmoes', o segundo é o numero do local '86' e o último dado 
+    br
+    | é o ano que você deseja saber se o local existe '1931'. A respota dessa função se encontra em JSON.
     div
       div
-            h1 Exemplo de Chamadas:
+            h1 Exemplo de Get:
             table(width='650', cellpadding='2', cellspacing='0')
               col(width='650')
               tr
@@ -66,28 +76,12 @@ block content
               
     h1 Exemplo Resposta:
     img.className#IdName(src="https://raw.githubusercontent.com/GSansigolo/PauliceiaAPI/master/views/img/Code.png" alt="Image Title")
-    //p.codebox
-      | [
-      br
-      |   &nbsp&nbsp&nbsp&nbsp"created_at: 15:19:36 30/08/2017",
-      br
-      |   &nbsp&nbsp&nbsp&nbsp"type: 'GET'",
-      br
-      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp[
-      br
-      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{
-      br
-      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"name":"Gabinete de Investigações",
-      br
-      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"geom":"POINT(-46.6399904062294 -23.5375939502085)"
-      br
-      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp}
-      br
-      |   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp]
-      br
-      |   ]
-      br
     h1 APIs
+    | Abaixo pode ser visto uma lista de tabelas, cada uma delas representa uma das rotas para acesso dos dados no sistema. As tabelas
+    br
+    | são compostas por nome da função, URL da mesma, formato de saida dos dados, descrição da função e os parâmetros da mesma.
+    br
+    br
     table(cellspacing='0', border='0')
       colgroup(span='4', width='85')
       colgroup(width='109')
@@ -1312,7 +1306,7 @@ block content
         td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
           font(face='Times New Roman', size='3') Texto (Requerido)
         td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='5', align='left', valign='middle')
-          font(face='Times New Roman', size='3') Texto da pesquisa (nome do local, nome da rua ou numero do local).
+          font(face='Times New Roman', size='3') Texto da pesquisa (nome da rua, numero do local).
       tr
         td(style='border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000', colspan='2', height='29', align='left', valign='middle')
           font(face='Times New Roman', size='3') Ano (Requerido)
