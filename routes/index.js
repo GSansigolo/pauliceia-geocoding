@@ -67,7 +67,6 @@ router.get('/', function(req, res, next) {
 router.get('/api/street/all/geojson', (req, res, next) => {
 
 const results = [];
-const head = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -79,9 +78,6 @@ const head = [];
     }
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
-    
-    head.push("created_at: " + getDateTime());
-    head.push("type: 'GET'");
 
     query.on('row', (row) => {
       results.push(row);
@@ -92,10 +88,8 @@ const head = [];
 
       const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
       //console.log(results2);
-      
-      head.push(results);
 
-      return res.json(head);
+      return res.json(results2);
     });
   });
 });
@@ -144,7 +138,6 @@ const head = [];
 router.get('/api/street/all/xml', (req, res, next) => {
 
 const results = [];
-const head = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -156,9 +149,6 @@ const head = [];
     }
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_street order by id ASC;');
-    
-    head.push("created_at: " + getDateTime());
-    head.push("type: 'GET'");
 
     query.on('row', (row) => {
       results.push(row);
@@ -184,7 +174,6 @@ const head = [];
 router.get('/api/places/all/geojson', (req, res, next) => {
 
 const results = [];
-const head = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -196,9 +185,6 @@ const head = [];
     }
     // SQL Query > Select Data
     const query = client.query('select *, st_astext(geom) as geom from tb_places order by id ASC;');
-    
-    head.push("created_at: " + getDateTime());
-    head.push("type: 'GET'");
 
     query.on('row', (row) => {
       results.push(row);
@@ -209,10 +195,8 @@ const head = [];
 
       const results2 = GeoJSON.parse(results, {'Point': 'geom'});
       //console.log(results2);
-      
-      head.push(results);
 
-      return res.json(head);
+      return res.json(results2);
     });
   });
 });
@@ -260,7 +244,7 @@ const head = [];
 +---------------------------------------------------+*/
 router.get('/api/places/all/xml', (req, res, next) => {
 
-  const results = [];
+const results = [];
 const head = [];
 
   // Get a Postgres client from the connection pool
@@ -343,7 +327,6 @@ router.get('/api/street/:street_id/json', (req, res, next) => {
 router.get('/api/street/:street_id/geojson', (req, res, next) => {
 
   const results = [];
-  const head = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -358,9 +341,6 @@ router.get('/api/street/:street_id/geojson', (req, res, next) => {
     const query = client.query('select *, st_astext(geom) as geom from tb_street where id=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
-    head.push("created_at: " + getDateTime());
-    head.push("type: 'GET'");
-
     query.on('row', (row) => {
       results.push(row);
     });
@@ -371,9 +351,7 @@ router.get('/api/street/:street_id/geojson', (req, res, next) => {
       const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
       //console.log(results2);
 
-      head.push(results);
-
-      return res.json(head);
+      return res.json(results2);
     });
   });
 });
@@ -464,7 +442,6 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
 router.get('/api/places/:street_id/geojson', (req, res, next) => {
   
   const results = [];
-  const head = [];
   const id = req.params.street_id;
 
   // Get a Postgres client from the connection pool
@@ -479,9 +456,6 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
     const query = client.query('select id, id_street, st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng, number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
-    head.push("created_at: " + getDateTime());
-    head.push("type: 'GET'");
-
     query.on('row', (row) => {
       results.push(row);
     });
@@ -490,11 +464,8 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
       done();
 
       const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
 
-      head.push(results);
-
-      return res.json(head);
+      return res.json(results2);
     });
   });
 });
@@ -545,8 +516,6 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
 +---------------------------------------------------+*/
 router.get('/api/listQuickSearch', (req, res, next) => {
   const results = [];
-  const newResults = [];
-  const head = [];
   
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -585,11 +554,7 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
   const number = req.params.number;
   const total = []
 
-
-  //if(textpoint.match(/^[0-9]+$/) != null){
-
-    //console.log("O 'textpoint' digitado é composto por letras");
-      // Get a Postgres client from the connection pool
+  // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
     if(err) {
@@ -612,8 +577,6 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
     // After all data is returned, close connection and return results
     query.on('end', () => {
       done();
-
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
 
       head.push(results);
 
