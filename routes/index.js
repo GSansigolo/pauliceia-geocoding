@@ -450,9 +450,6 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      //const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
-      //console.log(results2);
-
       head.push(results);      
 
       return res.json(head);
