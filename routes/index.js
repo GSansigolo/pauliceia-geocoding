@@ -159,8 +159,6 @@ const results = [];
       
       const results2 = js2xmlparser.parse("data", results);
       
-      //console.log(results2);
-      
       return res.end(results2);
     });
   });
