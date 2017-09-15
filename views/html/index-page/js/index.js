@@ -43,5 +43,9 @@ request.send();
 function CallURL(){
   var requestURL = 'http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json';
   
+  var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
+  var URL = "https://rawgit.com/GSansigolo/PauliceiaAPI/master/views/html/map-page/map.html";
+  var win = window.open(URL, "_self", strWindowFeatures);
+
 }
 
