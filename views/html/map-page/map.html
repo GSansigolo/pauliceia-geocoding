@@ -19,6 +19,7 @@
                 <div id="page-wrapper">
                     <div id="map" class="map"></div>
                     <script type="text/javascript">
+                      var lonlat = (localStorage.getItem("lonlat"));
                       var map = new ol.Map({
                         target: 'map',
                         layers: [
@@ -27,7 +28,8 @@
                           })
                         ],
                         view: new ol.View({
-                          center: ol.proj.fromLonLat([37.41, 8.82]),
+                          //center: ol.proj.fromLonLat([37.41, 8.82]),
+                          center: ol.proj.fromLonLat([lonlat]),
                           zoom: 4
                         })
                       });
