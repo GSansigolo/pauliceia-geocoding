@@ -3,16 +3,18 @@ function onload(){
     var geom;
     //alert(url);
     loadJSON(function(response) {
+        alert("3");
         // Do Something with the response e.g.
         var jsonresponse = JSON.parse(response);
         // Assuming json data is wrapped in square brackets as Drew suggests
         geom = jsonresponse.geom;
         /// A
-        alert("Done!");
+        
     });
 }
 
 function loadJSON(callback) {
+    alert("1");
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
     xobj.open('GET', url, true);
@@ -23,4 +25,5 @@ function loadJSON(callback) {
         }
     }
     xobj.send(null);
+    alert("2");
 }
