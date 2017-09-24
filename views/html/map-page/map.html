@@ -32,24 +32,6 @@
                         })
                       });
                     
-                    function onload(){
-                        alert(geom);
-                        var url = (localStorage.getItem("storageURL"));
-                        (function () {
-                          var myData;
-                          test();
-
-                          function test(callback) {
-                            $.getJSON(url, function (data) {
-                              callback(data);
-                            });
-                          }
-
-                          test(function (data) {
-                            geom = data.geom;
-                          });
-                        });
-                    }
                     </script>
             </div>
         </div>
@@ -57,5 +39,6 @@
                 <img class="bg" src="img/01_HOME.jpg">     
         </div>
         <script src="js/OpenLayers.js"></script>
+        <script src="js/onload.js"></script>
     </body>
 </html>
