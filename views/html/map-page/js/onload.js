@@ -5,8 +5,8 @@ function onload(){
     loadJSON(function(response) {
         // Parse JSON string into object
         var actual_JSON = JSON.parse(response);
+        alert(actual_JSON); 
     });
-    alert(actual_JSON);
 }
 
 function loadJSON(callback) {
