@@ -31,14 +31,16 @@
                           zoom: 4
                         })
                       });
-
+                    
                     function onload(){
+                        alert(geom);
                         var url = (localStorage.getItem("storageURL"));
                         (function () {
                           var myData;
+                          test();
 
                           function test(callback) {
-                            $.getJSON('notebook-json-data.php', function (data) {
+                            $.getJSON(url, function (data) {
                               callback(data);
                             });
                           }
@@ -47,8 +49,6 @@
                             geom = data.geom;
                           });
                         });
-
-                        alert(geom);
                     }
                     </script>
             </div>
