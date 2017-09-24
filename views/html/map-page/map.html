@@ -34,11 +34,21 @@
 
                     function onload(){
                         var url = (localStorage.getItem("storageURL"));
-                        var request = new XMLHttpRequest();
-                        request.open('GET', url, true);
-                        request.send();
+                        (function () {
+                          var myData;
 
-                        alert("onload");
+                          function test(callback) {
+                            $.getJSON('notebook-json-data.php', function (data) {
+                              callback(data);
+                            });
+                          }
+
+                          test(function (data) {
+                            geom = data.geom;
+                          });
+                        });
+
+                        alert(geom);
                     }
                     </script>
             </div>
