@@ -1,5 +1,4 @@
 function onload(){
-    var url = (localStorage.getItem("storageURL"));
     var geom;
     loadJSON(function(response) {
         // Do Something with the response e.g.
@@ -14,6 +13,7 @@ function onload(){
 }
 
 function loadJSON(callback) {
+    var url = (localStorage.getItem("storageURL"));
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
     xobj.open('GET', url, true);
