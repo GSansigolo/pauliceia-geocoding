@@ -11,30 +11,34 @@ var map = new ol.Map({
     })
   });
 
-function handleXML(){
-    txt = xhttp;
-    checkState(xmlhttp, function() {
-    
-    txt=xmlhttp.responseText + "";
-    txt.replace(/<&#91;^>&#93;*>/g, "");
-    //Convert txt into a string so that I can use it
-    });
-}
-
 function onload(){
     var url = (localStorage.getItem("storageURL"));
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.send();
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-           // Typical action to be performed when the document is ready:
-           document.getElementById("geom").innerHTML = xhttp.responseText;
+    request.onreadystatechange = function(response) {
+        if (request.readyState === 4) {
+          if (request.status === 200) {
+            // Parse the JSON
+            var jsonOptions = JSON.parse(request.responseText);
+        
+            // Loop over the JSON array.
+            jsonOptions.forEach(function(item) {
+              // Create a new <option> element.
+              var option = document.createElement('option');
+              // Set the value using the item in the JSON array.
+              option.value = item;
+              // Add the <option> element to the <datalist>.
+              dataList.appendChild(option);
+            });
+            
+            // Update the placeholder text.
+            input.placeholder = "";
+          } else {
+            // An error occured :(
+            }
         }
     };
-    xhttp.open("GET", url, true);
-    xhttp.send();
-
-    handleXML();
-    
-    alert(txt);
+    alert(document.getElementById('option'));
 }
