@@ -1,5 +1,6 @@
 function onload(){
     var url = (localStorage.getItem("storageURL"));
+    var actual_JSON;
     alert(url);
     loadJSON(function(response) {
         // Parse JSON string into object
