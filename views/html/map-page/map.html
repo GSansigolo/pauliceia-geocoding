@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html >
     <head>
+        <script src="js/map.js"></script>
+        <script src="js/OpenLayers.js"></script>
         <link rel="stylesheet" href="https://openlayers.org/en/v4.3.3/css/ol.css" type="text/css">
         <style>
             .map {
@@ -18,26 +20,10 @@
         <div id="frente">         
                 <div id="page-wrapper">
                     <div id="map" class="map"></div>
-                    <script type="text/javascript">
-                      var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                          new ol.layer.Tile({
-                            source: new ol.source.OSM()
-                          })
-                        ],
-                        view: new ol.View({
-                          center: ol.proj.fromLonLat([37.41, 8.82]),
-                          zoom: 4
-                        })
-                      });
-                    </script>
             </div>
         </div>
         <div id="fundo">
                 <img class="bg" src="img/01_HOME.jpg">     
         </div>
-        <script src="js/map.js"></script>
-        <script src="js/OpenLayers.js"></script>
     </body>
 </html>
