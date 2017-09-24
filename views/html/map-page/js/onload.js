@@ -1,11 +1,14 @@
 function onload(){
     var url = (localStorage.getItem("storageURL"));
+    var geom;
     //alert(url);
     loadJSON(function(response) {
         // Do Something with the response e.g.
         var jsonresponse = JSON.parse(response);
         // Assuming json data is wrapped in square brackets as Drew suggests
-        alert(jsonresponse[0].geom);
+        geom = jsonresponse.geom;
+        /// A
+        alert("Done!");
     });
 }
 
