@@ -1,7 +1,7 @@
 function onload(){
     var url = (localStorage.getItem("storageURL"));
 
-    $.getJSON(geocodingAPI, function (json) {
+    $.getJSON(url, function (json) {
 
         // Set the variables from the results array
         var lonlat = json.results[0].geom;
