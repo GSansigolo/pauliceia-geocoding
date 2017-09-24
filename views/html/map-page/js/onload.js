@@ -1,11 +1,11 @@
 function onload(){
     var url = (localStorage.getItem("storageURL"));
-    var actual_JSON;
-    alert(url);
+    //alert(url);
     loadJSON(function(response) {
-        // Parse JSON string into object
-        var actual_JSON = JSON.parse(response);
-        alert(actual_JSON); 
+        // Do Something with the response e.g.
+        var jsonresponse = JSON.parse(response);
+        // Assuming json data is wrapped in square brackets as Drew suggests
+        alert(jsonresponse[0].geom);
     });
 }
 
@@ -13,13 +13,11 @@ function loadJSON(callback) {
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
     xobj.open('GET', url, true);
-    // Replace 'my_data' with the path to your file
     xobj.onreadystatechange = function() {
-        if (xobj.readyState === 4 && xobj.status === "200") {
-            // Required use of an anonymous callback 
-            // as .open() will NOT return a value but simply returns undefined in asynchronous mode
+        if (xobj.readyState == 4 && xobj.status == "200") {
+            // .open will NOT return a value but simply returns undefined in async mode so use a callback
             callback(xobj.responseText);
         }
-    };
+    }
     xobj.send(null);
 }
