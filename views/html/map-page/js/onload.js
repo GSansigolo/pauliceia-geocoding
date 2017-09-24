@@ -23,5 +23,5 @@ function loadJSON(callback) {
             callback(xobj.responseText);
         }
     }
-    xobj.send(null);
+    xobj.send();
 }
