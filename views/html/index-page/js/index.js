@@ -35,9 +35,9 @@ request.onreadystatechange = function(response) {
 input.placeholder = "Loading options...";
 
 // Set up and make the request.
-request.open('GET', 'https://api.myjson.com/bins/1fmidh', false);
+request.open('GET', 'http://localhost:3000/api/listQuickSearch', false);
 
-//http://localhost:3000/api/listQuickSearch
+//https://api.myjson.com/bins/1fmidh
 
 request.send();
 
@@ -45,7 +45,7 @@ function CallURL(){
 
   localStorage.setItem("storageURL",'http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json');
   var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
-  var URL = "https://rawgit.com/GSansigolo/PauliceiaAPI/master/views/html/map-page/map.html";
+  var URL = "map.html";
   var win = window.open(URL, "_self", strWindowFeatures);
 }
 
