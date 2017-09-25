@@ -40,5 +40,6 @@ npm install cookie-parser
 npm install body-parser
 npm install debug
 npm install jade
+npm install cors
 
 ```

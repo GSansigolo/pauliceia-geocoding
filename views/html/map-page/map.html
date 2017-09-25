@@ -2,12 +2,8 @@
 <html >
     <head>
         <link rel="stylesheet" href="https://openlayers.org/en/v4.3.3/css/ol.css" type="text/css">
-        <style>
-            .map {
-                height: 500px;
-                width: 100%;
-                }
-        </style>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="js/onload.js"></script>
         <meta charset="UTF-8">
         <title>Map View</title>
         <link rel="stylesheet" href="css/style.css">
@@ -18,29 +14,51 @@
                 <div id="page-wrapper">
                     <div id="map" class="map"></div>
                     <script type="text/javascript">
+                      
                       var lonlat = (localStorage.getItem("lonlat"));
-                      alert(lonlat);
-                      var map = new ol.Map({
-                        target: 'map',
-                        layers: [
-                          new ol.layer.Tile({
-                            source: new ol.source.OSM()
-                          })
-                        ],
-                        view: new ol.View({
-                          //center: ol.proj.fromLonLat([37.41, 8.82]),
-                          center: ol.proj.fromLonLat([lonlat]),
-                          zoom: 4
-                        })
+                      var fields = lonlat.split(' ');
+                      var lon = fields[0];
+                      var lat = fields[1];
+                      
+                      var 
+                          vectorSource = new ol.source.Vector(),
+                          vectorLayer = new ol.layer.Vector({source: vectorSource}),
+                          olview = new ol.View({
+                              center: ol.proj.transform([lat, lon], 'EPSG:3857', 'EPSG:4326'),
+                              zoom: 4
+                          }),
+                      map = new ol.Map({
+                          target: document.getElementById('map'),
+                          view: olview,
+                          layers: [
+                              new ol.layer.Tile({
+                                  //source: new ol.source.MapQuest({ layer: 'osm' })
+                                  source: new ol.source.OSM()
+                              }), vectorLayer
+                          ]
                       });
-                    
-                    </script>
+
+                      var iconStyle = new ol.style.Style({
+                      image: new ol.style.Icon({
+                          anchor: [0.5, 46],
+                          anchorXUnits: 'fraction',
+                          anchorYUnits: 'pixels',
+                          opacity: 0.75,
+                          src: 'img/icon.png'
+                      })
+                      });
+                      var feature = new ol.Feature({
+                        geometry: new ol.geom.Point([ol.proj.transform([lon,lat], 'EPSG:3857', 'EPSG:4326')])
+                      });
+
+                      feature.setStyle(iconStyle);
+                      vectorSource.addFeature(feature);
+
+              </script> 
             </div>
         </div>
         <div id="fundo">
                 <img class="bg" src="img/01_HOME.jpg">     
         </div>
-        <script src="js/OpenLayers.js"></script>
-        <script src="js/onload.js"></script>
     </body>
 </html>

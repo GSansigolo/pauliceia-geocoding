@@ -9,7 +9,11 @@ html {
   font-size: 100%;
   -webkit-font-smoothing: antialiased;
 }
-
+.map {
+  height: 500px;
+  width: 100%;
+  }
+  
 #page-wrapper {
   width: 740px;
   background: #FFFFFF;

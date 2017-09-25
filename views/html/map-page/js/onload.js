@@ -1,21 +1,22 @@
 function onload(){
-    var url = (localStorage.getItem("storageURL"));
-
-    $.getJSON(url, function (json) {
-
-        // Set the variables from the results array
-        var lonlat = json.results[0].geom;
-        console.log('Latitude : ', geom);
-        // Set the table td text
-        $('#lonlat').text(geom);
-        localStorage.setItem("lonlat", geom);
-    });
-
-    var geom2 = localStorage.setItem("lonlat", geom);
-    geom2 = geom2.replace("POINT(", "");
-    geom2 = geom2.replace(")", "");
+    //var url = (localStorage.getItem("storageURL"));
+    var url = "http://127.0.0.1:3000/api/geolocation/rua%20jose%20bonifacio,%207,%201933/json";
     
-    localStorage.setItem("lonlat", geom2);
+    var request = new XMLHttpRequest();  
+    request.open("GET", url, false);   
+    request.send(null);  
+    
+    if (request.status === 200) 
+    {  
+        var obj = JSON.parse(request.responseText); 
+        localStorage.setItem("lonlat", JSON.stringify(obj[2][0].geom));
+    }
 
+    var geom2 = (localStorage.getItem("lonlat"));
+    //alert('LonLat: ', geom2);
+    geom2 = geom2.replace("POINT(", "");
+    geom2 = geom2.replace(')"', '');
+    geom2 = geom2.replace('"', '');
+    localStorage.setItem("lonlat", geom2);
 }
 
