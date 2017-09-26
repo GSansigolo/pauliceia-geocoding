@@ -1,6 +1,5 @@
 function onload(){
     var url = (localStorage.getItem("storageURL"));
-    //var url = "http://127.0.0.1:3000/api/geolocation/rua%20jose%20bonifacio,%207,%201933/json";
     console.log(url);
     
     var request = new XMLHttpRequest();  

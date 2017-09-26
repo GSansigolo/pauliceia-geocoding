@@ -1,7 +1,7 @@
 // Get the <datalist> and <input> elements.
 var dataList = document.getElementById('json-datalist');
 var input = document.getElementById('ajax');
-
+var webServiceAdress = "http://localhost:3000";
 // Create a new XMLHttpRequest.
 var request = new XMLHttpRequest();
 
@@ -35,15 +35,14 @@ request.onreadystatechange = function(response) {
 input.placeholder = "Loading options...";
 
 // Set up and make the request.
-request.open('GET', 'http://localhost:3000/api/listQuickSearch', false);
+request.open('GET', webServiceAdress +'/api/listQuickSearch', false);
 
-//https://api.myjson.com/bins/1fmidh
 
 request.send();
 
 function CallURL(){
 
-  localStorage.setItem("storageURL",'http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json');
+  localStorage.setItem("storageURL", webServiceAdress +'/api/geolocation/'+document.getElementById('ajax').value+'/json');
   var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
   var URL = "map.html";
   var win = window.open(URL, "_self", strWindowFeatures);
