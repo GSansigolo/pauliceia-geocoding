@@ -41,5 +41,6 @@ npm install body-parser
 npm install debug
 npm install jade
 npm install cors
+npm install mocha --save-dev
 
 ```

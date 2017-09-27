@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor ./bin/www"
+    "start": "supervisor ./bin/www",
+    "test": "mocha test"
   },
   "dependencies": {
     "body-parser": "~1.15.1",
@@ -17,5 +18,8 @@
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.3"
   }
 }
