@@ -30,6 +30,8 @@
                         var 
                           vectorSource = new ol.source.Vector(),
                           vectorLayer = new ol.layer.Vector({source: vectorSource}),
+                          point =  new ol.geom.Point([lon, lat]),
+                          pointcenter = [-46.6337613875829, -23.5487327236119],
                           osm = new ol.layer.Tile({
                                   source: new ol.source.OSM()
                               }),
@@ -52,9 +54,9 @@
                                 name: 'tb_street'
                             }),
                           olview = new ol.View({
-                              center: [-46.63665134071729, -23.543103484961193],
+                              center: pointcenter,
                               projection: 'EPSG:4326',
-                              zoom: 17
+                              zoom: 18.5
                           }),
                       map = new ol.Map({
                           target: document.getElementById('map'),
@@ -72,7 +74,7 @@
                       })
                       });
                       var feature = new ol.Feature({
-                        geometry: new ol.geom.Point([lon, lat])
+                        geometry: point
                       });
 
                       feature.setStyle(iconStyle);
