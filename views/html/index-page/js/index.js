@@ -1,4 +1,6 @@
 // Get the <datalist> and <input> elements.
+localStorage.setItem("lonlat", "");
+localStorage.setItem("storageURL", "");
 var dataList = document.getElementById('json-datalist');
 var input = document.getElementById('ajax');
 var webServiceAdress = "http://localhost:3000";

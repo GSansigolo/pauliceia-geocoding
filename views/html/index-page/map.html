@@ -31,7 +31,8 @@
                           vectorSource = new ol.source.Vector(),
                           vectorLayer = new ol.layer.Vector({source: vectorSource}),
                           point =  new ol.geom.Point([lon, lat]),
-                          pointcenter = [-46.6337613875829, -23.5487327236119],
+                          pointcenter = [lon, lat].map(Number),
+                          //pointcenter = [-46.6331374207663, -23.5342464387701],
                           osm = new ol.layer.Tile({
                                   source: new ol.source.OSM()
                               }),
