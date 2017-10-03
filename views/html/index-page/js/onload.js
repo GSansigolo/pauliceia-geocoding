@@ -9,6 +9,7 @@ function onload(){
     if (request.status === 200) 
     {  
         var obj = JSON.parse(request.responseText); 
+        localStorage.setItem("lonlat","");
         localStorage.setItem("lonlat", JSON.stringify(obj[2][0].geom));
     }
 
@@ -17,6 +18,8 @@ function onload(){
     geom2 = geom2.replace("POINT(", "");
     geom2 = geom2.replace(')"', '');
     geom2 = geom2.replace('"', '');
+
+    localStorage.setItem("lonlat", "");
     localStorage.setItem("lonlat", geom2);
 }
 

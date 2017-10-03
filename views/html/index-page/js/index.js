@@ -4,6 +4,7 @@ localStorage.setItem("storageURL", "");
 var dataList = document.getElementById('json-datalist');
 var input = document.getElementById('ajax');
 var webServiceAdress = "http://localhost:3000";
+
 // Create a new XMLHttpRequest.
 var request = new XMLHttpRequest();
 
@@ -43,7 +44,7 @@ request.open('GET', webServiceAdress +'/api/listQuickSearch', false);
 request.send();
 
 function CallURL(){
-
+  localStorage.setItem("storageURL"," ");
   localStorage.setItem("storageURL", webServiceAdress +'/api/geolocation/'+document.getElementById('ajax').value+'/json');
   var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
   var URL = "map.html";

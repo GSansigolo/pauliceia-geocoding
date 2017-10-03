@@ -22,30 +22,41 @@
 |getDateTime
 +---------------------------------------------------+*/
 function getDateTime() {
-  
       var date = new Date();
-  
       var hour = date.getHours();
       hour = (hour < 10 ? "0" : "") + hour;
-  
       var min  = date.getMinutes();
       min = (min < 10 ? "0" : "") + min;
-  
       var sec  = date.getSeconds();
       sec = (sec < 10 ? "0" : "") + sec;
-  
       var year = date.getFullYear();
-  
       var month = date.getMonth() + 1;
       month = (month < 10 ? "0" : "") + month;
-  
       var day  = date.getDate();
       day = (day < 10 ? "0" : "") + day;
-  
       return  hour + ":" + min + ":" + sec+ " "+ day + "/" + month  + "/" + year;
-  
   } 
   
+/*  
++---------------------------------------------------+
+|function JsonEmpty
++---------------------------------------------------+*/
+
+// This should work in node.js and other ES5 compliant implementations.
+function isEmptyObject(obj) {
+  return !Object.keys(obj).length;
+}
+
+// This should work both there and elsewhere.
+function isEmptyObject(obj) {
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 /*  
 +---------------------------------------------------+
 |Urls
@@ -545,6 +556,7 @@ router.get('/api/listQuickSearch', (req, res, next) => {
 |geolocation-Json
 +---------------------------------------------------+*/
 router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
+  
   const results = [];
   const head = [];
   const textpoint = req.params.textpoint;
@@ -562,24 +574,33 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
     }
     
     // SQL Query > Select Data
-       const query = client.query("SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year <= ($2) UNION SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.last_year >= ($2);",['%'+textpoint+'%', year, number]);
+    const query = client.query("SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year <= ($2) UNION SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.last_year >= ($2);",['%'+textpoint+'%', year, number]);
 
-      // Stream results back one row at a time
-    
+    // Stream results back one row at a time
     head.push("created_at: " + getDateTime());
     head.push("type: 'GET'");
 
     query.on('row', (row) => {
       results.push(row);
     });
+  
     // After all data is returned, close connection and return results
+
     query.on('end', () => {
       done();
 
-      head.push(results);
+            if (isEmptyObject(results)) {
 
-      return res.json(head);
-    });
+              head.push(results);
+              return res.json(head);
+
+            } else {
+
+              head.push(results);
+              return res.json(head);
+
+            }
+      });
   }); 
 });
 
