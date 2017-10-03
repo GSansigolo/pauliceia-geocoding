@@ -585,17 +585,19 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
     });
   
     // After all data is returned, close connection and return results
-
     query.on('end', () => {
       done();
 
             if (isEmptyObject(results)) {
+                //if it's empty
+        
+                functionGetStreet(textpoint, number, year);
 
-              head.push(results);
-              return res.json(head);
+                head.push(results);
+                return res.json(head);
 
             } else {
-
+                //if it isn't emptt
               head.push(results);
               return res.json(head);
 

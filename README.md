@@ -42,5 +42,5 @@ npm install debug
 npm install jade
 npm install cors
 npm install mocha --save-dev
-
+npm install mocha chai supertest --save
 ```
