@@ -14,6 +14,7 @@ function onload(){
     }
 
     var geom2 = (localStorage.getItem("lonlat"));
+    
     //alert('LonLat: ', geom2);
     geom2 = geom2.replace("POINT(", "");
     geom2 = geom2.replace(')"', '');

@@ -553,6 +553,16 @@ router.get('/api/listQuickSearch', (req, res, next) => {
 
 /*  
 +---------------------------------------------------+
+|functionGetPointsofStreet
++---------------------------------------------------+*/
+function functionGetPointsofStreet(head, string){
+  const results = [];
+
+
+};
+
+/*
++---------------------------------------------------+
 |geolocation-Json
 +---------------------------------------------------+*/
 router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
@@ -562,7 +572,7 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
   const textpoint = req.params.textpoint;
   const year = req.params.year;
   const number = req.params.number;
-  const total = []
+  const total = [];
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -590,11 +600,31 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
 
             if (isEmptyObject(results)) {
                 //if it's empty
-        
-                functionGetStreet(textpoint, number, year);
 
-                head.push(results);
-                return res.json(head);
+                pg.connect(connectionString, (err, client, done) => {
+                  // Handle connection errors
+                  if(err) {
+                    done();
+                    console.log(err);
+                    return res.status(500).json({success: false, data: err});
+                  }
+                  
+                  const query = client.query("select number, ST_AsText(a.geom) as geom from tb_places as a join tb_street as b on a.id_street = b.id where b.name LIKE ($1) AND a.last_year >= ($2) union select number, ST_AsText(a.geom) as geom from tb_places as a join tb_street as b on a.id_street = b.id where b.name LIKE ($1) AND a.first_year <= ($2) ;",[textpoint, year]);
+                  
+                  query.on('row', (row) => {
+                    results.push(row);
+                  });
+                  // After all data is returned, close connection and return results
+                  query.on('end', () => {
+                    done(); 
+                    
+                    //results
+                    
+                    head.push(results);
+                    return res.json(head);
+                
+                    });
+                });
 
             } else {
                 //if it isn't emptt
