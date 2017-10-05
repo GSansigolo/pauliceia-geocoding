@@ -584,7 +584,7 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
     }
     
     // SQL Query > Select Data
-    const query = client.query("SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year <= ($2) UNION SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.last_year >= ($2);",['%'+textpoint+'%', year, number]);
+    const query = client.query("SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year <= ($2) union SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.last_year >= ($2)",['%'+textpoint+'%', year, number]);
 
     // Stream results back one row at a time
     head.push("created_at: " + getDateTime());
@@ -609,7 +609,7 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
                     return res.status(500).json({success: false, data: err});
                   }
                   
-                  const query = client.query("select number, ST_AsText(a.geom) as geom from tb_places as a join tb_street as b on a.id_street = b.id where b.name LIKE ($1) AND a.last_year >= ($2) union select number, ST_AsText(a.geom) as geom from tb_places as a join tb_street as b on a.id_street = b.id where b.name LIKE ($1) AND a.first_year <= ($2) ;",[textpoint, year]);
+                  const query = client.query("SELECT geometry , nf, nl, ($3) AS num FROM (SELECT (SELECT St_AsText(a.geom) FROM tb_street AS a WHERE a.name LIKE ($1)) AS geometry, (SELECT number_max FROM (SELECT (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.first_year >= ($2) UNION  SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.last_year >= ($2) LIMIT 1) as number_max) AS foo) As nf, (SELECT number_min FROM (SELECT (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.first_year >= ($2) UNION  SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.last_year >= ($2) LIMIT 1) as number_min) AS foo) AS nl) As foo;",['%'+textpoint+'%', year, number]);
                   
                   query.on('row', (row) => {
                     results.push(row);
