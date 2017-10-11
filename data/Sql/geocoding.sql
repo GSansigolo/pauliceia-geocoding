@@ -1,9 +1,41 @@
 ---------------------------------------------------------------------------------------------------------------------------
+#FUNÇÃO PARA SEPARAR OS DADOS PARA GEOCODIFICAÇÃO
+---------------------------------------------------------------------------------------------------------------------------
 
 SELECT geometry , nf, nl, (33) AS num 
 FROM 
 	(SELECT 
-		(	SELECT St_AsText(a.geom) FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')	) AS geometry, 
+		(SELECT ST_AsText(ST_Line_SubString(street, startfraction, endfraction)) as geometry FROM
+	(SELECT
+		(SELECT St_AsText(a.geom) FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')) AS street,
+			(SELECT ST_LineLocatePoint(line, point) FROM
+				(SELECT
+	(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')) AS line,	
+		(SELECT
+			(SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM 
+				(SELECT 
+	(SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = 
+		(SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id 
+			WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.first_year >= (1917) 
+		UNION 
+		SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id
+			WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.last_year >= (1917) LIMIT 1) 
+			AND b.name LIKE ('%rua barra funda%')  ) As pt, 
+	(SELECT ST_AsText(geom) FROM tb_street 
+		WHERE name LIKE ('%rua barra funda%')) As line) As foo)) AS point)AS foo) AS startfraction,
+	(SELECT ST_LineLocatePoint(line, point) FROM 
+		(SELECT
+			(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')) AS line,	
+				(SELECT
+	(SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM 
+		(SELECT 
+			(SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = 
+	(SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id 
+		WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.first_year >= (1917) 
+	UNION 
+	SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id 
+		WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.last_year >= (1917) LIMIT 1) AND b.name LIKE ('%rua barra funda%')  ) As pt, 
+	(SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ('%rua barra funda%')  ) As line) As foo)) AS point) AS foo) AS endfraction) AS foo) AS geometry, 
 		(SELECT number_max FROM 
 			(SELECT 
 				(SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id 
@@ -21,45 +53,39 @@ FROM
 	As foo;
 
 ---------------------------------------------------------------------------------------------------------------------------
+#FUNÇÃO CORTAR A LINHA
+---------------------------------------------------------------------------------------------------------------------------
 
 SELECT ST_AsText(ST_Line_SubString(street, startfraction, endfraction)) as geometry
 FROM
 	(SELECT
 		(	SELECT St_AsText(a.geom) FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')	) AS street,
-		(	0.2	  ) AS startfraction,
-		(	0.8   ) AS endfraction
+		(	SELECT ST_LineLocatePoint(line, point) FROM(SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')) AS line,	(SELECT(SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.first_year >= (1917) UNION SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.last_year >= (1917) LIMIT 1) AND b.name LIKE ('%rua barra funda%')  ) As pt, (  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ('%rua barra funda%')) As line) As foo)) AS point) AS foo	  ) AS startfraction,
+		(	SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')) AS line,	(SELECT( SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.first_year >= (1917) UNION SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.last_year >= (1917) LIMIT 1) AND b.name LIKE ('%rua barra funda%')  ) As pt, (  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ('%rua barra funda%')  ) As line) As foo)) AS point) AS foo   ) AS endfraction
 ) AS foo
 	
 ---------------------------------------------------------------------------------------------------------------------------
-
-SELECT ST_LineLocatePoint(line, point) 
-FROM
-	(SELECT
-		(SELECT ST_LineMerge(St_AsText(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')) AS line,	
-	(SELECT
-		()) AS point
-) AS foo
-
-SELECT ST_LineLocatePoint(line, point) 
-FROM
-	(SELECT
-		(SELECT ST_LineMerge(St_AsText(a.geom))  AS street FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')) AS line,	
-	(SELECT
-		()) AS point
-) AS foo
-
+#FUNÇÃO PARA DESCOBRIR A PORCENTAGEM SELECT ST_LineLocatePoint('LINESTRING(0 0, 2 2)', 'POINT(1 1)');
 ---------------------------------------------------------------------------------------------------------------------------
 
-SELECT ST_AsText(ST_ClosestPoint(line, pt)) AS cp_pt_1
+SELECT ST_LineLocatePoint(line, point) FROM(SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')) AS line,	(SELECT(SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.first_year >= (1917) UNION SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.last_year >= (1917) LIMIT 1) AND b.name LIKE ('%rua barra funda%')  ) As pt, (  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ('%rua barra funda%')) As line) As foo)) AS point) AS foo
+
+SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ('%rua barra funda%')) AS line,	(SELECT( SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.first_year >= (1917) UNION SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.last_year >= (1917) LIMIT 1) AND b.name LIKE ('%rua barra funda%')  ) As pt, (  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ('%rua barra funda%')  ) As line) As foo)) AS point) AS foo
+
+---------------------------------------------------------------------------------------------------------------------------
+#FUNÇÃO PARA PEGAR O CLOSESTPOINT
+---------------------------------------------------------------------------------------------------------------------------
+
+SELECT ST_AsText(ST_ClosestPoint(line, pt)) 
 	FROM 
 		(SELECT 
-			(SELECT b.geom FROM tb_places AS b where b.id = ((SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.first_year >= (1917) UNION  SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.last_year >= (1917) LIMIT 1))) As pt, 
-			(SELECT c.geom FROM tb_street AS c JOIN tb_places AS b ON b.id_street = c.id where b.id = ((SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.first_year >= (1917) UNION  SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.last_year >= (1917) LIMIT 1))) As line
+			(  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.first_year >= (1917) UNION SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number > (33) AND a.last_year >= (1917) LIMIT 1) AND b.name LIKE ('%rua barra funda%')  ) As pt, 
+			(  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ('%rua barra funda%')	) As line
 		) As foo
 
-SELECT ST_AsText(ST_ClosestPoint(line, pt)) AS cp_pt_2
+SELECT ST_AsText(ST_ClosestPoint(line, pt)) 
 	FROM 
 		(SELECT 
-			(SELECT b.geom FROM tb_places AS b where b.id = ((SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.first_year >= (1917) UNION  SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.last_year >= (1917) LIMIT 1))) As pt, 
-			(SELECT c.geom FROM tb_street AS c JOIN tb_places AS b ON b.id_street = c.id where b.id = ((SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.first_year >= (1917) UNION  SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.last_year >= (1917) LIMIT 1))) As line
+			(  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.first_year >= (1917) UNION SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ('%rua barra funda%') AND a.number < (33) AND a.last_year >= (1917) LIMIT 1) AND b.name LIKE ('%rua barra funda%')  ) As pt, 
+			(  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ('%rua barra funda%')  ) As line
 		) As foo
