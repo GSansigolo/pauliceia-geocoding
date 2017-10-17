@@ -1,3 +1,63 @@
+/*
+
+rua barra funda, 33, 1917
+
+rua quinze de novembro, 38, 1900
+
+rua quinze de novembro, 38, 1901
+
+rua quinze de novembro, 38, 1902
+
+rua quinze de novembro, 38, 1903
+
+rua quinze de novembro, 38, 1904
+
+rua quinze de novembro, 38, 1905
+
+rua quinze de novembro, 38, 1906
+
+rua quinze de novembro, 38, 1907
+
+rua quinze de novembro, 38, 1908
+
+rua quinze de novembro, 38, 1909
+
+rua quinze de novembro, 38, 1910
+
+rua quinze de novembro, 38, 1911
+
+rua quinze de novembro, 58, 1900
+
+
+{"type":"FeatureCollection","features":[
+  {
+                  "type": "Feature",
+                  "geometry": {
+                      "type": "Point",
+                      "coordinates": [ -46.65315, -23.532042]
+                  }
+                   ,"properties":{}}, {
+                  "type": "Feature",
+                  "geometry": {
+                      "type": "Point",
+                      "coordinates": [ -46.65405687597237, -23.53162906150253]
+                  }
+                  ,"properties":{}}, {
+                  "type": "Feature",
+                  "geometry": {
+                      "type": "Point",
+                      "coordinates": [ -46.65372021067016, -23.532037517627412]
+                  }
+                   ,"properties":{}}, {
+                  "type": "Feature",
+                  "geometry": {
+                      "type": "Point",
+                      "coordinates": [-46.654077, -23.530879]
+                  }
+  ,"properties":{}}
+  ]}
+ */ 
+ 
 [
   {
     "adress": "rua barra funda, 33, 1917",
@@ -96,25 +156,3 @@
     "geom": "POINT(-46.634373 -23.5459)"
   }
 ]
-
-{"type":"FeatureCollection","features":[
-{
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [ -46.633987, -23.547155]
-                }
-                 ,"properties":{}}, {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [ -46.6343097538225, -23.546056742858]
-                }
-                 ,"properties":{}}, {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [-46.634155, -23.546043]
-                }
-,"properties":{}}
-]}

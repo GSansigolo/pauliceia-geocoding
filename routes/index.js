@@ -613,14 +613,16 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
                   const query = client.query("SELECT geometry , nf, nl, ($3) AS num FROM (SELECT(SELECT ST_AsText(ST_Line_SubString(street, startfraction, endfraction)) as geometry FROM(SELECT(	SELECT St_AsText(a.geom) FROM tb_street AS a WHERE a.name LIKE ($1)	) AS street,(	SELECT ST_LineLocatePoint(line, point) FROM(SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ($1)) AS line,	(SELECT(SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.first_year >= ($2) UNION SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.last_year >= ($2) LIMIT 1) AND b.name LIKE ($1)  ) As pt, (  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ($1)) As line) As foo)) AS point) AS foo	  ) AS startfraction,(	SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ($1)) AS line,	(SELECT( SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.first_year >= ($2) UNION SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.last_year >= ($2) LIMIT 1) AND b.name LIKE ($1)  ) As pt, (  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ($1)  ) As line) As foo)) AS point) AS foo   ) AS endfraction) AS foo	) AS geometry, (SELECT number_max FROM (SELECT (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.first_year >= ($2) UNION SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.last_year >= ($2) LIMIT 1) as number_max) AS foo) As nf, (SELECT number_min FROM (SELECT (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.first_year >= ($2) UNION SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.last_year >= ($2) LIMIT 1) as number_min) AS foo) AS nl) As foo;",['%'+textpoint+'%', year, number]);
                   
                   query.on('row', (row) => {
-                    //"POINT("+JSON.stringify((Search.getPoint(row.geometry, row.nf, row.nl, row.num)).point).slice(2, 37) +")"
                     
                     if (!row.geometry || !row.nf || !row.num || !row.nl) {
                       results.push({name: "", geom: ""});
                     }
                     else {
+                      
                       //results.push(row);
-                      results.push({name: "P", geom: ("POINT("+JSON.stringify((Search.getPoint(row.geometry, row.nf, row.nl, row.num)).point).slice(2, 36) +")")});
+                      
+                      results.push({name: "P", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
+
                     }
                   });
 

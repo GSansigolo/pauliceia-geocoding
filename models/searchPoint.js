@@ -13,7 +13,7 @@ exports.getPoint = function(geometry, nf, nl, num){
         };
 
     //tratar a string da geometria
-    var geom = geometry.substr(geometry.indexOf("(")+1);
+    var geom = geometry.substr(geometry.indexOf("(")+2);
     var geom = geom.substr(0,geom.indexOf(")"));
 
     //separa os pontos da linha
@@ -23,7 +23,7 @@ exports.getPoint = function(geometry, nf, nl, num){
     //verfica se o numero esta entre o inicial e o final da rua
     if(num<nf) return { point: points[0], error: null};
     if(num>nl) return { point: points[points.length-1], error: null};
-
+    
     //criar vetor com as distancias entre os pontos daa linha
     var distances = [];
     for(var i=0; i<points.length; i++){
