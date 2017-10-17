@@ -535,7 +535,7 @@ router.get('/api/listQuickSearch', (req, res, next) => {
       console.log(err);
       return res.status(500).json({success: false, data: err});
     }
-    // SQL Query > Select Data avenida tiradentes, 1, 1931
+
     const query = client.query("select b.name, a.number, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 union select b.name, a.number, a.last_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.last_year >= 1 order by number;");
 
     query.on('row', (row) => {
@@ -551,16 +551,6 @@ router.get('/api/listQuickSearch', (req, res, next) => {
    });
   });
 });
-
-/*  
-+---------------------------------------------------+
-|functionGetPointsofStreet
-+---------------------------------------------------+*/
-function functionGetPointsofStreet(head, string){
-  const results = [];
-
-
-};
 
 /*
 +---------------------------------------------------+

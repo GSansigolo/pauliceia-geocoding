@@ -12,7 +12,13 @@
             <div id="page-wrapper">
                 <h1>Search Page</h1>
                 <label for="ajax">Search: </label>
-                <input type="text" id="ajax" list="json-datalist" placeholder="">
+
+                <div style="width: 95%; float:left; margin-left: 2%;">
+                    <div id="a" style="width: 80%; height: 100%; float:left;"><input type="text" id="ajax" list="json-datalist" placeholder=""></div>
+                    <div id="b" style="width: 20%; height: 100%; float:right;"><button2 id="button_upload" type="submit" onclick="">Upload</button2></div>
+                </div><br><br>
+                
+                
                 <datalist id="json-datalist"></datalist>
                 <label for="1"> </label>
                 <div><button id="button_search" type="submit" onclick="location.href='http://localhost:3000/api/geolocation/'+document.getElementById('ajax').value+'/json';">Search in Web Service</button&nbsp&nbsp&nbsp&nbsp><button id="button_search2" type="submit2" onclick="CallURL();">View on OpenLayers</button></div></div>

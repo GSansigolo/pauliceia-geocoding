@@ -72,6 +72,25 @@ button {
   
 }
 
+button2 {
+  display: inline-block;
+  border-radius: 2px;
+  border: none;
+  font-size: 0.9rem;
+  padding: 0.7rem 0.9em;
+  background: #69c773;
+  border-bottom: 1px solid #498b50;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  font-weight: bold;
+  margin: 1;
+  width: 95%;
+  text-align: center;
+  margin-left: 8%;
+  margin-right: 5%;
+}
+
+
 button:hover, button:focus {
   opacity: 0.75;
   cursor: pointer;

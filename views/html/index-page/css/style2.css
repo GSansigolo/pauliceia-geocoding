@@ -10,12 +10,12 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 .map {
-  height: 500px;
+  height: 80%;
   width: 100%;
   }
   
 #page-wrapper {
-  width: 740px;
+  width: 70%;
   background: #FFFFFF;
   padding: 1em;
   margin:2em auto;
