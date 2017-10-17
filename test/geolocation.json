@@ -96,3 +96,25 @@
     "geom": "POINT(-46.634373 -23.5459)"
   }
 ]
+
+{"type":"FeatureCollection","features":[
+{
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [ -46.633987, -23.547155]
+                }
+                 ,"properties":{}}, {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [ -46.6343097538225, -23.546056742858]
+                }
+                 ,"properties":{}}, {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-46.634155, -23.546043]
+                }
+,"properties":{}}
+]}

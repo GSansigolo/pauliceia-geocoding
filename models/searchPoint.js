@@ -1,4 +1,3 @@
-
 //geometry -> geometria do trecho 
 //nf-> numero ponto inicial (mais proximo melhor)
 //nl-> numero ponto final (mais proximo melhor)
