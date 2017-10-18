@@ -4,6 +4,7 @@ localStorage.setItem("storageURL", "");
 var dataList = document.getElementById('json-datalist');
 var input = document.getElementById('ajax');
 var webServiceAdress = "http://localhost:3000";
+var json = {};
 
 // Create a new XMLHttpRequest.
 var request = new XMLHttpRequest();
@@ -44,10 +45,18 @@ request.open('GET', webServiceAdress +'/api/listQuickSearch', false);
 request.send();
 
 function CallURL(){
-  localStorage.setItem("storageURL", webServiceAdress +'/api/geolocation/'+document.getElementById('ajax').value+'/json');
-  var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
-  var URL = "map.html";
-  var win = window.open(URL, "_self", strWindowFeatures);
+  if (document.getElementById('ajax').value.substring(0, 5) == "File:" ){
+    localStorage.setItem("storageURL", webServiceAdress +'/api/multiplegeolocation/'+json+'/json');
+    var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
+    var URL = "map.html";
+    var win = window.open(webServiceAdress +'/api/multiplegeolocation/'+json+'/json', "_self", strWindowFeatures);
+    
+  } else {
+    localStorage.setItem("storageURL", webServiceAdress +'/api/geolocation/'+document.getElementById('ajax').value+'/json');
+    var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
+    var URL = "map.html";
+    var win = window.open(URL, "_self", strWindowFeatures);
+}
 }
 
 function openAttachment() {
@@ -55,24 +64,19 @@ function openAttachment() {
 }
 
 function fileSelected(input){
-  document.getElementById('ajax').value = "File: " + input.files[0].name
+  document.getElementById('ajax').value = "File: " + input.files[0].name;
+  //json =  input.files[0].name;
+  var reader = new FileReader();
+  reader.onload = function () {
+    var text = reader.result;
+    var node = document.getElementById('output');
+    json = text;
+};
+reader.readAsText(input.files[0]);
 }
 
-
-function readTextFile(file)
-{
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                alert(allText);
-            }
-        }
-    }
-    rawFile.send(null);
-}
+var openFile = function (event) {
+  var input = event.target;
+  
+  
+};
