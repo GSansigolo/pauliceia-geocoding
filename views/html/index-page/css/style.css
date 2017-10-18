@@ -91,12 +91,23 @@ button2 {
 }
 
 
+button2:hover, button2:focus {
+  opacity: 0.75;
+  cursor: pointer;
+}
+
 button:hover, button:focus {
   opacity: 0.75;
   cursor: pointer;
 }
 
 button:active {
+  opacity: 1;
+  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1) inset;
+}
+
+
+button2:active {
   opacity: 1;
   box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1) inset;
 }

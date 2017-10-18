@@ -50,3 +50,29 @@ function CallURL(){
   var win = window.open(URL, "_self", strWindowFeatures);
 }
 
+function openAttachment() {
+  document.getElementById('attachement').click();
+}
+
+function fileSelected(input){
+  document.getElementById('ajax').value = "File: " + input.files[0].name
+}
+
+
+function readTextFile(file)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                alert(allText);
+            }
+        }
+    }
+    rawFile.send(null);
+}
