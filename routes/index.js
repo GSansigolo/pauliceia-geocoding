@@ -659,7 +659,7 @@ router.get('/api/multiplegeolocation/:jsonquery/json', (req, res, next) => {
     
   url = webServiceAdress + '/api/geolocation/' + jsonObject[j][content] +"/json"
   
-//////////////////////////////////////////////////////////////
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   const options = {  
     method: 'GET',
@@ -673,7 +673,7 @@ router.get('/api/multiplegeolocation/:jsonquery/json', (req, res, next) => {
       results.push(json[2][0]);
   });
 
-///////////////////////////////////////////////////////////////
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
 }
   return res.json(results);
