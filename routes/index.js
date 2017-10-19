@@ -8,6 +8,8 @@
   var postgeo = require("postgeo");
   var js2xmlparser = require("js2xmlparser");
   var Search = require('../models/searchPoint');
+  var webServiceAdress = "http://localhost:3000";
+  const request = require('request');
 
 /*  
 +---------------------------------------------------+
@@ -644,81 +646,37 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
 router.get('/api/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   
   const results = [];
-  const head = [];
-  const textpoint = req.params.textpoint;
-  const year = req.params.year;
-  const number = req.params.number;
-  const total = [];
+  var jsonObject = JSON.parse(req.params.jsonquery);
+  const sizeJson = Object.keys(jsonObject).length;
 
-  // Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    
-    // SQL Query > Select Data
-    const query = client.query("SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year <= ($2) union SELECT tb_places.name, ST_ASTEXT(tb_places.geom) AS geom FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.last_year >= ($2)",['%'+textpoint+'%', year, number]);
+  var content = "";
+  for(index in jsonObject)
+      for(product in jsonObject[index])
+          content = (Object.keys(jsonObject[index]));
 
-    // Stream results back one row at a time
-    head.push("created_at: " + getDateTime());
-    head.push("type: 'GET'");
-
-    query.on('row', (row) => {
-      results.push(row);
-    });
   
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
+  for ( var j = 0; j < sizeJson ; j++ ) {
+    
+  url = webServiceAdress + '/api/geolocation/' + jsonObject[j][content] +"/json"
+  
+//////////////////////////////////////////////////////////////
 
-            if (isEmptyObject(results)) {
-                //if it's empty
+  const options = {  
+    method: 'GET',
+      url: url
+  };
 
-                pg.connect(connectionString, (err, client, done) => {
-                  // Handle connection errors
-                  if(err) {
-                    done();
-                    console.log(err);
-                    return res.status(500).json({success: false, data: err});
-                  }
-                  
-                  const query = client.query("SELECT geometry , nf, nl, ($3) AS num FROM (SELECT(SELECT ST_AsText(ST_Line_SubString(street, startfraction, endfraction)) as geometry FROM(SELECT(	SELECT St_AsText(a.geom) FROM tb_street AS a WHERE a.name LIKE ($1)	) AS street,(	SELECT ST_LineLocatePoint(line, point) FROM(SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ($1)) AS line,	(SELECT(SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.first_year >= ($2) UNION SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.last_year >= ($2) LIMIT 1) AND b.name LIKE ($1)  ) As pt, (  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ($1)) As line) As foo)) AS point) AS foo	  ) AS startfraction,(	SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ($1)) AS line,	(SELECT( SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (  SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.first_year >= ($2) UNION SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.last_year >= ($2) LIMIT 1) AND b.name LIKE ($1)  ) As pt, (  SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ($1)  ) As line) As foo)) AS point) AS foo   ) AS endfraction) AS foo	) AS geometry, (SELECT number_max FROM (SELECT (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.first_year >= ($2) UNION SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.last_year >= ($2) LIMIT 1) as number_max) AS foo) As nf, (SELECT number_min FROM (SELECT (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.first_year >= ($2) UNION SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.last_year >= ($2) LIMIT 1) as number_min) AS foo) AS nl) As foo;",['%'+textpoint+'%', year, number]);
-                  
-                  query.on('row', (row) => {
-                    
-                    if (!row.geometry || !row.nf || !row.num || !row.nl) {
-                      results.push({name: "", geom: ""});
-                    }
-                    else {
-                      
-                      //results.push(row);
-                      
-                      results.push({name: "P", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
+  results.push(url);
 
-                    }
-                  });
+  request(options, function(err, res, body) { 
+      json = JSON.parse(body);
+      results.push(json[2][0]);
+  });
 
-                  // After all data is returned, close connection and return results
-                  query.on('end', () => {
-                    done(); 
-                    
-                    head.push(results);
-                    return res.json(head);
-                
-                    });
-                });
-
-            } else {
-                //if it isn't emptt
-              head.push(results);
-              return res.json(head);
-
-            }
-      });
-  }); 
+///////////////////////////////////////////////////////////////
+  
+}
+  return res.json(results);
 });
 
 
