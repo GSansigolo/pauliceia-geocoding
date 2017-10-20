@@ -10,8 +10,8 @@
   var Search = require('../models/searchPoint');
   var webServiceAdress = "http://localhost:3000";
   const request = require('request');
-
-/*  
+  
+  /*  
 +---------------------------------------------------+
 |Connection
 +---------------------------------------------------+*/
@@ -39,7 +39,8 @@ function getDateTime() {
       day = (day < 10 ? "0" : "") + day;
       return  hour + ":" + min + ":" + sec+ " "+ day + "/" + month  + "/" + year;
   } 
-  
+
+
 /*  
 +---------------------------------------------------+
 |function JsonEmpty
@@ -648,37 +649,46 @@ router.get('/api/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   const results = [];
   var jsonObject = JSON.parse(req.params.jsonquery);
   const sizeJson = Object.keys(jsonObject).length;
-
+  var urlList = [];
+  var textList = [];
+  var k = 0;
+  const head = [];
+  
   var content = "";
   for(index in jsonObject)
       for(product in jsonObject[index])
           content = (Object.keys(jsonObject[index]));
 
-  
   for ( var j = 0; j < sizeJson ; j++ ) {
-    
-  url = webServiceAdress + '/api/geolocation/' + jsonObject[j][content] +"/json"
-  
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    url = webServiceAdress + '/api/geolocation/' + jsonObject[j][content] +"/json"
+    urlList.push(url);
+    textList.push(jsonObject[j][content]);
+  }
 
-  const options = {  
-    method: 'GET',
-      url: url
-  };
+  for (i in urlList) {
+    request(urlList[i], function (error, response, body) {
+      if (!error) {
+        var bodyjson = JSON.parse(body);
+        //console.log(bodyjson[2][0].geom);
+        console.log(results);
+        results.push({adress: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
+       k=k+1;
 
-  results.push(url);
+       if (k >= urlList.length){
+        
+        // Stream results back one row at a time
+        head.push("created_at: " + getDateTime());
+        head.push("type: 'GET'");
+      
+        head.push(results);
+        return res.json(head);
 
-  request(options, function(err, res, body) { 
-      json = JSON.parse(body);
-      results.push(json[2][0]);
-  });
+      }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
-}
-  return res.json(results);
+     } 
+      });  
+  }  
 });
-
 
 /*  
 +---------------------------------------------------+

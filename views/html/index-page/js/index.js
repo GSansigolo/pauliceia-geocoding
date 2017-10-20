@@ -46,11 +46,7 @@ request.send();
 
 function CallURL(){
   if (document.getElementById('ajax').value.substring(0, 5) == "File:" ){
-    localStorage.setItem("storageURL", webServiceAdress +'/api/multiplegeolocation/'+json+'/json');
-    var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
-    var URL = "map.html";
-    var win = window.open(webServiceAdress +'/api/multiplegeolocation/'+json+'/json', "_self", strWindowFeatures);
-    
+
   } else {
     localStorage.setItem("storageURL", webServiceAdress +'/api/geolocation/'+document.getElementById('ajax').value+'/json');
     var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
@@ -58,6 +54,7 @@ function CallURL(){
     var win = window.open(URL, "_self", strWindowFeatures);
 }
 }
+
 
 function openAttachment() {
   document.getElementById('attachement').click();
@@ -77,6 +74,21 @@ reader.readAsText(input.files[0]);
 
 var openFile = function (event) {
   var input = event.target;
-  
-  
 };
+
+
+function serchinservice(){
+      
+      if (document.getElementById('ajax').value.substring(0, 5) == "File:" ){
+
+        localStorage.setItem("storageURL", webServiceAdress +'/api/multiplegeolocation/'+json+'/json');
+        var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
+        var win = window.open(webServiceAdress +'/api/multiplegeolocation/'+json+'/json', "_self", strWindowFeatures);
+        
+       } else {
+
+        var strWindowFeatures = "location=ye,scrollbars=yes,status=yes";
+        var win = window.open(webServiceAdress +'/api/geolocation/'+document.getElementById('ajax').value+'/json', "_self", strWindowFeatures);
+       
+      }
+    }
