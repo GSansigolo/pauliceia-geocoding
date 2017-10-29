@@ -8,40 +8,72 @@ global.uuid = uuid;
 global.expect = chai.expect;  
 global.request = supertest(app);
 
-  describe('getAllStreetsJson', function() {
-    it('', function(done) {
+describe('getAllStreetsJson', function() {
+    it('Sucess', function(done) {
         request.get('/api/street/all/json')
             .expect(200)
             .end(function(err, res) {
-                expect(res.body[2]).to.have.lengthOf(546);
+                expect(res.body[2]).not.have.lengthOf(0);
+                expect(res.body).to.be.a('array');
                 done();
             });
     });
   });
 
-  describe('getSingleStreetJson', function() {
-    it('', function(done) {
-        request.get('/api/street/1/json')
+describe('getAllStreetsGeoJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/street/all/geojson')
             .expect(200)
             .end(function(err, res) {
-                expect(res.body[2]).to.have.lengthOf(1);
+                expect(res.body.features).not.have.lengthOf(0);
+                expect(res.body.features).to.be.a('array');
                 done();
             });
     });
   });
 
-  describe('getGeolocationJson 1', function() {
-    it('', function(done) {
-        request.get('/api/geolocation/rua%20monsenhor%20andrade,%20120,%201931/json')
+describe('getAllStreetsXml', function() {
+    it('Sucess.', function(done) {
+        request.get('/api/street/all/xml')
             .expect(200)
             .end(function(err, res) {
-                expect(res.body[2]).to.have.lengthOf(1);
+                expect(res.body.data).not.have.data;
                 done();
             });
     });
   });
 
+  describe('getAllPlacesJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/places/all/json')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body[2]).not.have.lengthOf(0);
+                expect(res.body).to.be.a('array');
+                done();
+            });
+    });
+  });
 
+describe('getAllPlacesGeoJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/places/all/geojson')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body.features).not.have.lengthOf(0);
+                expect(res.body.features).to.be.a('array');
+                done();
+            });
+    });
+  });
 
-
- 
+describe('getAllPlacesXml', function() {
+    it('Sucess.', function(done) {
+        request.get('/api/places/all/xml')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body.data).not.have.data;
+                done();
+            });
+    });
+  });
