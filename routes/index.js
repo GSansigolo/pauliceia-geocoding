@@ -466,7 +466,7 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('select id, id_street, st_x(st_astext(geom)) as lat, st_y(st_astext(geom)) as lng, number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
+    const query = client.query('select id, id_street, st_astext(geom) as geom, number, name, first_day, first_month, first_year, last_day, last_month, last_year, description, source from tb_places where number=($1)',[id]);
     //const query = client.query('select * from tb_street where id=($1)', id);
 
     query.on('row', (row) => {
@@ -476,7 +476,7 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
     query.on('end', () => {
       done();
 
-      const results2 = GeoJSON.parse(results, {'MultiLineString': 'geom'});
+      const results2 = GeoJSON.parse(results, {'Point': 'geom'});
 
       return res.json(results2);
     });
@@ -670,7 +670,7 @@ router.get('/api/multiplegeolocation/:jsonquery/json', (req, res, next) => {
       if (!error) {
         var bodyjson = JSON.parse(body);
         results.push({adress: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
-        console.log({adress: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
+        //console.log({adress: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
        k=k+1;
 
        if (k >= urlList.length){

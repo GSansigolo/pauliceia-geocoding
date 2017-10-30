@@ -77,3 +77,114 @@ describe('getAllPlacesXml', function() {
             });
     });
   });
+
+  describe('getSingleStreetJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/street/1/json')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body[2]).not.have.lengthOf(0);
+                expect(res.body).to.be.a('array');
+                expect(res.body[2]).have.lengthOf(1);
+                done();
+            });
+    });
+  });
+
+  describe('getSingleStreetGeoJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/street/1/geojson')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body.features).not.have.lengthOf(0);
+                expect(res.body.features).to.be.a('array');
+                expect(res.body.features).have.lengthOf(1);
+                done();
+            });
+    });
+  });
+
+  describe('getSingleStreetXml', function() {
+    it('Sucess', function(done) {
+        request.get('/api/street/1/xml')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body.data).not.have.data;
+                done();
+            });
+    });
+  });
+
+  describe('getSinglePlaceJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/places/71/json')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body[2]).not.have.lengthOf(0);
+                expect(res.body).to.be.a('array');
+                expect(res.body[2]).have.lengthOf(1);
+                done();
+            });
+    });
+  });
+
+  describe('getSinglePlaceGeoJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/places/71/geojson')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body.features).not.have.lengthOf(0);
+                expect(res.body.features).to.be.a('array');
+                expect(res.body.features).have.lengthOf(1);
+                done();
+            });
+    });
+  });
+
+  describe('getSinglePlaceXml', function() {
+    it('Sucess', function(done) {
+        request.get('/api/places/71/xml')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body.data).not.have.data;
+                done();
+            });
+    });
+  });
+  
+  describe('getListQuickSearchJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/geolocation//json')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body).is.not.null;
+                done();
+            });
+    });
+  });
+  
+  describe('getGeolocationJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/geolocation/rua quinze de novembro, 17, 1900/json')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body[2]).not.have.lengthOf(0);
+                expect(res.body).to.be.a('array');
+                expect(res.body[2]).have.lengthOf(1);
+                done();
+            });
+    });
+  });
+  
+  describe('getMultipleGeolocationJson', function() {
+    it('Sucess', function(done) {
+        request.get('/api/multiplegeolocation/[{"adress": "rua oriente, 41, 1911"},{"adress": "rua rodrigues dos santos, 2, 1902"}]/json')
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body[2]).not.have.lengthOf(0);
+                expect(res.body).to.be.a('array');
+                expect(res.body[2]).have.lengthOf(2);
+                done();
+            });
+    });
+  });
