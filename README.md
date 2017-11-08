@@ -1,5 +1,5 @@
 ![image](https://raw.githubusercontent.com/GSansigolo/PauliceiaAPI/master/logo.png)
-# Web Service para Geocodificação de Endereços em Banco de Dados Espaços Temporais.
+# Web Service para Geocodificação de Endereços em Banco de Dados Espaços-Temporais.
 
 ## Gabriel Sansigolo<br>
 
@@ -9,8 +9,6 @@ Gabriel Sansigolo, INPE <br>
 Carlos A. Noronha, INPE<br>
 Gilberto R. de Queiroz, INPE<br>
 Karine R. Ferreira, INPE<br>
-
-
 
 ## Resumo
 
@@ -24,8 +22,8 @@ PostGIS 2.3
 NodeJS 4.2.6
 
 ```
-## Instalação
 
+## Instalação
 
 ```
 npm install -g express-generator@4.13.4
