@@ -608,13 +608,30 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
                   query.on('row', (row) => {
                     
                     if (!row.geometry || !row.nf || !row.num || !row.nl) {
-                      results.push({name: "", geom: ""});
-                    }
-                    else {
+                    
+                      //Extrapolação ano
+                      
+                      
+                      const query = client.query("SELECT tb_street.name FROM tb_places JOIN tb_street ON tb_places.id_street = tb_street.id WHERE tb_places.number = ($3) AND tb_street.name LIKE ($1) AND tb_places.first_year <= ($2) AND tb_places.last_year >= ($2)",['%'+textpoint+'%', year, number]);
+                     
+                      query.on('row', (row) => {
+                        results.push({Alert: "Ponto Não Encontrado", Results: ""});
+                      });
+                  
+                      // After all data is returned, close connection and return results
+                      query.on('end', () => {
+                        done();
+                  
+                      return res.json(results);
+                  
+                     });
+
+
+                    } else {
                       
                       //results.push(row);
                       
-                      results.push({name: "P", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
+                      results.push({name: "Ponto Geolocalizado", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
 
                     }
                   });

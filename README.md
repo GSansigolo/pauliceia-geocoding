@@ -3,15 +3,18 @@
 
 ## Gabriel Sansigolo<br>
 
-### Orientadores:
+### Autores:
 
-Luis Antonio Coelho Ferla, Doutor, UNIFESP<br>
-Karine Reis Ferreira, Doutora, INPE<br>
-Juliana Forin Pasquini Martinez, Mestre, FATEC<br>
+gabriel Sansigolo, INPE <br>
+Carlos A. Noronha, INPE<br>
+Gilberto R. de Queiroz, INPE<br>
+Karine R. Ferreira, INPE<br>
+
+
 
 ## Resumo
 
-Web services vem ganhando cada vez mais espaço no mercado da computação, principalmente pela sua eficiência no que diz respeito a integração de sistemas e comunicação entre aplicações diferentes (SANCHEZ, 2014). Com a transição do publico de aplicações locais para aplicações web permitiu-se uma evolução na questão de compartilhamento de dados e uma necessidade de melhor distribuição na internet. Este trabalho tem como principal objetivo o desenvolvimento de um web service para distribuição dos dados e um projeto de mapeamento histórico da cidade de São Paulo. O serviço vai oferecer, além de acesso aos dados, ferramentas de geocodificação de endereços já desenvolvidas para trabalhar com o banco de dados histórico do projeto. Esse projeto está associado ao projeto: “Pauliceia 2.0: Geocodificação de Endereços em Banco de Dados Espaço Temporais.”
+Web services vem ganhando cada vez mais atenção na área da computação, principalmente pela sua eficiência na integração de sistemas e na comunicação entre aplicações diferentes. A transição de aplicações locais para aplicações web promoveu uma evolução no compartilhamento e distribuição de dados na internet. O objetivo desse trabalho é desenvolver uma ferramenta para geocodificação de endereços em banco de dados espaço-temporais para o projeto Pauliceia 2.0. Esse projeto visa produzir um conjunto de dados digitais históricos da cidade de São Paulo no período de 1870 a 1940 e desenvolver uma plataforma computacional para manipulação desses dados históricos e mapeamento colaborativo. A ferramenta de geocodificação está sendo desenvolvida como um serviço web e será integrada na plataforma do projeto Pauliceia 2.0 para trabalhar com os dados históricos da cidade de São Paulo. Atualmente existem ferramentas eficientes para a geocodificação de endereços. Porém, nenhuma delas trabalha com dados espaço-temporais, ou seja, não considera a componente temporal dos dados espaciais. Como o objetivo é a geocodificação de endereços históricos no município de São Paulo durante os anos de 1870 a 1940, é essencial que a ferramenta de geocodificação considere a componente temporal dos dados espaciais. No que diz respeito aos resultados obtidos, testou-se a ferramenta desenvolvida com uma série de dados históricos fornecidos pela pesquisadora Ayala Levy. Os resultados obtidos até o momento levam a concluir que a média das distâncias entre os dados obtidos pela ferramenta e os dados esperados pela pesquisa foram de 0.00029 metros. Diante dos resultados das análises, pode-se concluir que a ferramenta de geocodificação de endereço funcionou de forma exemplar entregando uma localização espacial precisa dentro da faixa temporal buscada.
 
 ## Prerequisitos
 
