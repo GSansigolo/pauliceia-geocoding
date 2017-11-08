@@ -5,7 +5,7 @@
 
 ### Autores:
 
-gabriel Sansigolo, INPE <br>
+Gabriel Sansigolo, INPE <br>
 Carlos A. Noronha, INPE<br>
 Gilberto R. de Queiroz, INPE<br>
 Karine R. Ferreira, INPE<br>
