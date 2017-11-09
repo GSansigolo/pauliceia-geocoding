@@ -40,6 +40,19 @@ function getDateTime() {
       return  hour + ":" + min + ":" + sec+ " "+ day + "/" + month  + "/" + year;
   } 
 
+/*  
++---------------------------------------------------+
+|request
++---------------------------------------------------+*/
+function getJsonUrl(url1) {
+  request(url1, function (error, response, body) {
+    if (!error) {
+      var bodyjson = JSON.parse(body);
+      console.log(bodyjson[2][0].geom);
+      return "a"
+      } 
+  });
+} 
 
 /*  
 +---------------------------------------------------+
@@ -564,12 +577,11 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
   const results = [];
   const head = [];
   const textpoint = req.params.textpoint;
-  const year = req.params.year;
-  const number = req.params.number;
+  const year = req.params.year.replace(" ", "");;
+  const yearExtra = year;
+  const number = req.params.number.replace(" ", "");
   const total = [];
-  var jsonObject = JSON.parse(req.params.jsonquery);
-    var jsonObject = JSON.parse(req.params.jsonquery);
-  var jsonPush = [];
+  var   url = "";
 
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -611,48 +623,36 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
                   query.on('row', (row) => {
                     
                     if (!row.geometry || !row.nf || !row.num || !row.nl) {
-
-                      if (number < row.nf){
-                        number = row.nf
-
-                          url = webServiceAdress + '/api/geolocation/' + textpoint+", "+year+", "+number +"/json"
-                          jsonPush.push(jsonObject[j][content]);
-
-
-                          results.push({alert: "Ponto Não Encontrado"});
-                          results.push({alert: "Você quis dizer: "});
-                          results.push({name: textpoint+", "+year+", "+number, geom: row.geom});
+                      if (row.num < row.nf){
+                        const query2 = client.query("select first_year from tb_places where id_street = (select id from tb_street where name like $1) and number = $2",['%'+textpoint+'%', row.nf]);
+                        query2.on('row', (row) => {
+                          console.log(row.first_year);
+                        });
+                        url = webServiceAdress + '/api/geolocation/' + textpoint+", "+row.nf+", "+yearExtra+"/json";
+                        //results.push({alert: "Point not Found", cond:  row.num+" < "+row.nf});
+                        results.push({name: textpoint+", "+row.nf+", "+year, geom: ""/*, url: url*/});
+                      } else {
+                        const query3 = client.query("select first_year from tb_places where id_street = (select id from tb_street where name like $1) and number = $2",['%'+textpoint+'%', row.nl]);
+                        query3.on('row', (row) => {
+                          console.log(row.first_year);
+                        });
+                        url = webServiceAdress + '/api/geolocation/' + textpoint+", "+row.nl+", "+yearExtra+"/json";;
+                        //results.push({alert: "Point not Found", msg: row.num+" > "+row.nl,  msg2: "Did you mean:"});
+                        results.push({name: textpoint+", "+row.nl+", "+year, geom: ""/*, url: url*/});
                       } 
-
-                      if (number > row.nl){
-                        number = row.nl
-                        
-                          results.push({alert: "Ponto Não Encontrado"});
-                          results.push({alert: "Você quis dizer: "});
-                          results.push({name: textpoint+", "+year+", "+number, geom: row.geom});
-                      } 
-                    
-                      results.push({Alert: "Ponto Não Encontrado"});
-                    
                     } else {
-                      
-                      results.push({name: "Ponto Geolocalizado", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
-
+                      results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
                     }
                   });
-
-                  // After all data is returned, close connection and return results
                   query.on('end', () => {
                     done(); 
-                    
                     head.push(results);
                     return res.json(head);
-                
                     });
                 });
 
             } else {
-                //if it isn't emptt
+
               head.push(results);
               return res.json(head);
 
