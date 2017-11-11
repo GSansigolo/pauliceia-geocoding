@@ -64,7 +64,7 @@ function getJsonUrl(url1) {
 function processName(name)
 {
     nameExtra = name;
-    //console.log(nameExtra);
+    console.log(nameExtra);
 }
 
 /*  
@@ -74,7 +74,7 @@ function processName(name)
 function processYear(year)
 {
     yearExtra = year;
-    //console.log(yearExtra);
+    console.log(yearExtra);
 }
 
 /*  
@@ -614,7 +614,14 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
   const number = req.params.number.replace(" ", "");
   const total = [];
   var url = "";
-
+  
+  if (!number || !textpoint || !year || number == null || textpoint == null || year == null /*|| typeof number === 'number' ||  typeof year === 'number' */){
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+    results.push({Alert: ""});
+    head.push(results);
+    return res.json(head);
+  }
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
@@ -660,21 +667,26 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
                         query2.on('row', (row) => {
                           processName(row.name);
                           processYear(row.first_year);
-                          processGeom(row.geom);
+                          processGeom(row.st_astext);
                         });
-
-                        results.push({name: nameExtra, geom: geomExtra , url: url});
-                      
+                        const ads1 = textpoint+", "+row.nf+", "+yearExtra;
+                      results.push({Address: ads1, name: nameExtra, geom: geomExtra});
+                        processName("");
+                        processYear("");
+                        processGeom("");
                       } else {
 
                         const query3 = client.query("select name, first_year, ST_AsText(geom)  from tb_places where id_street = (select id from tb_street where name like $1) and number = $2",['%'+textpoint+'%', row.nl]);
                         query3.on('row', (row) => {
                           processName(row.name);
                           processYear(row.first_year);
-                          processGeom(row.geom);
+                          processGeom(row.st_astext);
                         });
-
-                        results.push({name: nameExtra, geom: geomExtra, url: url});
+                          const ads2 = textpoint+", "+row.nl+", "+yearExtra;
+                        results.push({Address:  ads2, name: nameExtra, geom: geomExtra});
+                          processName("");
+                          processYear("");
+                          processGeom("");
                       } 
                     } else {
                       results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
