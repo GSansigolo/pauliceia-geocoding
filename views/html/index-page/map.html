@@ -39,7 +39,7 @@
                           sara = new ol.layer.Tile({
                                 source: new ol.source.TileWMS({
                                     url: 'http://www.pauliceia.dpi.inpe.br/geoserver/ows',
-                                    params: {'LAYERS': 'pauliceia:saraBrasil', 'TILED': true},
+                                    params: {'LAYERS': 'pauliceia:saraBrasil30', 'TILED': true},
                                     serverType: 'geoserver'
                                 }),
                                 visible: true,
@@ -48,7 +48,7 @@
                             street = new ol.layer.Tile({
                                 source: new ol.source.TileWMS({
                                     url: 'http://www.pauliceia.dpi.inpe.br/geoserver/ows',
-                                    params: {'LAYERS': 'pauliceia:tb_street', 'TILED': true},
+                                    params: {'LAYERS': 'pauliceia:streets', 'TILED': true},
                                     serverType: 'geoserver'
                                 }),
                                 visible: true,
@@ -62,7 +62,7 @@
                       map = new ol.Map({
                           target: document.getElementById('map'),
                           view: olview,
-                          layers: [osm, sara, street, vectorLayer],
+                          layers: [osm, sara, /*street,*/ vectorLayer],
                       });
 
                       var iconStyle = new ol.style.Style({
