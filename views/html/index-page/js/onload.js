@@ -22,6 +22,6 @@ function onload(){
 
     localStorage.setItem("lonlat", "");
     localStorage.setItem("lonlat", geom2);
-    location.reload(); 
+    //location.reload(); 
 }
 
