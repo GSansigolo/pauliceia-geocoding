@@ -66,57 +66,6 @@ function getJsonUrl(url1) {
 
 /*  
 +---------------------------------------------------+
-|processYear
-+---------------------------------------------------+*/
-function processName(name)
-{
-    nameExtra = name;
-    console.log(nameExtra);
-}
-
-/*  
-+---------------------------------------------------+
-|processFYear
-+---------------------------------------------------+*/
-function processFYear(fy)
-{
-    FYear= fy;
-    console.log(FYear);
-}
-
-/*  
-+---------------------------------------------------+
-|processLYear
-+---------------------------------------------------+*/
-function processLYear(ly)
-{
-    LYear= ly;
-    console.log(LYear);
-}
-
-
-/*  
-+---------------------------------------------------+
-|processName
-+---------------------------------------------------+*/
-function processYear(year)
-{
-    yearExtra = year;
-    console.log(yearExtra);
-}
-
-/*  
-+---------------------------------------------------+
-|processGeom
-+---------------------------------------------------+*/
-function processGeom(geom)
-{
-    geomExtra = geom;
-    console.log(geomExtra);
-}
-
-/*  
-+---------------------------------------------------+
 |function JsonEmpty
 +---------------------------------------------------+*/
 
@@ -143,11 +92,11 @@ function isEmptyObject(obj) {
 /*  
 +---------------------------------------------------+
 |HomePage - Index of Pages
-+---------------------------------------------------+*/
++---------------------------------------------------+
 router.get('/', function(req, res, next) {
   res.render('index', {title: 'Documentação do Desenvolvedor Pauliceia 2.0' });
 
-});
+});*/
 
 /*  
 +---------------------------------------------------+
@@ -720,6 +669,7 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
                           processYear("");
                           processGeom("");
                       } */
+
                       results.push({alert: "Point not found", msg:{alertMsg: "System did not find " + textpoint+", "+number+", "+year, help: "Make sure the search is spelled correctly. (street, number, year)"}});
                     } else {
                       results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});

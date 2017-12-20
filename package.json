@@ -1,6 +1,6 @@
 {
-  "name": "node-postgres-todo",
-  "version": "0.0.0",
+  "name": "Pauliceia-GeocodingAPI",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "supervisor ./bin/www",
@@ -19,7 +19,7 @@
     "morgan": "~1.7.0",
     "pg": "^6.1.0",
     "request": "^2.83.0",
-    "request-promise": "^4.2.1",
+    "request-promise": "^4.2.2",
     "serve-favicon": "~2.3.0",
     "supertest": "^3.0.0"
   },
