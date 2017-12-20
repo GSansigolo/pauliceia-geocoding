@@ -12,7 +12,7 @@
   var GeoJSON = require('geojson');
   var postgeo = require("postgeo");
   var js2xmlparser = require("js2xmlparser");
-  var Search = require('../models/searchPoint');
+  var Search = require('../controllers/searchPoint');
   var webServiceAdress = "http://localhost:3000";
   const request = require('request');
   var yearExtra;
