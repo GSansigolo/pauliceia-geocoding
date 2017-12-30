@@ -16,7 +16,7 @@ A transição de aplicações locais para aplicações web promoveu uma evoluç�
 
 ## Prerequisitos
 
-```
+```javascript
 PostgreSQL 9.5.8
 PostGIS 2.3
 NodeJS 4.2.6
@@ -25,7 +25,7 @@ NodeJS 4.2.6
 
 ## Instalação
 
-```
+```javascript
 npm install -g express-generator@4.13.4
 npm install supervisor@0.11.0 -g
 npm install pg@6.1.0 --save
