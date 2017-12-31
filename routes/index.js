@@ -633,13 +633,48 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
                     console.log(err);
                     return res.status(500).json({success: false, data: err});
                   }
-                  
-                  //Build SQL Query
-                  const SQL_Query_Geoocode = "SELECT geometry , nf, nl, ($3) AS num FROM (SELECT (SELECT ST_AsText(ST_Line_SubString(street, startfraction, endfraction)) as geometry FROM(SELECT(SELECT St_AsText(a.geom) FROM tb_street AS a WHERE a.name LIKE ($1)) AS street,(SELECT ST_LineLocatePoint(line, point) FROM(SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ($1)) AS line,	(SELECT(SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.first_year >= ($2) AND a.last_year >= ($2) LIMIT 1) AND b.name LIKE ($1)  ) As pt, (SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ($1)) As line) As foo)) AS point)AS foo) AS startfraction,(SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a.geom)) AS street FROM tb_street AS a WHERE a.name LIKE ($1)) AS line,	(SELECT (SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (SELECT st_astext(a.geom) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE a.number = (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.first_year >= ($2) AND a.last_year >= ($2) LIMIT 1) AND b.name LIKE ($1)  ) As pt, (SELECT ST_AsText(geom) FROM tb_street WHERE name LIKE ($1)  ) As line) As foo)) AS point) AS foo) AS endfraction) AS foo) AS geometry, (SELECT number_max FROM (SELECT (SELECT MIN(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number > ($3) AND a.first_year >= ($2) AND a.last_year >= ($2) LIMIT 1) as number_max) AS foo) As nf, (SELECT number_min FROM (SELECT (SELECT MAX(number) FROM tb_places AS a JOIN tb_street AS b ON a.id_street = b.id WHERE b.name LIKE ($1) AND a.number < ($3) AND a.first_year >= ($2) AND a.last_year >= ($2) LIMIT 1) as number_min) AS foo) AS nl) As foo;";
-                  
-                  //SQL Query > Select Data
-                  const query = client.query(SQL_Query_Geoocode, ['%'+textpoint+'%', year, number]);
-                  
+
+                  /*--------------------------------------------------+
+                  | Build Geocode SQL Query                           |
+                  +--------------------------------------------------*/
+
+                    //SQL tables
+                    const table_street = "tb_street";
+                    const table_places = "tb_places";
+
+                    //SQL columns
+                    const column_geom = "geom";
+                    const column_name = "name";
+                    const column_fk_id_street = "id_street";
+                    const column_number = "number";
+                    const column_first_year = "first_year";
+                    const column_last_year = "last_year";
+                    const column_id_street = "id";
+
+                    //SQL Selects geometry
+                    const SQL_query_geometry_street = "(SELECT(SELECT St_AsText(a."+column_geom+") FROM "+table_street+" AS a WHERE a."+column_name+" LIKE ($1)) AS street";
+                    const SQL_query_geometry_startfraction = "(SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a."+column_geom+")) AS street FROM "+table_street+" AS a WHERE a."+column_name+" LIKE ($1)) AS line, (SELECT(SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (SELECT st_astext(a."+column_geom+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE a."+column_number+" = (SELECT MIN("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" > ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) AND b."+column_name+" LIKE ($1)  ) As pt, (SELECT ST_AsText("+column_geom+") FROM "+table_street+" WHERE "+column_name+" LIKE ($1)) As line) As foo)) AS point)AS foo) AS startfraction";
+                    const SQL_query_geometry_endfraction = "(SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a."+column_geom+")) AS street FROM "+table_street+" AS a WHERE a."+column_name+" LIKE ($1)) AS line, (SELECT (SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (SELECT st_astext(a."+column_geom+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE a."+column_number+" = (SELECT MAX("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" < ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) AND b."+column_name+" LIKE ($1)) As pt, (SELECT ST_AsText("+column_geom+") FROM "+table_street+" WHERE "+column_name+" LIKE ($1)) As line) As foo)) AS point) AS foo) AS endfraction";
+                    
+                    //SQL Query geometry
+                    const SQL_query_geometry = "(SELECT(SELECT ST_AsText(ST_Line_SubString(street, startfraction, endfraction)) as geometry FROM "+SQL_query_geometry_street+", "+SQL_query_geometry_startfraction+", "+SQL_query_geometry_endfraction+") AS foo) AS geometry";
+                    
+                    //SQL Query nf
+                    const SQL_query_nf = "(SELECT "+column_number+"_max FROM (SELECT (SELECT MIN("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" > ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) as "+column_number+"_max) AS foo) As nf";
+                    
+                    //SQL Query nl
+                    const SQL_query_nl = "(SELECT "+column_number+"_min FROM (SELECT (SELECT MAX("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" < ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) as "+column_number+"_min) AS foo) AS nl)";
+                    
+                  /*--------------------------------------------------+
+                  | Geocode SQL Query                                 |
+                  +--------------------------------------------------*/
+                    const SQL_Query_Geocode = "SELECT geometry, nf, nl, ($3) AS num FROM "+ SQL_query_geometry +", "+SQL_query_nf+", "+SQL_query_nl+" As foo;";
+
+                  /*--------------------------------------------------+
+                  | SQL Query > Select Data                           |
+                  +--------------------------------------------------*/
+                  const query = client.query(SQL_Query_Geocode, ['%'+textpoint+'%', year, number]);
+
                   //Push the SQL Query result 
                   query.on('row', (row) => {
                     if (!row.geometry || !row.nf || !row.num || !row.nl) {
