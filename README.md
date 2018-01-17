@@ -45,5 +45,6 @@ npm install cors
 npm install mocha --save-dev
 npm install mocha chai supertest --save
 npm install js-string-escape
+npm install apidoc --save-dev
 ```
 

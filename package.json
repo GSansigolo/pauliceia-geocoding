@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "supervisor ./bin/www",
-    "test": "mocha test"
+    "test": "mocha test",
+    "apidoc": "apidoc -i routes/doc -o public/apidoc"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -28,6 +29,7 @@
     "supertest": "^3.0.0"
   },
   "devDependencies": {
+    "apidoc": "^0.17.6",
     "mocha": "^3.5.3"
   }
 }
