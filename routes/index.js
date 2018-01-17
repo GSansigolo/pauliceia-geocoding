@@ -89,11 +89,12 @@ function isEmptyObject(obj) {
 
 /*--------------------------------------------------+
 |Index                                              |
-+---------------------------------------------------+
++--------------------------------------------------/
 router.get('/', function(req, res, next) {
-  res.render('index', {title: 'Documentação do Desenvolvedor Pauliceia 2.0' });
-
+  res.render('/public/apidocs/index.html', {});
 });
+
+*/
 
 /*---------------------------------------------------+
 |getAllStreets - GeoJson                             |
