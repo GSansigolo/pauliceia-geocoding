@@ -13,10 +13,11 @@
   var GeoJSON = require('geojson');
   var postgeo = require("postgeo");
   var js2xmlparser = require("js2xmlparser");
+  var path = require('path');
   var Search = require('../controllers/searchPoint');
   var webServiceAddress = "http://localhost:3000";
   const request = require('request');
-
+  
 
 /*--------------------------------------------------+
 | Connection                                        |
@@ -89,12 +90,10 @@ function isEmptyObject(obj) {
 
 /*--------------------------------------------------+
 |Index                                              |
-+--------------------------------------------------/
++--------------------------------------------------
 router.get('/', function(req, res, next) {
-  res.render('/public/apidocs/index.html', {});
-});
-
-*/
+  res.sendFile('../public/apidocs/index.html');
+});*/
 
 /*---------------------------------------------------+
 |getAllStreets - GeoJson                             |
