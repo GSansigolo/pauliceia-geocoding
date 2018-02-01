@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/listQuickSearch listQuickSearch
+ * @api {get} /api/geocoding/listQuickSearch listQuickSearch
  * @apiGroup Functions
  *
  * @apiSuccessExample {json} Sucess

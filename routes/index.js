@@ -13,11 +13,10 @@
   var GeoJSON = require('geojson');
   var postgeo = require("postgeo");
   var js2xmlparser = require("js2xmlparser");
-  var path = require('path');
   var Search = require('../controllers/searchPoint');
-  var webServiceAddress = "http://localhost:3000";
+  var webServiceAddress = process.env.PORT ? "http://localhost:"+process.env.PORT : "http://localhost:3000";
   const request = require('request');
-  
+
 
 /*--------------------------------------------------+
 | Connection                                        |
@@ -90,15 +89,17 @@ function isEmptyObject(obj) {
 
 /*--------------------------------------------------+
 |Index                                              |
-+--------------------------------------------------
++--------------------------------------------------/
 router.get('/', function(req, res, next) {
-  res.sendFile('../public/apidocs/index.html');
-});*/
+  res.render('/public/apidocs/index.html', {});
+});
+
+*/
 
 /*---------------------------------------------------+
 |getAllStreets - GeoJson                             |
 +---------------------------------------------------*/
-router.get('/api/street/all/geojson', (req, res, next) => {
+router.get('/street/all/geojson', (req, res, next) => {
 
   const results = [];
 
@@ -131,7 +132,7 @@ router.get('/api/street/all/geojson', (req, res, next) => {
 /*--------------------------------------------------+
 |getAllStreets - Json
 +--------------------------------------------------*/
-router.get('/api/street/all/json', (req, res, next) => {
+router.get('/street/all/json', (req, res, next) => {
 
  const results = [];
  const head = [];
@@ -167,7 +168,7 @@ router.get('/api/street/all/json', (req, res, next) => {
 /*--------------------------------------------------+
 |getAllStreets - Xml
 +--------------------------------------------------*/
-router.get('/api/street/all/xml', (req, res, next) => {
+router.get('/street/all/xml', (req, res, next) => {
 
  const results = [];
 
@@ -199,7 +200,7 @@ router.get('/api/street/all/xml', (req, res, next) => {
 /*--------------------------------------------------+
 |getAllPlaces - GeoJson
 +---------------------------------------------------*/
-router.get('/api/places/all/geojson', (req, res, next) => {
+router.get('/places/all/geojson', (req, res, next) => {
 
  const results = [];
 
@@ -232,7 +233,7 @@ router.get('/api/places/all/geojson', (req, res, next) => {
 /*---------------------------------------------------+
 |getAllPlaces - Json
 +---------------------------------------------------*/
-router.get('/api/places/all/json', (req, res, next) => {
+router.get('/places/all/json', (req, res, next) => {
 
  const results = [];
  const head = [];
@@ -268,7 +269,7 @@ router.get('/api/places/all/json', (req, res, next) => {
 /*--------------------------------------------------+
 |getAllPlaces - Xml
 +--------------------------------------------------*/
-router.get('/api/places/all/xml', (req, res, next) => {
+router.get('/places/all/xml', (req, res, next) => {
 
  const results = [];
  const head = [];
@@ -307,7 +308,7 @@ router.get('/api/places/all/xml', (req, res, next) => {
 /*--------------------------------------------------+
 |getSingleStreet - Json
 +---------------------------------------------------*/
-router.get('/api/street/:street_id/json', (req, res, next) => {
+router.get('/street/:street_id/json', (req, res, next) => {
 
   const results = [];
   const head = [];
@@ -348,7 +349,7 @@ router.get('/api/street/:street_id/json', (req, res, next) => {
 /*---------------------------------------------------+
 |getSingleStreet - GeoJson
 +----------------------------------------------------*/
-router.get('/api/street/:street_id/geojson', (req, res, next) => {
+router.get('/street/:street_id/geojson', (req, res, next) => {
 
   const results = [];
   const id = req.params.street_id;
@@ -383,7 +384,7 @@ router.get('/api/street/:street_id/geojson', (req, res, next) => {
 /*---------------------------------------------------+
 |getSingleStreet - Xml
 +---------------------------------------------------*/
-router.get('/api/street/:street_id/xml', (req, res, next) => {
+router.get('/street/:street_id/xml', (req, res, next) => {
 
   const results = [];
   const head = [];
@@ -422,7 +423,7 @@ router.get('/api/street/:street_id/xml', (req, res, next) => {
 /*--------------------------------------------------+
 |getSinglePlace - Json
 +---------------------------------------------------*/
-router.get('/api/places/:street_id/json', (req, res, next) => {
+router.get('/places/:street_id/json', (req, res, next) => {
   
   const results = [];
   const head = [];
@@ -460,7 +461,7 @@ router.get('/api/places/:street_id/json', (req, res, next) => {
 /*--------------------------------------------------+
 |getSinglePlace- GeoJson
 +---------------------------------------------------*/
-router.get('/api/places/:street_id/geojson', (req, res, next) => {
+router.get('/places/:street_id/geojson', (req, res, next) => {
   
   const results = [];
   const id = req.params.street_id;
@@ -494,7 +495,7 @@ router.get('/api/places/:street_id/geojson', (req, res, next) => {
 /*--------------------------------------------------+
 |getSinglePlace - Xml
 +---------------------------------------------------*/
-router.get('/api/places/:street_id/xml', (req, res, next) => {
+router.get('/places/:street_id/xml', (req, res, next) => {
   
   const results = [];
   const head = [];
@@ -533,7 +534,7 @@ router.get('/api/places/:street_id/xml', (req, res, next) => {
 /*--------------------------------------------------+
 | List Quick Search Json                            |
 +--------------------------------------------------*/
-router.get('/api/listQuickSearch', (req, res, next) => {
+router.get('/listQuickSearch', (req, res, next) => {
   
   //Results Variable
   const results = [];
@@ -573,7 +574,7 @@ router.get('/api/listQuickSearch', (req, res, next) => {
 /*--------------------------------------------------+
 | Geolocation Json                                  |
 +--------------------------------------------------*/
-router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) => {    
+router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {    
   
   //Results Variables
   const results = [];
@@ -707,7 +708,7 @@ router.get('/api/geolocation/:textpoint,:number,:year/json', (req, res, next) =>
 /*--------------------------------------------------+
 | Multiple Geolocation Json                         |
 +--------------------------------------------------*/
-router.get('/api/multiplegeolocation/:jsonquery/json', (req, res, next) => {
+router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 
   //Results Variables
   const results = [];
@@ -730,7 +731,7 @@ router.get('/api/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   
   //Geolocate all Address
   for ( var j = 0; j < sizeJson ; j++ ) {
-    url = webServiceAddress + '/api/geolocation/' + jsonObject[j][content] +"/json"
+    url = webServiceAddress + '/geolocation/' + jsonObject[j][content] +"/json"
     urlList.push(url);
     textList.push(jsonObject[j][content]);
   }
@@ -764,5 +765,5 @@ router.get('/api/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 /*---------------------------------------------------+
 | Console Log                                        |
 +---------------------------------------------------*/
-console.log('Listening on port 3000.');
+console.log(process.env.PORT ? 'Listening on port '+process.env.PORT : 'Listening on port 3000');
 module.exports = router;

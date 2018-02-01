@@ -17,13 +17,13 @@ A transição de aplicações locais para aplicações web promoveu uma evoluç�
 ## Prerequisitos
 
 ```
-PostgreSQL 9.5.8
-PostGIS 2.3
-NodeJS 4.2.6
+PostgreSQL >= 9.5.8
+PostGIS >= 2.3
+NodeJS >= 4.2.6
 
 ```
 
-## Instalação
+## Instalação de plugins/biblioteca
 
 ```
 npm install -g express-generator@4.13.4
@@ -47,4 +47,22 @@ npm install mocha chai supertest --save
 npm install js-string-escape
 npm install apidoc --save-dev
 ```
+
+## Executando a API 
+
+```
+git clone https://github.com/Pauliceia/GeocodingAPI.git
+cd GeocodingAPI
+
+npm install -g express-generator@4.13.4
+npm install supervisor@0.11.0 -g
+npm install
+
+psql ...
+```
+
+## Executando API com Docker completo
+link ...
+
+
 

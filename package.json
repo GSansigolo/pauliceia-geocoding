@@ -26,10 +26,10 @@
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "serve-favicon": "^2.3.2",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "apidoc": "^0.17.6"
   },
   "devDependencies": {
-    "apidoc": "^0.17.6",
     "mocha": "^3.5.3"
   }
 }
