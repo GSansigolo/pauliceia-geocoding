@@ -557,7 +557,8 @@ router.get('/listQuickSearch', (req, res, next) => {
 
     //Push Results
     query.on('row', (row) => {
-      results.push(row.name +', '+ row.number+', '+ row.year);
+      //results.push(row.name +', '+ row.number+', '+ row.year);
+      results.push({name: row.name, number: row.number, year: row.year});
     });
 
     //After all data is returned, close connection and return results
