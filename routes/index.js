@@ -545,7 +545,7 @@ router.get('/listQuickSearch', (req, res, next) => {
   
   //Results Variable
   const results = [];
-  
+
   //Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     
@@ -572,8 +572,8 @@ router.get('/listQuickSearch', (req, res, next) => {
     query.on('end', () => {
       done();
 
-    //Resuts
-    return res.json(results);
+     //Resuts
+     return res.json(results);
 
    });
   });
