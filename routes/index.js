@@ -538,6 +538,7 @@ router.get('/places/:street_id/xml', (req, res, next) => {
   });
 });
 
+
 /*--------------------------------------------------+
 | List Quick Search Json                            |
 +--------------------------------------------------*/
@@ -686,10 +687,71 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
                   //Push the SQL Query result 
                   query.on('row', (row) => {
+
+                    /*--------------------------------------------------+
+                    | Extrapolation Check                               |
+                    +--------------------------------------------------*/
                     if (!row.geometry || !row.nf || !row.num || !row.nl) {
-                      results.push({alert: "Point not found", msg:{alertMsg: "System did not find " + textpoint+", "+number+", "+year, help: "Make sure the search is spelled correctly. (street, number, year)"}});
+
+                    /*--------------------------------------------------+
+                    | If The Geom can't be found                        |
+                    +--------------------------------------------------*/
+                                          
+                      //build url of the call
+                      url = webServiceAddress + '/api/geocoding/listQuickSearch'
+
+                      //request to get the 
+                      request(url, function (error, response, body) {
+                        if (!error) {
+
+                          //request body
+                          var bodyjson = JSON.parse(body);
+
+                          //request body filtered
+                          var filteredArray = bodyjson.filter(el=>el.name == textpoint);
+
+                          //request body filtered size
+                          const sizeJson = Object.keys(filteredArray).length;
+
+                          //check if the size is 0 or bigger
+                          if (sizeJson-1 == 0){
+                            //if the size is 0
+
+                            //build the json
+                            const jsonAddressStreet = [{address: filteredArray[0].name +", "+filteredArray[0].number+", "+filteredArray[0].year}]; 
+
+                            //build the next call with the json
+                            url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(jsonAddressStreet)+'/json'
+                            
+                            console.log(url)
+
+                          }else {
+                            //if the size is bigget
+
+                            //for to run all the filtered json  
+                            for(var j = 0; j >= (sizeJson-1) ; j++ ){
+                               
+                              //build the json for the next call
+                               console.log({adress: filteredArray[j].name +", "+filteredArray[j].number+", "+filteredArray[j].year});   
+
+                               //results.push({adress: filteredArray[j].name +", "+filteredArray[j].number+", "+filteredArray[j].year});
+                               //results.push({alert: "Point not found", msg:{alertMsg: "System did not find " + textpoint+", "+number+", "+year, help: "Make sure the search is spelled correctly. (street, number, year)"}});
+                      
+                            }
+                          }
+                        }
+                      }); 
+
+                      results.push({alert: "Point not found", data:{}});
+                      
                     } else {
+
+                    /*--------------------------------------------------+
+                    | If The Geom was found                              |
+                    +--------------------------------------------------*/
+
                       results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
+
                     }
                   });
 
