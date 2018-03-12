@@ -7,7 +7,7 @@
  * @apiParam {number} year Year of the searched address
  * 
 * @apiParamExample {String} Request-Example: 
- *      { "rua do seminario, 10, 1908" }
+ *      { "rua quinze de novembro, 40, 1900" }
  * 
  * @apiSuccessExample {json} Sucess
  *    [
@@ -15,8 +15,8 @@
  *    "type: 'GET'",
  *      [
  *          {
- *          "name": "Mignon Theatre",
- *            "geom": "POINT(-46.635331 -23.54447)"
+ *          "name": "Point Geolocated",
+ *            "geom": "POINT(-46.634276069248784 -23.54643605378835)"
  *            }
  *      ]
  *    ]
