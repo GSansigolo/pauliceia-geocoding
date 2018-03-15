@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/geocoding/listQuickSearch listQuickSearch
+ * @api {get} /api/geocoding/placesDataset Places Dataset
  * @apiGroup Functions
  *
  * @apiSuccessExample {json} Sucess

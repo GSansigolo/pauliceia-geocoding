@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/geocoding/multiplegeolocation/:jsonquery/json multiGeolocation
+ * @api {get} /api/geocoding/multiplegeolocation/:jsonquery/json Multi Geolocation
  * @apiGroup Functions
  * 
  * @apiParam {json} jsonquery Json with the list of address

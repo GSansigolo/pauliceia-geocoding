@@ -6,8 +6,8 @@
  * @apiParam {Number} number Number of the address
  * @apiParam {number} year Year of the searched address
  * 
-* @apiParamExample {String} Request-Example: 
- *      { "rua quinze de novembro, 40, 1900" }
+ * @apiParamExample {String} Request-Example: 
+ *      'rua quinze de novembro, 40, 1900'
  * 
  * @apiSuccessExample {json} Sucess
  *    [
@@ -21,7 +21,7 @@
  *      ]
  *    ]
  * 
- * @apiErrorExample {json} Point not found
+ * @apiErrorExample {json} Error Example
  *        [
  *        "created_at: 16:31:06 17/01/2018",
  *        "type: 'GET'",

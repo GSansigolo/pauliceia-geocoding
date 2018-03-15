@@ -104,9 +104,10 @@ router.get('/', function(req, res, next) {
 */
 
 /*-----------------------------------------------+
-| List Quick Search Json                            |
+| places Dataset Json                            |
 +--------------------------------------------------*/
-router.get('/listQuickSearch', (req, res, next) => {
+
+router.get('/placesdataset', (req, res, next) => {
   
   //Results Variable
   const results = [];
@@ -259,7 +260,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     +--------------------------------------------------*/
                     
                       //build url of the call
-                      url = webServiceAddress + '/api/geocoding/listQuickSearch'
+                      url = webServiceAddress + '/api/geocoding/placesdataset'
  
                        //request to get the street name
                        request(url, function (error, response, body) {
@@ -323,6 +324,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
                     //Results
                     return res.json(head);
+                    
                     });
                 });
             } else {
