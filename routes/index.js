@@ -104,6 +104,46 @@ router.get('/', function(req, res, next) {
 */
 
 /*-----------------------------------------------+
+| places Json                                    |
++-----------------------------------------------*/
+router.get('/places', (req, res, next) => {
+  
+  //Results Variable
+  const results = [];
+
+  //Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    
+    //Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+
+    //Build the SQL Query
+    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+
+    //Execute SQL Query
+    const query = client.query(SQL_Query_Select_List);
+
+    //Push Results
+    query.on('row', (row) => {
+       results.push(row.name +', '+ row.number+', '+ row.year);
+    });
+
+    //After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+     //Resuts
+     return res.json(results);
+
+   });
+  });
+});
+
+/*-----------------------------------------------+
 | places Dataset Json                            |
 +--------------------------------------------------*/
 
@@ -259,6 +299,8 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     | If The Geom wasn't found                          |
                     +--------------------------------------------------*/
                     
+                      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                      
                       //build url of the call
                       url = webServiceAddress + '/api/geocoding/placesdataset'
  
@@ -298,6 +340,8 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                           }
                        });
 
+                       //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                       
                        results.push({alert: "Point not found", data: Extrapolation});
 
                     } else {
