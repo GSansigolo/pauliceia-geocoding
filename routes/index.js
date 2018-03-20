@@ -24,9 +24,9 @@
   const pg = require('pg');
 
   const db_user = process.env.DATABASE_USER || "postgres";
-  const db_pass = process.env.DATABASE_PASS || "teste";
+  const db_pass = process.env.DATABASE_PASS || "postgres";
   const db_host = process.env.DATABASE_HOST || "localhost";
-  const db_name = process.env.DATABASE_NAME || "db_pauliceia";
+  const db_name = process.env.DATABASE_NAME || "pauliceia-geocoding";
 
   const connectionString = {
     host: db_host,
@@ -153,6 +153,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
   //Results Variables
   const results = [];
   const head = [];
+  var waitDataExtrapolation;
   const Extrapolation = [];
 
   //Entering Variables
@@ -261,44 +262,46 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     
                       //build url of the call
                       url = webServiceAddress + '/api/geocoding/placesdataset'
+
+                      //request to get the street name
+                      waitDataExtrapolation = new Promise((resolve, reject) => {
+                        
+                        request(url, function (error, response, body) {
+                          if (!error) {
  
-                       //request to get the street name
-                       request(url, function (error, response, body) {
-                         if (!error) {
+                            //request body
+                            var bodyjson = JSON.parse(body);
+
+                            //request body filtered
+                            var filteredArray = bodyjson.filter(el=>el.name == textpoint);
+
+                            //request body filtered size
+                            const sizeJson = Object.keys(filteredArray).length;
+
+                            //build the json
+                            const jsonAddressStreet = [{address: filteredArray[0].name +", "+filteredArray[0].number+", "+filteredArray[0].year}]; 
  
-                           //request body
-                           var bodyjson = JSON.parse(body);
- 
-                           //request body filtered
-                           var filteredArray = bodyjson.filter(el=>el.name == textpoint);
- 
-                           //request body filtered size
-                           const sizeJson = Object.keys(filteredArray).length;
- 
-                           //build the json
-                           const jsonAddressStreet = [{address: filteredArray[0].name +", "+filteredArray[0].number+", "+filteredArray[0].year}]; 
- 
-                             //build the next call with the json
-                             url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(jsonAddressStreet)+'/json'
+                            //build the next call with the json
+                            url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(jsonAddressStreet)+'/json'
                              
-                             //request to get all places of the street
-                             request(url, function (error, response, body) {
-                               if (!error) {
+                            //request to get all places of the street
+                            request(url, function (error, response, body) {
+                              if (!error) {
 
-                                 bodyjson = JSON.parse(body);
-                                 
-                                 
-                                 Extrapolation.push({address: bodyjson[2][0].address, geom: bodyjson[2][0].geom});
+                                bodyjson = JSON.parse(body);
+                                
+                                Extrapolation.push({address: bodyjson[2][0].address, geom: bodyjson[2][0].geom});
 
-                                 console.log("-----------------------------------------------------------");
-                                 console.log(JSON.stringify(Extrapolation));
-                                 console.log("-----------------------------------------------------------");
-                               }
-                             }); 
+                                resolve(Extrapolation)
+                              }
+                            })
+              
                           }
-                       });
+                       })
 
-                       results.push({alert: "Point not found", data: Extrapolation});
+                      })
+
+                      results.push({alert: "Point not found", data: Extrapolation});
 
                     } else {
 
@@ -320,10 +323,10 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     head.push("type: 'GET'");
 
                     //Push Head
-                    head.push(results);
-
-                    //Results
-                    return res.json(head);
+                    waitDataExtrapolation.then(() => {
+                      head.push(results);
+                      return res.json(head);
+                    })
                     
                     });
                 });
