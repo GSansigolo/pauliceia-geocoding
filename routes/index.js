@@ -24,9 +24,9 @@
   const pg = require('pg');
 
   const db_user = process.env.DATABASE_USER || "postgres";
-  const db_pass = process.env.DATABASE_PASS || "postgres";
+  const db_pass = process.env.DATABASE_PASS || "teste";
   const db_host = process.env.DATABASE_HOST || "localhost";
-  const db_name = process.env.DATABASE_NAME || "pauliceia-geocoding";
+  const db_name = process.env.DATABASE_NAME || "db_pauliceia";
 
   const connectionString = {
     host: db_host,
@@ -195,6 +195,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
   const head = [];
   var waitDataExtrapolation;
   const Extrapolation = [];
+  const urlList = [];
 
   //Entering Variables
   const textpoint = req.params.textpoint;
@@ -300,8 +301,6 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     | If The Geom wasn't found                          |
                     +--------------------------------------------------*/
                     
-                      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                      
                       //build url of the call
                       url = webServiceAddress + '/api/geocoding/placesdataset'
 
@@ -319,33 +318,64 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
                             //request body filtered size
                             const sizeJson = Object.keys(filteredArray).length;
+                            
+                            console.log(sizeJson);
 
-                            //build the json
-                            const jsonAddressStreet = [{address: filteredArray[0].name +", "+filteredArray[0].number+", "+filteredArray[0].year}]; 
- 
-                            //build the next call with the json
-                            url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(jsonAddressStreet)+'/json'
-                             
-                            //request to get all places of the street
-                            request(url, function (error, response, body) {
-                              if (!error) {
+                            //if sizeJson == 1
+                            if (sizeJson == 1){
 
-                                bodyjson = JSON.parse(body);
-                                
-                                Extrapolation.push({address: bodyjson[2][0].address, geom: bodyjson[2][0].geom});
+                              //build the json
+                              const jsonAddressStreet = [{address: filteredArray[0].name +", "+filteredArray[0].number+", "+filteredArray[0].year}]; 
+  
+                              //build the next call with the json
+                              url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(jsonAddressStreet)+'/json'
+                              
+                              //request to get all places of the street
+                              request(url, function (error, response, body) {
+                                if (!error) {
 
-                                resolve(Extrapolation)
+                                  bodyjson = JSON.parse(body);
+                                  
+                                  Extrapolation.push({address: bodyjson[2][0].address, geom: bodyjson[2][0].geom});
+
+                                  resolve(Extrapolation)
+                                }
+                              })
+
+                            } else {
+
+                              for (var j = 0; j < sizeJson-1 ; j++ ) {
+                              
+                                //build the json
+                                const jsonAddressStreet = {address: filteredArray[j].name +", "+filteredArray[j].number+", "+filteredArray[j].year}; 
+    
+                                urlList.push(jsonAddressStreet);
+                              
                               }
-                            })
-              
-                          }
+
+                              url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(urlList)+'/json'
+
+                              //request to get all places of the street
+                              request(url, function (error, response, body) {
+                                if (!error) {
+
+                                  bodyjson = JSON.parse(body);
+                                  for (var j = 0; j < sizeJson-1 ; j++ ) {
+
+                                    Extrapolation.push({address: bodyjson[2][j].address, geom: bodyjson[2][j].geom});
+
+                                  }
+                                  resolve(Extrapolation)
+                                }
+                                }) 
+                              }
+                            }
                        })
 
                       })
                       
                       results.push({alert: "Point not found", data: Extrapolation});
                       
-                      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
                     } else {
 
