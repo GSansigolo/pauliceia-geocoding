@@ -342,17 +342,21 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                                 }
                               })
 
+                            //if sizeJson > 1
                             } else {
 
+                              //for to build urlList 
                               for (var j = 0; j < sizeJson-1 ; j++ ) {
                               
                                 //build the json
                                 const jsonAddressStreet = {address: filteredArray[j].name +", "+filteredArray[j].number+", "+filteredArray[j].year}; 
-    
+                                
+                                //append the json
                                 urlList.push(jsonAddressStreet);
                               
                               }
 
+                              //build the url
                               url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(urlList)+'/json'
 
                               //request to get all places of the street
@@ -360,11 +364,15 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                                 if (!error) {
 
                                   bodyjson = JSON.parse(body);
+
+                                  //for to get all the data
                                   for (var j = 0; j < sizeJson-1 ; j++ ) {
 
+                                    //append all the data from the request
                                     Extrapolation.push({address: bodyjson[2][j].address, geom: bodyjson[2][j].geom});
 
                                   }
+                                  //resolve
                                   resolve(Extrapolation)
                                 }
                                 }) 
@@ -373,16 +381,17 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                        })
 
                       })
-                      
+
+                      //Result
                       results.push({alert: "Point not found", data: Extrapolation});
                       
-
                     } else {
 
                     /*--------------------------------------------------+
-                    | If The Geom was found                              |
+                    | If The Geom was found                             |
                     +--------------------------------------------------*/
 
+                      //Result
                       results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
 
                     }
