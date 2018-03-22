@@ -185,6 +185,50 @@ router.get('/placesdataset', (req, res, next) => {
   });
 });
 
+/*-----------------------------------------------+
+| Data places xml                            |
++--------------------------------------------------*/
+
+router.get('/placesdataset/xml', (req, res, next) => {
+  
+  //Results Variable
+  const results = [];
+  const results2 = [];
+
+  //Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    
+    //Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+
+    //Build the SQL Query
+    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+
+    //Execute SQL Query
+    const query = client.query(SQL_Query_Select_List);
+
+    //Push Results
+    query.on('row', (row) => {
+      //results.push(row.name +', '+ row.number+', '+ row.year);
+      results.push({name: row.name, number: row.number, year: row.year});
+    });
+
+    //After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+     //Resuts
+     const results2 = js2xmlparser.parse("data", results);
+     return res.end(results2);
+
+   });
+  });
+});
+
 /*--------------------------------------------------+
 | Geolocation Json                                  |
 +--------------------------------------------------*/
@@ -467,6 +511,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   for (i in urlList) {
     request(urlList[i], function (error, response, body) {
       if (!error) {
+
         var bodyjson = JSON.parse(body);
         results.push({address: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
       
@@ -481,7 +526,74 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
       
         //Results
         head.push(results);
+        
         return res.json(head);
+
+      }
+
+     } 
+      });  
+  }
+
+});
+
+/*
++---------------------------------------------------+
+|multiplegeolocation-geoJson
++---------------------------------------------------+*/
+router.get('/multiplegeolocation/:jsonquery/geojson', (req, res, next) => {
+  
+  //Results Variables
+  const results = [];
+  const results2 = [];
+  var urlList = [];
+  var textList = [];
+  var content = "";
+
+  //Entering Variables
+  var jsonObject = JSON.parse(req.params.jsonquery);
+  const sizeJson = Object.keys(jsonObject).length;
+  
+  //Count Variables
+  var k = 0;
+  const head = [];
+
+  //Read all the Json
+  for(index in jsonObject)
+      for(product in jsonObject[index])
+          content = (Object.keys(jsonObject[index]));
+         
+  
+  //Geolocate all Address
+  for (var j = 0; j < sizeJson ; j++ ) {
+    url = webServiceAddress + '/api/geocoding/geolocation/' + jsonObject[j][content] +"/json"
+    urlList.push(url);
+    textList.push(jsonObject[j][content]);
+  }
+
+
+  //Push all results
+  for (i in urlList) {
+    request(urlList[i], function (error, response, body) {
+      if (!error) {
+
+        var bodyjson = JSON.parse(body);
+        results.push({address: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
+      
+        //Count the id results
+       k=k+1;
+
+       if (k >= urlList.length){
+        
+        // Stream results back one row at a time
+        head.push("created_at: " + getDateTime());
+        head.push("type: 'GET'");
+      
+        //Results
+        const results2 = GeoJSON.parse(results, {'Point': 'geom'});
+
+        //console.log(results2);
+        return res.json(results2);
 
       }
 
