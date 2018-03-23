@@ -20,10 +20,11 @@
     "jade": "^1.11.0",
     "js-string-escape": "^1.0.1",
     "js2xmlparser": "^3.0.0",
+    "mocha": "^3.5.3",
     "morgan": "^1.9.0",
     "pg": "^6.1.0",
     "postgeo": "^0.1.2",
-    "request": "^2.83.0",
+    "request": "^2.85.0",
     "request-promise": "^4.2.2",
     "serve-favicon": "^2.4.5",
     "supertest": "^3.0.0"
