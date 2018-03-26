@@ -436,8 +436,10 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     +--------------------------------------------------*/
 
                       //Result
-                      results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
-
+                      waitDataExtrapolation = new Promise((resolve, reject) => {
+                        results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
+                        resolve()
+                      })
                     }
                   });
 
