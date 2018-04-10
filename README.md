@@ -21,9 +21,9 @@ NodeJS >= 4.2.6
 ## Instalação de plugins/biblioteca
 
 ```
-npm install -g express-generator@4.13.4
-npm install supervisor@0.11.0 -g
-npm install pg@6.1.0 --save
+npm install -g express-generator
+npm install supervisor
+npm install pg --save
 npm install geojson
 npm install postgeo
 npm install js2xmlparser
@@ -49,8 +49,8 @@ npm install apidoc --save-dev
 git clone https://github.com/Pauliceia/GeocodingAPI.git
 cd GeocodingAPI
 
-npm install -g express-generator@4.13.4
-npm install supervisor@0.11.0 -g
+npm install -g express-generator
+npm install supervisor -g
 npm install
 
 psql ...

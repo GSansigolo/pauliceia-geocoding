@@ -332,9 +332,13 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                   | SQL Query > Select Data                           |
                   +--------------------------------------------------*/
                   const query = client.query(SQL_Query_Geocode, ['%'+textpoint+'%', year, number]);
+                  
+                  console.log(query);
 
                   //Push the SQL Query result 
                   query.on('row', (row) => {
+
+                    console.log(row);
 
                     /*--------------------------------------------------+
                     | Extrapolation Check                               |
