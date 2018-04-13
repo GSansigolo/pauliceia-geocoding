@@ -16,7 +16,7 @@
   var Search = require('../controllers/searchPoint');
   var webServiceAddress = process.env.PORT ? "http://localhost:"+process.env.PORT : "http://localhost:3000";
   const request = require('request');
-
+  var assert = require('assert');
 
 /*--------------------------------------------------+
 | Connection                                        |
@@ -188,7 +188,6 @@ router.get('/placesdataset', (req, res, next) => {
 /*-----------------------------------------------+
 | Data places xml                            |
 +--------------------------------------------------*/
-
 router.get('/placesdataset/xml', (req, res, next) => {
   
   //Results Variable
@@ -240,7 +239,9 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
   var waitDataExtrapolation;
   const Extrapolation = [];
   const urlList = [];
-
+  var newGeom;
+  const jsonAddressStreet = [];
+  
   //Entering Variables
   const textpoint = req.params.textpoint;
   const year = req.params.year.replace(" ", "");;
@@ -312,16 +313,19 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     //SQL Selects geometry
                     const SQL_query_geometry_street = "(SELECT(SELECT St_AsText(a."+column_geom+") FROM "+table_street+" AS a WHERE a."+column_name+" LIKE ($1)) AS street";
                     const SQL_query_geometry_startfraction = "(SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a."+column_geom+")) AS street FROM "+table_street+" AS a WHERE a."+column_name+" LIKE ($1)) AS line, (SELECT(SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (SELECT st_astext(a."+column_geom+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE a."+column_number+" = (SELECT MIN("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" > ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) AND b."+column_name+" LIKE ($1)  ) As pt, (SELECT ST_AsText("+column_geom+") FROM "+table_street+" WHERE "+column_name+" LIKE ($1)) As line) As foo)) AS point)AS foo) AS startfraction";
-                    const SQL_query_geometry_endfraction = "(SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a."+column_geom+")) AS street FROM "+table_street+" AS a WHERE a."+column_name+" LIKE ($1)) AS line, (SELECT (SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (SELECT st_astext(a."+column_geom+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE a."+column_number+" = (SELECT MAX("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" < ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) AND b."+column_name+" LIKE ($1)) As pt, (SELECT ST_AsText("+column_geom+") FROM "+table_street+" WHERE "+column_name+" LIKE ($1)) As line) As foo)) AS point) AS foo) AS endfraction";
+                    const SQL_query_geometry_endfraction = "(SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a."+column_geom+")) AS street FROM "+table_street+" AS a WHERE a."+column_name+" LIKE ($1)) AS line, (SELECT (SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (SELECT st_astext(a."+column_geom+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE a."+column_number+" = (SELECT MAX("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" > ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) AND b."+column_name+" LIKE ($1)) As pt, (SELECT ST_AsText("+column_geom+") FROM "+table_street+" WHERE "+column_name+" LIKE ($1)) As line) As foo)) AS point) AS foo) AS endfraction";
                     
                     //SQL Query geometry
-                    const SQL_query_geometry = "(SELECT(SELECT ST_AsText(ST_Line_SubString(street, startfraction, endfraction)) as geometry FROM "+SQL_query_geometry_street+", "+SQL_query_geometry_startfraction+", "+SQL_query_geometry_endfraction+") AS foo) AS geometry";
-                    
+                     const SQL_query_geometry = "(SELECT(SELECT ST_AsText(ST_LineSubstring(street, startfraction, endfraction)) as geometry FROM "+SQL_query_geometry_street+", "+SQL_query_geometry_startfraction+", "+SQL_query_geometry_endfraction+") AS foo) AS geometry";
+                   
+                    //SQL Query geometry 2
+                    //const SQL_query_geometry = "(SELECT(SELECT ST_AsText(ST_LineSubstring(street, endfraction, startfraction)) as geometry FROM "+SQL_query_geometry_street+", "+SQL_query_geometry_startfraction+", "+SQL_query_geometry_endfraction+") AS foo) AS geometry";
+                     
                     //SQL Query nf
                     const SQL_query_nf = "(SELECT "+column_number+"_max FROM (SELECT (SELECT MIN("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" > ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) as "+column_number+"_max) AS foo) As nf";
                     
                     //SQL Query nl
-                    const SQL_query_nl = "(SELECT "+column_number+"_min FROM (SELECT (SELECT MAX("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" < ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) as "+column_number+"_min) AS foo) AS nl)";
+                    const SQL_query_nl = "(SELECT "+column_number+"_min FROM (SELECT (SELECT MAX("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" > ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) as "+column_number+"_min) AS foo) AS nl)";
                     
                   /*--------------------------------------------------+
                   | Geocode SQL Query                                 |
@@ -348,16 +352,16 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     /*--------------------------------------------------+
                     | If The Geom wasn't found                          |
                     +--------------------------------------------------*/
-                    
+                    /*
                       //build url of the call
                       url = webServiceAddress + '/api/geocoding/placesdataset'
-
+        
                       //request to get the street name
                       waitDataExtrapolation = new Promise((resolve, reject) => {
                         
                         request(url, function (error, response, body) {
                           if (!error) {
- 
+
                             //request body
                             var bodyjson = JSON.parse(body);
 
@@ -366,15 +370,13 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
                             //request body filtered size
                             const sizeJson = Object.keys(filteredArray).length;
-                            
-                            console.log(sizeJson);
-
+                        
                             //if sizeJson == 1
                             if (sizeJson == 1){
 
                               //build the json
-                              const jsonAddressStreet = [{address: filteredArray[0].name +", "+filteredArray[0].number+", "+filteredArray[0].year}]; 
-  
+                              jsonAddressStreet = [{address: filteredArray[0].name +", "+filteredArray[0].number+", "+filteredArray[0].year}]; 
+
                               //build the next call with the json
                               url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(jsonAddressStreet)+'/json'
                               
@@ -394,41 +396,33 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                             } else {
 
                               //for to build urlList 
-                              for (var j = 0; j < sizeJson-1 ; j++ ) {
-                              
+                              for (var j = 0; j < sizeJson ; j++ ) {
+
                                 //build the json
-                                const jsonAddressStreet = {address: filteredArray[j].name +", "+filteredArray[j].number+", "+filteredArray[j].year}; 
-                                
-                                //append the json
-                                urlList.push(jsonAddressStreet);
-                              
-                              }
+                                jsonAddressStreet = {address: filteredArray[j].name +", "+filteredArray[j].number+", "+filteredArray[j].year}; 
 
-                              //build the url
-                              url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(urlList)+'/json'
+                                url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(jsonAddressStreet )+'/json'
 
-                              //request to get all places of the street
-                              request(url, function (error, response, body) {
-                                if (!error) {
+                                request(url, function (error, response, body) {
+                                  if (!error) {
+  
+                                    bodyjson = JSON.parse(body);
 
-                                  bodyjson = JSON.parse(body);
-
-                                  //for to get all the data
-                                  for (var j = 0; j < sizeJson-1 ; j++ ) {
-
-                                    //append all the data from the request
                                     Extrapolation.push({address: bodyjson[2][j].address, geom: bodyjson[2][j].geom});
 
-                                  }
-                                  //resolve
-                                  resolve(Extrapolation)
+                                    console.log("----------------------------------------------------------------------------------")
+                                    console.log(bodyjson[2][j].address, bodyjson[2][j].geom)
+                                    console.log("----------------------------------------------------------------------------------")
+                                    }
+                                })
+
                                 }
-                                }) 
-                              }
+                               }
                             }
                        })
 
                       })
+                      */
 
                       //Result
                       results.push({alert: "Point not found", data: Extrapolation});
@@ -438,12 +432,13 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     /*--------------------------------------------------+
                     | If The Geom was found                             |
                     +--------------------------------------------------*/
+                      newGeom = row.geometry;
 
                       //Result
-                      waitDataExtrapolation = new Promise((resolve, reject) => {
-                        results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
-                        resolve()
-                      })
+                      //waitDataExtrapolation = new Promise((resolve, reject) => {
+                        results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(newGeom, row.nl, row.nf, row.num).point)+")"});
+                        //resolve()
+                      //})
                     }
                   });
 
@@ -456,10 +451,10 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     head.push("type: 'GET'");
 
                     //Push Head
-                    waitDataExtrapolation.then(() => {
+                    //waitDataExtrapolation.then(() => {
                       head.push(results);
                       return res.json(head);
-                    })
+                    //})
                     
                     });
                 });
@@ -477,6 +472,20 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
             }
       });
   }); 
+});
+
+/*--------------------------------------------------+
+| Geocode Extrapolation Json                                  |
++--------------------------------------------------*/
+router.get('/geolocation/:textpoint,:number,:year/json/extrapol', (req, res, next) => {
+
+  //Results Variables
+  const results = [];
+  const head = [];
+
+  
+
+  return res.json();
 });
 
 /*
