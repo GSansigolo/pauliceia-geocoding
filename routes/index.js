@@ -20,7 +20,29 @@
 
 /*--------------------------------------------------+
 | Connection                                        |
-+--------------------------------------------------*/
++--------------------------------------------------
+  const { Pool, Client } = require('pg')
+
+    // create a pool
+    const pool = new Pool({
+      user: "postgres",
+      host: "localhost",
+      database: "db_pauliceia",
+      password: "teste",
+      port:5432,
+    })
+
+    const client = new Client({
+      user: "postgres",
+      host: "localhost",
+      database: "db_pauliceia",
+      password: "teste",
+      port:5432,
+    })
+
+    client.connect()  */
+
+ //
   const pg = require('pg');
 
   const db_user = process.env.DATABASE_USER || "postgres";
@@ -96,17 +118,12 @@ function isEmptyObject(obj) {
 
 /*--------------------------------------------------+
 |Index                                              |
-+--------------------------------------------------/
-router.get('/', function(req, res, next) {
-  res.render('/public/apidocs/index.html', {});
-});
-
-*/
++--------------------------------------------------*/
 
 /*-----------------------------------------------+
-| places Json                                    |
+| Places List                                    |
 +-----------------------------------------------*/
-router.get('/places', (req, res, next) => {
+router.get('/placeslist', (req, res, next) => {
   
   //Results Variable
   const results = [];
@@ -144,10 +161,9 @@ router.get('/places', (req, res, next) => {
 });
 
 /*-----------------------------------------------+
-| places Dataset Json                            |
-+--------------------------------------------------*/
-
-router.get('/placesdataset', (req, res, next) => {
+| Places Dataset                                 |
++-----------------------------------------------*/
+router.get('/places', (req, res, next) => {
   
   //Results Variable
   const results = [];
@@ -163,7 +179,7 @@ router.get('/placesdataset', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year, ST_AsText(a.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -171,7 +187,7 @@ router.get('/placesdataset', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({name: row.name, number: row.number, year: row.year});
+      results.push({name: row.name, number: row.number, year: row.year, geom: row.geom});
     });
 
     //After all data is returned, close connection and return results
@@ -186,13 +202,12 @@ router.get('/placesdataset', (req, res, next) => {
 });
 
 /*-----------------------------------------------+
-| Data places xml                            |
-+--------------------------------------------------*/
-router.get('/placesdataset/xml', (req, res, next) => {
+| Street Dataset                                 |
++-----------------------------------------------*/
+router.get('/streets', (req, res, next) => {
   
   //Results Variable
   const results = [];
-  const results2 = [];
 
   //Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
@@ -205,7 +220,7 @@ router.get('/placesdataset/xml', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -213,7 +228,7 @@ router.get('/placesdataset/xml', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({name: row.name, number: row.number, year: row.year});
+      results.push({name: row.name, year: row.year});
     });
 
     //After all data is returned, close connection and return results
@@ -221,41 +236,67 @@ router.get('/placesdataset/xml', (req, res, next) => {
       done();
 
      //Resuts
-     const results2 = js2xmlparser.parse("data", results);
-     return res.end(results2);
+     return res.json(results);
+
+   });
+  });
+});
+
+/*-----------------------------------------------+
+| Years Dataset                                 |
++-----------------------------------------------*/
+router.get('/years', (req, res, next) => {
+  
+  //Results Variable
+  const results = [];
+
+  //Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    
+    //Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+
+    //Build the SQL Query
+    const SQL_Query_Select_List = "select a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 GROUP BY year order by year;";
+
+    //Execute SQL Query
+    const query = client.query(SQL_Query_Select_List);
+
+    //Push Results
+    query.on('row', (row) => {
+      //results.push(row.name +', '+ row.number+', '+ row.year);
+      results.push({year: row.year});
+    });
+
+    //After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+     //Resuts
+     return res.json(results);
 
    });
   });
 });
 
 /*--------------------------------------------------+
-| Geolocation Json                                  |
+| Geolocation                                       |
 +--------------------------------------------------*/
 router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {    
   
   //Results Variables
   const results = [];
   const head = [];
-  var waitDataExtrapolation;
-  const Extrapolation = [];
-  const urlList = [];
-  var newGeom;
-  const jsonAddressStreet = [];
   
   //Entering Variables
   const textpoint = req.params.textpoint;
   const year = req.params.year.replace(" ", "");;
   const number = req.params.number.replace(" ", "");
   
-  //Check of the entering variables
-  if (!number || !textpoint || !year || number == null || textpoint == null || year == null){
-    head.push("created_at: " + getDateTime());
-    head.push("type: 'GET'");
-    results.push({alert: ""});
-    head.push(results);
-    return res.json(head);
-  }
-
   //Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     
@@ -349,96 +390,18 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     +--------------------------------------------------*/
                     if (!row.geometry || !row.nf || !row.num || !row.nl) {
 
-                    /*--------------------------------------------------+
-                    | If The Geom wasn't found                          |
-                    +--------------------------------------------------*/
-                    /*
-                      //build url of the call
-                      url = webServiceAddress + '/api/geocoding/placesdataset'
-        
-                      //request to get the street name
-                      waitDataExtrapolation = new Promise((resolve, reject) => {
-                        
-                        request(url, function (error, response, body) {
-                          if (!error) {
-
-                            //request body
-                            var bodyjson = JSON.parse(body);
-
-                            //request body filtered
-                            var filteredArray = bodyjson.filter(el=>el.name == textpoint);
-
-                            //request body filtered size
-                            const sizeJson = Object.keys(filteredArray).length;
-                        
-                            //if sizeJson == 1
-                            if (sizeJson == 1){
-
-                              //build the json
-                              jsonAddressStreet = [{address: filteredArray[0].name +", "+filteredArray[0].number+", "+filteredArray[0].year}]; 
-
-                              //build the next call with the json
-                              url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(jsonAddressStreet)+'/json'
-                              
-                              //request to get all places of the street
-                              request(url, function (error, response, body) {
-                                if (!error) {
-
-                                  bodyjson = JSON.parse(body);
-                                  
-                                  Extrapolation.push({address: bodyjson[2][0].address, geom: bodyjson[2][0].geom});
-
-                                  resolve(Extrapolation)
-                                }
-                              })
-
-                            //if sizeJson > 1
-                            } else {
-
-                              //for to build urlList 
-                              for (var j = 0; j < sizeJson ; j++ ) {
-
-                                //build the json
-                                jsonAddressStreet = {address: filteredArray[j].name +", "+filteredArray[j].number+", "+filteredArray[j].year}; 
-
-                                url = webServiceAddress + '/api/geocoding/multiplegeolocation/'+JSON.stringify(jsonAddressStreet )+'/json'
-
-                                request(url, function (error, response, body) {
-                                  if (!error) {
-  
-                                    bodyjson = JSON.parse(body);
-
-                                    Extrapolation.push({address: bodyjson[2][j].address, geom: bodyjson[2][j].geom});
-
-                                    console.log("----------------------------------------------------------------------------------")
-                                    console.log(bodyjson[2][j].address, bodyjson[2][j].geom)
-                                    console.log("----------------------------------------------------------------------------------")
-                                    }
-                                })
-
-                                }
-                               }
-                            }
-                       })
-
-                      })
-                      */
-
                       //Result
-                      results.push({alert: "Point not found", data: Extrapolation});
+                      results.push({alert: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")", help: "Make sure the search is spelled correctly. (street, number, year)"});
                       
                     } else {
 
                     /*--------------------------------------------------+
                     | If The Geom was found                             |
                     +--------------------------------------------------*/
-                      newGeom = row.geometry;
 
                       //Result
-                      //waitDataExtrapolation = new Promise((resolve, reject) => {
-                        results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(newGeom, row.nl, row.nf, row.num).point)+")"});
-                        //resolve()
-                      //})
+                      results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
+
                     }
                   });
 
@@ -475,7 +438,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 });
 
 /*--------------------------------------------------+
-| Geocode Extrapolation Json                                  |
+| Geolocation Extrapol                              |
 +--------------------------------------------------*/
 router.get('/geolocation/:textpoint,:number,:year/json/extrapol', (req, res, next) => {
 
@@ -490,7 +453,7 @@ router.get('/geolocation/:textpoint,:number,:year/json/extrapol', (req, res, nex
 
 /*
 +---------------------------------------------------+
-|multiplegeolocation-Json
+| Multiple Geolocation                               |
 +---------------------------------------------------+*/
 router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   
@@ -552,70 +515,35 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 
 });
 
-/*
-+---------------------------------------------------+
-|multiplegeolocation-geoJson
-+---------------------------------------------------+*/
-router.get('/multiplegeolocation/:jsonquery/geojson', (req, res, next) => {
+/*--------------------------------------------------+
+| Street Location                                   |
++--------------------------------------------------*/
+router.get('/streetlocation/:textpoint,:year/json', (req, res, next) => {
+
+    //Results Variables
+    const results = [];
+    const head = [];
   
-  //Results Variables
-  const results = [];
-  const results2 = [];
-  var urlList = [];
-  var textList = [];
-  var content = "";
+    //Entering Variables
+    const textpoint = req.params.textpoint;
+    const year = req.params.year.replace(" ", "");
+    
+    return res.json();
+});
 
-  //Entering Variables
-  var jsonObject = JSON.parse(req.params.jsonquery);
-  const sizeJson = Object.keys(jsonObject).length;
+/*--------------------------------------------------+
+| Year Location                                     |
++--------------------------------------------------*/
+router.get('/yearlocation/:year/json', (req, res, next) => {
   
-  //Count Variables
-  var k = 0;
-  const head = [];
-
-  //Read all the Json
-  for(index in jsonObject)
-      for(product in jsonObject[index])
-          content = (Object.keys(jsonObject[index]));
-         
+    //Results Variables
+    const results = [];
+    const head = [];
   
-  //Geolocate all Address
-  for (var j = 0; j < sizeJson ; j++ ) {
-    url = webServiceAddress + '/api/geocoding/geolocation/' + jsonObject[j][content] +"/json"
-    urlList.push(url);
-    textList.push(jsonObject[j][content]);
-  }
-
-
-  //Push all results
-  for (i in urlList) {
-    request(urlList[i], function (error, response, body) {
-      if (!error) {
-
-        var bodyjson = JSON.parse(body);
-        results.push({address: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
-      
-        //Count the id results
-       k=k+1;
-
-       if (k >= urlList.length){
-        
-        // Stream results back one row at a time
-        head.push("created_at: " + getDateTime());
-        head.push("type: 'GET'");
-      
-        //Results
-        const results2 = GeoJSON.parse(results, {'Point': 'geom'});
-
-        //console.log(results2);
-        return res.json(results2);
-
-      }
-
-     } 
-      });  
-  }
-
+    //Entering Variables
+    const year = req.params.year.replace(" ", "");
+ 
+    return res.json();
 });
 
 /*---------------------------------------------------+
