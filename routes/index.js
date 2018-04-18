@@ -1,4 +1,3 @@
-
 /* ----------------------------------------------------------------------------+
 |                                                                              |
 |                 Pauliceia Geoocoding API - Gabriel Sansigolo                 |
@@ -8,8 +7,8 @@
 /*--------------------------------------------------+
 | Var                                               |
 +--------------------------------------------------*/
-	var express = require('express');
-	var router = express.Router();
+  var express = require('express');
+  var router = express.Router();
   var GeoJSON = require('geojson');
   var postgeo = require("postgeo");
   var js2xmlparser = require("js2xmlparser");
@@ -21,28 +20,28 @@
 /*--------------------------------------------------+
 | Connection                                        |
 +--------------------------------------------------
-  const { Pool, Client } = require('pg')
+const { Pool, Client } = require('pg')
 
-    // create a pool
-    const pool = new Pool({
-      user: "postgres",
-      host: "localhost",
-      database: "db_pauliceia",
-      password: "teste",
-      port:5432,
-    })
+  // create a pool
+  const pool = new Pool({
+    user: "postgres",
+    host: "localhost",
+    database: "db_pauliceia",
+    password: "teste",
+    port:5432,
+  })
 
-    const client = new Client({
-      user: "postgres",
-      host: "localhost",
-      database: "db_pauliceia",
-      password: "teste",
-      port:5432,
-    })
+  const client = new Client({
+    user: "postgres",
+    host: "localhost",
+    database: "db_pauliceia",
+    password: "teste",
+    port:5432,
+  })
 
-    client.connect()  */
+  client.connect()  */
 
- //
+//
   const pg = require('pg');
 
   const db_user = process.env.DATABASE_USER || "postgres";
@@ -59,13 +58,13 @@
   }
 
   const client = new pg.Client(connectionString);
-  
+
   client.connect();
-  
+
 /*--------------------------------------------------+
 | function getJsonUrl(url)                          |
 +--------------------------------------------------*/
-function getJsonUrl(url1) {
+  function getJsonUrl(url1) {
   request(url1, function (error, response, body) {
     if (!error) {
       var bodyjson = JSON.parse(body);
@@ -79,19 +78,19 @@ function getJsonUrl(url1) {
 | function getDateTime()                           |
 +-------------------------------------------------*/
 function getDateTime() {
-      var date = new Date();
-      var hour = date.getHours();
-      hour = (hour < 10 ? "0" : "") + hour;
-      var min  = date.getMinutes();
-      min = (min < 10 ? "0" : "") + min;
-      var sec  = date.getSeconds();
-      sec = (sec < 10 ? "0" : "") + sec;
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      month = (month < 10 ? "0" : "") + month;
-      var day  = date.getDate();
-      day = (day < 10 ? "0" : "") + day;
-      return  hour + ":" + min + ":" + sec+ " "+ day + "/" + month  + "/" + year;
+    var date = new Date();
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+    var min  = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+    var sec  = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" : "") + month;
+    var day  = date.getDate();
+    day = (day < 10 ? "0" : "") + day;
+    return  hour + ":" + min + ":" + sec+ " "+ day + "/" + month  + "/" + year;
 } 
 
 /*--------------------------------------------------+
@@ -124,7 +123,7 @@ function isEmptyObject(obj) {
 | Places List                                    |
 +-----------------------------------------------*/
 router.get('/placeslist', (req, res, next) => {
-  
+
   //Results Variable
   const results = [];
 
@@ -146,17 +145,17 @@ router.get('/placeslist', (req, res, next) => {
 
     //Push Results
     query.on('row', (row) => {
-       results.push(row.name +', '+ row.number+', '+ row.year);
+      results.push(row.name +', '+ row.number+', '+ row.year);
     });
 
     //After all data is returned, close connection and return results
     query.on('end', () => {
       done();
 
-     //Resuts
-     return res.json(results);
+    //Resuts
+    return res.json(results);
 
-   });
+  });
   });
 });
 
@@ -164,7 +163,7 @@ router.get('/placeslist', (req, res, next) => {
 | Places Dataset                                 |
 +-----------------------------------------------*/
 router.get('/places', (req, res, next) => {
-  
+
   //Results Variable
   const results = [];
 
@@ -194,10 +193,10 @@ router.get('/places', (req, res, next) => {
     query.on('end', () => {
       done();
 
-     //Resuts
-     return res.json(results);
+    //Resuts
+    return res.json(results);
 
-   });
+  });
   });
 });
 
@@ -205,7 +204,7 @@ router.get('/places', (req, res, next) => {
 | Street Dataset                                 |
 +-----------------------------------------------*/
 router.get('/streets', (req, res, next) => {
-  
+
   //Results Variable
   const results = [];
 
@@ -235,10 +234,10 @@ router.get('/streets', (req, res, next) => {
     query.on('end', () => {
       done();
 
-     //Resuts
-     return res.json(results);
+    //Resuts
+    return res.json(results);
 
-   });
+  });
   });
 });
 
@@ -246,7 +245,7 @@ router.get('/streets', (req, res, next) => {
 | Years Dataset                                 |
 +-----------------------------------------------*/
 router.get('/years', (req, res, next) => {
-  
+
   //Results Variable
   const results = [];
 
@@ -276,10 +275,10 @@ router.get('/years', (req, res, next) => {
     query.on('end', () => {
       done();
 
-     //Resuts
-     return res.json(results);
+    //Resuts
+    return res.json(results);
 
-   });
+  });
   });
 });
 
@@ -287,16 +286,16 @@ router.get('/years', (req, res, next) => {
 | Geolocation                                       |
 +--------------------------------------------------*/
 router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {    
-  
+
   //Results Variables
   const results = [];
   const head = [];
-  
+
   //Entering Variables
   const textpoint = req.params.textpoint;
   const year = req.params.year.replace(" ", "");;
   const number = req.params.number.replace(" ", "");
-  
+
   //Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
     
@@ -317,7 +316,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
     query.on('row', (row) => {
       results.push(row);
     });
-  
+
     //After all data is returned, close connection and return results
     query.on('end', () => {
       done();
@@ -357,11 +356,9 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     const SQL_query_geometry_endfraction = "(SELECT ST_LineLocatePoint(line, point) FROM (SELECT(SELECT St_AsText(ST_LineMerge(a."+column_geom+")) AS street FROM "+table_street+" AS a WHERE a."+column_name+" LIKE ($1)) AS line, (SELECT (SELECT ST_AsText(ST_ClosestPoint(line, pt)) FROM (SELECT (SELECT st_astext(a."+column_geom+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE a."+column_number+" = (SELECT MAX("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" > ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) AND b."+column_name+" LIKE ($1)) As pt, (SELECT ST_AsText("+column_geom+") FROM "+table_street+" WHERE "+column_name+" LIKE ($1)) As line) As foo)) AS point) AS foo) AS endfraction";
                     
                     //SQL Query geometry
-                     const SQL_query_geometry = "(SELECT(SELECT ST_AsText(ST_LineSubstring(street, startfraction, endfraction)) as geometry FROM "+SQL_query_geometry_street+", "+SQL_query_geometry_startfraction+", "+SQL_query_geometry_endfraction+") AS foo) AS geometry";
-                   
-                    //SQL Query geometry 2
+                    const SQL_query_geometry = "(SELECT(SELECT ST_AsText(ST_LineSubstring(street, startfraction, endfraction)) as geometry FROM "+SQL_query_geometry_street+", "+SQL_query_geometry_startfraction+", "+SQL_query_geometry_endfraction+") AS foo) AS geometry";
                     //const SQL_query_geometry = "(SELECT(SELECT ST_AsText(ST_LineSubstring(street, endfraction, startfraction)) as geometry FROM "+SQL_query_geometry_street+", "+SQL_query_geometry_startfraction+", "+SQL_query_geometry_endfraction+") AS foo) AS geometry";
-                     
+                    
                     //SQL Query nf
                     const SQL_query_nf = "(SELECT "+column_number+"_max FROM (SELECT (SELECT MIN("+column_number+") FROM "+table_places+" AS a JOIN "+table_street+" AS b ON a."+column_fk_id_street+" = b."+column_id_street+" WHERE b."+column_name+" LIKE ($1) AND a."+column_number+" > ($3) AND a."+column_first_year+" >= ($2) AND a."+column_last_year+" >= ($2) LIMIT 1) as "+column_number+"_max) AS foo) As nf";
                     
@@ -377,13 +374,9 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                   | SQL Query > Select Data                           |
                   +--------------------------------------------------*/
                   const query = client.query(SQL_Query_Geocode, ['%'+textpoint+'%', year, number]);
-                  
-                  console.log(query);
 
                   //Push the SQL Query result 
                   query.on('row', (row) => {
-
-                    console.log(row);
 
                     /*--------------------------------------------------+
                     | Extrapolation Check                               |
@@ -414,10 +407,8 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     head.push("type: 'GET'");
 
                     //Push Head
-                    //waitDataExtrapolation.then(() => {
                       head.push(results);
                       return res.json(head);
-                    //})
                     
                     });
                 });
@@ -446,8 +437,6 @@ router.get('/geolocation/:textpoint,:number,:year/json/extrapol', (req, res, nex
   const results = [];
   const head = [];
 
-  
-
   return res.json();
 });
 
@@ -456,7 +445,7 @@ router.get('/geolocation/:textpoint,:number,:year/json/extrapol', (req, res, nex
 | Multiple Geolocation                               |
 +---------------------------------------------------+*/
 router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
-  
+
   //Results Variables
   const results = [];
   var urlList = [];
@@ -466,7 +455,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   //Entering Variables
   var jsonObject = JSON.parse(req.params.jsonquery);
   const sizeJson = Object.keys(jsonObject).length;
-  
+
   //Count Variables
   var k = 0;
   const head = [];
@@ -475,8 +464,8 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   for(index in jsonObject)
       for(product in jsonObject[index])
           content = (Object.keys(jsonObject[index]));
-         
-  
+        
+
   //Geolocate all Address
   for (var j = 0; j < sizeJson ; j++ ) {
     url = webServiceAddress + '/api/geocoding/geolocation/' + jsonObject[j][content] +"/json"
@@ -494,9 +483,9 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
         results.push({address: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
       
         //Count the id results
-       k=k+1;
+      k=k+1;
 
-       if (k >= urlList.length){
+      if (k >= urlList.length){
         
         // Stream results back one row at a time
         head.push("created_at: " + getDateTime());
@@ -509,10 +498,9 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 
       }
 
-     } 
+    } 
       });  
   }
-
 });
 
 /*--------------------------------------------------+
@@ -520,30 +508,30 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 +--------------------------------------------------*/
 router.get('/streetlocation/:textpoint,:year/json', (req, res, next) => {
 
-    //Results Variables
-    const results = [];
-    const head = [];
+  //Results Variables
+  const results = [];
+  const head = [];
+
+  //Entering Variables
+  const textpoint = req.params.textpoint;
+  const year = req.params.year.replace(" ", "");
   
-    //Entering Variables
-    const textpoint = req.params.textpoint;
-    const year = req.params.year.replace(" ", "");
-    
-    return res.json();
+  return res.json();
 });
 
 /*--------------------------------------------------+
 | Year Location                                     |
 +--------------------------------------------------*/
 router.get('/yearlocation/:year/json', (req, res, next) => {
-  
-    //Results Variables
-    const results = [];
-    const head = [];
-  
-    //Entering Variables
-    const year = req.params.year.replace(" ", "");
- 
-    return res.json();
+
+  //Results Variables
+  const results = [];
+  const head = [];
+
+  //Entering Variables
+  const year = req.params.year.replace(" ", "");
+
+  return res.json();
 });
 
 /*---------------------------------------------------+
