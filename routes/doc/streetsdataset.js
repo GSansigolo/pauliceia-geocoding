@@ -2,8 +2,8 @@
  * @api {get} /api/geocoding/streets 6 - Streets Dataset
  * @apiGroup Functions
  * 
- * @apiSuccess (Sucess 200) {String} name Name of the searched address.
- * @apiSuccess (Sucess 200) {String} geom  Geometry of the searched address.
+ * @apiSuccess (Sucess 200) {String} name String with the street name.
+ * @apiSuccess (Sucess 200) {Number} year Number with the address year.
  *
  * @apiSuccessExample {json} Success-Response:
  *

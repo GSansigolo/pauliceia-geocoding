@@ -2,9 +2,8 @@
  * @api {get} /api/geocoding/years 7 - Years Dataset
  * @apiGroup Functions
  * 
- * @apiSuccess (Sucess 200) {String} name Name of the searched address.
- * @apiSuccess (Sucess 200) {String} geom  Geometry of the searched address.
- *
+ * @apiSuccess (Sucess 200) {Number} year Number with the address year.
+ * 
  * @apiSuccessExample {json} Success-Response:
  *   [
  *        {

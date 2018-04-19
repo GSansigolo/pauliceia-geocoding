@@ -429,17 +429,36 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 });
 
 /*--------------------------------------------------+
-| Geolocation Extrapol                              |
+| Street Location                                   |
 +--------------------------------------------------*/
-router.get('/geolocation/:textpoint,:number,:year/json/extrapol', (req, res, next) => {
-
-  //Results Variables
-  const results = [];
-  const head = [];
-
-  return res.json();
-});
-
+router.get('/streetlocation/:textpoint,:year/json', (req, res, next) => {
+  
+    //Results Variables
+    const results = [];
+    const head = [];
+  
+    //Entering Variables
+    const textpoint = req.params.textpoint;
+    const year = req.params.year.replace(" ", "");
+    
+    return res.json();
+  });
+  
+  /*--------------------------------------------------+
+  | Year Location                                     |
+  +--------------------------------------------------*/
+  router.get('/yearlocation/:year/json', (req, res, next) => {
+  
+    //Results Variables
+    const results = [];
+    const head = [];
+  
+    //Entering Variables
+    const year = req.params.year.replace(" ", "");
+  
+    return res.json();
+  });
+  
 /*
 +---------------------------------------------------+
 | Multiple Geolocation                               |
@@ -504,36 +523,17 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 });
 
 /*--------------------------------------------------+
-| Street Location                                   |
+| Geolocation Extrapol                              |
 +--------------------------------------------------*/
-router.get('/streetlocation/:textpoint,:year/json', (req, res, next) => {
-
-  //Results Variables
-  const results = [];
-  const head = [];
-
-  //Entering Variables
-  const textpoint = req.params.textpoint;
-  const year = req.params.year.replace(" ", "");
+router.get('/geolocation/:textpoint,:number,:year/json/extrapol', (req, res, next) => {
   
-  return res.json();
+    //Results Variables
+    const results = [];
+    const head = [];
+  
+    return res.json();
 });
-
-/*--------------------------------------------------+
-| Year Location                                     |
-+--------------------------------------------------*/
-router.get('/yearlocation/:year/json', (req, res, next) => {
-
-  //Results Variables
-  const results = [];
-  const head = [];
-
-  //Entering Variables
-  const year = req.params.year.replace(" ", "");
-
-  return res.json();
-});
-
+  
 /*---------------------------------------------------+
 | Console Log                                        |
 +---------------------------------------------------*/
