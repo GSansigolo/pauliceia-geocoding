@@ -20,7 +20,7 @@
 /*--------------------------------------------------+
 | Connection                                        |
 +--------------------------------------------------
-const { Pool, Client } = require('pg')
+  const { Pool, Client } = require('pg')
 
   // create a pool
   const pool = new Pool({
@@ -42,6 +42,7 @@ const { Pool, Client } = require('pg')
   client.connect()  */
 
 //
+
   const pg = require('pg');
 
   const db_user = process.env.DATABASE_USER || "postgres";
@@ -61,10 +62,11 @@ const { Pool, Client } = require('pg')
 
   client.connect();
 
+ 
 /*--------------------------------------------------+
 | function getJsonUrl(url)                          |
 +--------------------------------------------------*/
-  function getJsonUrl(url1) {
+function getJsonUrl(url1) {
   request(url1, function (error, response, body) {
     if (!error) {
       var bodyjson = JSON.parse(body);
@@ -78,19 +80,19 @@ const { Pool, Client } = require('pg')
 | function getDateTime()                           |
 +-------------------------------------------------*/
 function getDateTime() {
-    var date = new Date();
-    var hour = date.getHours();
-    hour = (hour < 10 ? "0" : "") + hour;
-    var min  = date.getMinutes();
-    min = (min < 10 ? "0" : "") + min;
-    var sec  = date.getSeconds();
-    sec = (sec < 10 ? "0" : "") + sec;
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    month = (month < 10 ? "0" : "") + month;
-    var day  = date.getDate();
-    day = (day < 10 ? "0" : "") + day;
-    return  hour + ":" + min + ":" + sec+ " "+ day + "/" + month  + "/" + year;
+  var date = new Date();
+  var hour = date.getHours();
+  hour = (hour < 10 ? "0" : "") + hour;
+  var min  = date.getMinutes();
+  min = (min < 10 ? "0" : "") + min;
+  var sec  = date.getSeconds();
+  sec = (sec < 10 ? "0" : "") + sec;
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  month = (month < 10 ? "0" : "") + month;
+  var day  = date.getDate();
+  day = (day < 10 ? "0" : "") + day;
+  return  hour + ":" + min + ":" + sec+ " "+ day + "/" + month  + "/" + year;
 } 
 
 /*--------------------------------------------------+
@@ -178,7 +180,7 @@ router.get('/places', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year, ST_AsText(a.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as firstyear, a.last_year as lastyear, ST_AsText(a.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -186,7 +188,7 @@ router.get('/places', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({name: row.name, number: row.number, year: row.year, geom: row.geom});
+      results.push({street_name: row.name, place_number: row.number, place_firstyear: row.firstyear, place_lastyear: row.lastyear, place_geom: row.geom});
     });
 
     //After all data is returned, close connection and return results
@@ -219,7 +221,7 @@ router.get('/streets', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name, b.first_year as firstyear, b.last_year as lastyear, ST_astext(b.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -227,7 +229,7 @@ router.get('/streets', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({name: row.name, year: row.year});
+      results.push({street_name: row.name, street_geom: row.geom, street_firstyear: row.firstyear, street_lastyear: row.lastyear});
     });
 
     //After all data is returned, close connection and return results
@@ -239,12 +241,12 @@ router.get('/streets', (req, res, next) => {
 
   });
   });
-});
+  });
 
-/*-----------------------------------------------+
-| Years Dataset                                 |
-+-----------------------------------------------*/
-router.get('/years', (req, res, next) => {
+  /*-----------------------------------------------+
+  | Years Dataset                                 |
+  +-----------------------------------------------*/
+  router.get('/years', (req, res, next) => {
 
   //Results Variable
   const results = [];
@@ -285,7 +287,7 @@ router.get('/years', (req, res, next) => {
 /*--------------------------------------------------+
 | Geolocation                                       |
 +--------------------------------------------------*/
-router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {    
+router.get('/geolocation/:textpoint,:number,:year/sql', (req, res, next) => {    
 
   //Results Variables
   const results = [];
@@ -432,35 +434,34 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 | Street Location                                   |
 +--------------------------------------------------*/
 router.get('/streetlocation/:textpoint,:year/json', (req, res, next) => {
+
+  //Results Variables
+  const results = [];
+  const head = [];
+
+  //Entering Variables
+  const textpoint = req.params.textpoint;
+  const year = req.params.year.replace(" ", "");
   
-    //Results Variables
-    const results = [];
-    const head = [];
-  
-    //Entering Variables
-    const textpoint = req.params.textpoint;
-    const year = req.params.year.replace(" ", "");
-    
-    return res.json();
-  });
-  
-  /*--------------------------------------------------+
-  | Year Location                                     |
-  +--------------------------------------------------*/
-  router.get('/yearlocation/:year/json', (req, res, next) => {
-  
-    //Results Variables
-    const results = [];
-    const head = [];
-  
-    //Entering Variables
-    const year = req.params.year.replace(" ", "");
-  
-    return res.json();
-  });
-  
-/*
-+---------------------------------------------------+
+  return res.json();
+});
+
+/*--------------------------------------------------+
+| Year Location                                     |
++--------------------------------------------------*/
+router.get('/yearlocation/:year/json', (req, res, next) => {
+
+  //Results Variables
+  const results = [];
+  const head = [];
+
+  //Entering Variables
+  const year = req.params.year.replace(" ", "");
+
+  return res.json();
+});
+
+/*--------------------------------------------------+
 | Multiple Geolocation                               |
 +---------------------------------------------------+*/
 router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
@@ -523,17 +524,24 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 });
 
 /*--------------------------------------------------+
-| Geolocation Extrapol                              |
+| New Geolocation                                   |
 +--------------------------------------------------*/
-router.get('/geolocation/:textpoint,:number,:year/json/extrapol', (req, res, next) => {
-  
-    //Results Variables
-    const results = [];
-    const head = [];
-  
-    return res.json();
+router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
+
+  //Results Variables
+  const results = [];
+  const head = [];
+
+  //Entering Variables
+  const textpoint = req.params.textpoint;
+  const year = req.params.year.replace(" ", "");;
+  const number = req.params.number.replace(" ", "");
+
+ //
+
+  return res.json();
 });
-  
+
 /*---------------------------------------------------+
 | Console Log                                        |
 +---------------------------------------------------*/

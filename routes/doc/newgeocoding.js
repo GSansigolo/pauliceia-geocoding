@@ -1,7 +1,8 @@
 /**
- * @api {get} /api/geocoding/streetlocation/:streetName,:year/json 3 - Streetlocation 
+ * @api {get} /api/geocoding/geolocation/:streetName,:number,:year/json 2 - New Geolocation
  * @apiGroup Functions
  * 
+ * @apiParam {String} streetName Street name
  * @apiParam {Number} number Number of the address
  * @apiParam {number} year Year of the searched address
  * 
@@ -35,4 +36,4 @@
  *    ]
  *  ]
  *
-*/ 
+ */ 

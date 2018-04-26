@@ -1,25 +1,27 @@
 /**
- * @api {get} /api/geocoding/streets 6 - Streets Dataset
+ * @api {get} /api/geocoding/streets 7 - Streets Dataset
  * @apiGroup Functions
  * 
- * @apiSuccess (Sucess 200) {String} name String with the street name.
- * @apiSuccess (Sucess 200) {Number} year Number with the address year.
+ * @apiSuccess (Sucess 200) {String} street_name String with the name of the street.
+ * @apiSuccess (Sucess 200) {String} street_geom  String with the geometry of the street.
+ * @apiSuccess (Sucess 200) {Number} street_firstyear Number with the first date of the street.
+ * @apiSuccess (Sucess 200) {Number} street_lastyear Number with the last date of the street.
  *
  * @apiSuccessExample {json} Success-Response:
  *
  *   [
- *     {
- *      "name":"rua caio prado",
- *      "year":1930
- *     },
- *     {
- *      "name":"rua albuquerque lins",
- *      "year":1931
- *     },
- *     { 
- *      "name":"rua elisa whitacker",
- *      "year":1930
- *     }
+ *      {
+ *          "street_name":"rua caio prado",
+ *          "street_geom":"MULTILINESTRING((-46.6489442168316 -23.547993799908,-46.6487994520019 -23.5484104003636, ...))",
+ *          "street_firstyear":1920,
+ *          "street_lastyear":1930
+ *      },
+ *      {
+ *          "street_name":"rua albuquerque lins",
+ *          "street_geom":"MULTILINESTRING((-46.6560276150948 -23.5349697133848,-46.6551309875705 -23.5338546256294, ...))",
+ *          "street_firstyear":1920,
+ *          "street_lastyear":1930
+ *      }
  *     ...
  *  ]
  */ 

@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/geocoding/yearlocation/:year/json 3 - Yearlocation
+ * @api {get} /api/geocoding/yearlocation/:year/json 4 - Yearlocation
  * @apiGroup Functions
  * 
  * @apiParam {Number} number Number of the address
