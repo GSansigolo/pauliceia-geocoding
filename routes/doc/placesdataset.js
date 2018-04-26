@@ -3,6 +3,7 @@
  * @apiGroup Functions
  * 
  * @apiSuccess (Sucess 200) {String} street_name String with the name of the street where this address are.
+ * @apiSuccess (Sucess 200) {String} place_name String with the name of the place.
  * @apiSuccess (Sucess 200) {Number} place_number Number with the place address.
  * @apiSuccess (Sucess 200) {Number} place_firstyear Number with the place first year.
  * @apiSuccess (Sucess 200) {Number} place_lastyear  Number with the place last year.
@@ -12,6 +13,7 @@
  *   [
  *      {
  *          "street_name":"rua caio prado",
+ *          "place_name":null,
  *          "place_number":1,
  *          "place_firstyear":1930,
  *          "place_lastyear":1930,
@@ -19,6 +21,7 @@
  *      },
  *      {
  *          "street_name":"rua albuquerque lins",
+ *          "place_name":"Grupo Escolar Barra Funda",
  *          "place_number":1,
  *          "place_firstyear":1931,
  *          "place_lastyear":1931,

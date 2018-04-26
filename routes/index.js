@@ -180,7 +180,7 @@ router.get('/places', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as firstyear, a.last_year as lastyear, ST_AsText(a.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name as name_s, a.name as name_p, a.number, a.first_year as firstyear, a.last_year as lastyear, ST_AsText(a.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -188,7 +188,7 @@ router.get('/places', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({street_name: row.name, place_number: row.number, place_firstyear: row.firstyear, place_lastyear: row.lastyear, place_geom: row.geom});
+      results.push({street_name: row.name_s, place_name: row.name_p, place_number: row.number, place_firstyear: row.firstyear, place_lastyear: row.lastyear, place_geom: row.geom});
     });
 
     //After all data is returned, close connection and return results
@@ -287,7 +287,7 @@ router.get('/streets', (req, res, next) => {
 /*--------------------------------------------------+
 | Geolocation                                       |
 +--------------------------------------------------*/
-router.get('/geolocation/:textpoint,:number,:year/sql', (req, res, next) => {    
+router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {    
 
   //Results Variables
   const results = [];
@@ -502,7 +502,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
         var bodyjson = JSON.parse(body);
         results.push({address: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
       
-        //Count the id results
+      //Count the id results
       k=k+1;
 
       if (k >= urlList.length){
@@ -526,20 +526,59 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 /*--------------------------------------------------+
 | New Geolocation                                   |
 +--------------------------------------------------*/
-router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
+router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) => {
 
-  //Results Variables
+  //Results variables
   const results = [];
   const head = [];
 
-  //Entering Variables
+  //Develop variables
+  var url;
+  const places = [];
+  const places_filter = [];
+
+  //Entering variables
   const textpoint = req.params.textpoint;
   const year = req.params.year.replace(" ", "");;
   const number = req.params.number.replace(" ", "");
 
- //
+ //Set the url
+ url = webServiceAddress + '/api/geocoding/places';
 
-  return res.json();
+ //Request the json with all places
+ request(url, function (error, response, body) {
+  if (!error) {
+    
+    //Set the bodyjson with the body of the request
+    var bodyjson = JSON.parse(body);
+
+    //Set places with bodyjson
+    places.push(bodyjson)
+
+    //Filter json places using the entering variables
+
+    //console.log(places.filter(el=>el.street_name == textpoint));
+
+    //places_filter.push();
+    //places_filter = places.filter(el=>el.place_number = number);
+    //places_filter = places.filter(el=>el.place_lastyear > year);
+    //places_filter = places.filter(el=>el.place_firstyear < year);
+
+    //Organize the Json results
+    //results.push({address: places_filter[0].place_name, geom: places_filter[0].place_geom});
+
+    //Write header
+    head.push("created_at: " + getDateTime());
+    head.push("type: 'GET'");
+
+    //Push Head
+    head.push(results);
+
+    //Return the json with results
+    return res.json(head);
+ 
+  }
+ })
 });
 
 /*---------------------------------------------------+

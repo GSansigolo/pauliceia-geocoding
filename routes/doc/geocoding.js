@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/geocoding/geolocation/:streetName,:number,:year/sql 1 - Geolocation
+ * @api {get} /api/geocoding/geolocation/:streetName,:number,:year/json 1 - Geolocation
  * @apiGroup Functions
  * 
  * @apiParam {String} streetName Street name
