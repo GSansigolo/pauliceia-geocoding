@@ -19,30 +19,7 @@
 
 /*--------------------------------------------------+
 | Connection                                        |
-+--------------------------------------------------
-  const { Pool, Client } = require('pg')
-
-  // create a pool
-  const pool = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "db_pauliceia",
-    password: "teste",
-    port:5432,
-  })
-
-  const client = new Client({
-    user: "postgres",
-    host: "localhost",
-    database: "db_pauliceia",
-    password: "teste",
-    port:5432,
-  })
-
-  client.connect()  */
-
-//
-
++-------------------------------------------------*/
   const pg = require('pg');
 
   const db_user = process.env.DATABASE_USER || "postgres";
@@ -62,7 +39,6 @@
 
   client.connect();
 
- 
 /*--------------------------------------------------+
 | function getJsonUrl(url)                          |
 +--------------------------------------------------*/
@@ -116,10 +92,6 @@ function isEmptyObject(obj) {
 |                              URLS                                        |
 |                                                                          |
 +-------------------------------------------------------------------------*/
-
-/*--------------------------------------------------+
-|Index                                              |
-+--------------------------------------------------*/
 
 /*-----------------------------------------------+
 | Places List                                    |
@@ -230,47 +202,6 @@ router.get('/streets', (req, res, next) => {
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
       results.push({street_name: row.name, street_geom: row.geom, street_firstyear: row.firstyear, street_lastyear: row.lastyear});
-    });
-
-    //After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-
-    //Resuts
-    return res.json(results);
-
-  });
-  });
-  });
-
-  /*-----------------------------------------------+
-  | Years Dataset                                 |
-  +-----------------------------------------------*/
-  router.get('/years', (req, res, next) => {
-
-  //Results Variable
-  const results = [];
-
-  //Get a Postgres client from the connection pool
-  pg.connect(connectionString, (err, client, done) => {
-    
-    //Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-
-    //Build the SQL Query
-    const SQL_Query_Select_List = "select a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 GROUP BY year order by year;";
-
-    //Execute SQL Query
-    const query = client.query(SQL_Query_Select_List);
-
-    //Push Results
-    query.on('row', (row) => {
-      //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({year: row.year});
     });
 
     //After all data is returned, close connection and return results
@@ -431,37 +362,6 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 });
 
 /*--------------------------------------------------+
-| Street Location                                   |
-+--------------------------------------------------*/
-router.get('/streetlocation/:textpoint,:year/json', (req, res, next) => {
-
-  //Results Variables
-  const results = [];
-  const head = [];
-
-  //Entering Variables
-  const textpoint = req.params.textpoint;
-  const year = req.params.year.replace(" ", "");
-  
-  return res.json();
-});
-
-/*--------------------------------------------------+
-| Year Location                                     |
-+--------------------------------------------------*/
-router.get('/yearlocation/:year/json', (req, res, next) => {
-
-  //Results Variables
-  const results = [];
-  const head = [];
-
-  //Entering Variables
-  const year = req.params.year.replace(" ", "");
-
-  return res.json();
-});
-
-/*--------------------------------------------------+
 | Multiple Geolocation                               |
 +---------------------------------------------------+*/
 router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
@@ -557,7 +457,7 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
     places_filter = places_filter.filter(el=>el.place_firstyear <= year);
 
     //Check if only one result was found
-    if (places_filter.length = 1){
+    if (places_filter.length == 1){
 
       //Organize the Json results
       results.push({name: places_filter[0].place_name, geom: places_filter[0].place_geom});
@@ -588,6 +488,75 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
 
         //Return the json with results
         return res.json(head);
+    }
+  }
+ })
+});
+
+/*--------------------------------------------------+
+| Streetlocation                                    |
++--------------------------------------------------*/
+router.get('/streetlocation/:textpoint,:year/json', (req, res, next) => {
+
+ //Results variables
+ const results = [];
+ const head = [];
+
+ //Develop variables
+ var url;
+
+ //Entering variables
+ const textpoint = req.params.textpoint;
+ const year = req.params.year.replace(" ", "");
+
+  //Set the url
+  url = webServiceAddress + '/api/geocoding/streets';
+
+ //Request the json with all places
+ request(url, function (error, response, body) {
+  if (!error) {
+    
+    //Set the bodyjson with the body of the request
+    var street = JSON.parse(body);
+    
+    console.log(street)
+
+    //Filter json places using the entering variables
+    var street_filter = street.filter(el=>el.street_name == textpoint);
+    //street_filter = street_filter.filter(el=>el.street_lastyear >= year);
+    //street_filter = street_filter.filter(el=>el.street_firstyear <= year);
+
+    //Check if only one result was found
+    if (street_filter.length == 1){
+
+      //Organize the Json results
+      results.push({name: street_filter[0].street_name, geom: street_filter[0].street_geom});
+
+      //Write header
+      head.push("created_at: " + getDateTime());
+      head.push("type: 'GET'");
+
+      //Push Head
+      head.push(results);
+
+      //Return the json with results
+      return res.json(head);
+
+    } else {
+
+      //Result
+      results.push({alert: "Street not found", alertMsg: "System did not find ("+ textpoint +", "+ year + ")", help: "Make sure the search is spelled correctly. (street, year)"});
+      
+      //Write header
+      head.push("created_at: " + getDateTime());
+      head.push("type: 'GET'");
+
+      //Push Head
+      head.push(results);
+
+      //Return the json with results
+      return res.json(head);
+                     
     }
   }
  })

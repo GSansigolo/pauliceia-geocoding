@@ -2,9 +2,9 @@
  * @api {get} /api/geocoding/geolocation/:streetName,:number,:year/json 1 - Geolocation
  * @apiGroup Functions
  * 
- * @apiParam {String} streetName Street name
- * @apiParam {Number} number Number of the address
- * @apiParam {number} year Year of the searched address
+ * @apiParam {String} streetName Street name.
+ * @apiParam {Number} number Number of the address.
+ * @apiParam {number} year Year of the searched address.
  * 
  * @apiSuccess (Sucess 200) {String} name Name of the searched address.
  * @apiSuccess (Sucess 200) {String} geom  Geometry of the searched address.
