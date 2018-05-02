@@ -22,7 +22,7 @@ NodeJS >= 4.2.6
 
 ```
 npm install -g express-generator
-npm install supervisor
+npm install supervisor --save
 npm install pg --save
 npm install geojson
 npm install postgeo

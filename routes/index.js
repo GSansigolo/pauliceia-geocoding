@@ -534,8 +534,6 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
 
   //Develop variables
   var url;
-  const places = [];
-  const places_filter = [];
 
   //Entering variables
   const textpoint = req.params.textpoint;
@@ -550,33 +548,47 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
   if (!error) {
     
     //Set the bodyjson with the body of the request
-    var bodyjson = JSON.parse(body);
-
-    //Set places with bodyjson
-    places.push(bodyjson)
+    var places = JSON.parse(body);
 
     //Filter json places using the entering variables
+    var places_filter = places.filter(el=>el.street_name == textpoint);
+    places_filter = places_filter.filter(el=>el.place_number == number);
+    places_filter = places_filter.filter(el=>el.place_lastyear >= year);
+    places_filter = places_filter.filter(el=>el.place_firstyear <= year);
 
-    //console.log(places.filter(el=>el.street_name == textpoint));
+    //Check if only one result was found
+    if (places_filter.length = 1){
 
-    //places_filter.push();
-    //places_filter = places.filter(el=>el.place_number = number);
-    //places_filter = places.filter(el=>el.place_lastyear > year);
-    //places_filter = places.filter(el=>el.place_firstyear < year);
+      //Organize the Json results
+      results.push({name: places_filter[0].place_name, geom: places_filter[0].place_geom});
 
-    //Organize the Json results
-    //results.push({address: places_filter[0].place_name, geom: places_filter[0].place_geom});
+      //Write header
+      head.push("created_at: " + getDateTime());
+      head.push("type: 'GET'");
 
-    //Write header
-    head.push("created_at: " + getDateTime());
-    head.push("type: 'GET'");
+      //Push Head
+      head.push(results);
 
-    //Push Head
-    head.push(results);
+      //Return the json with results
+      return res.json(head);
 
-    //Return the json with results
-    return res.json(head);
- 
+    //Geocode
+    } else {
+
+        //--------------------------
+        //      Geocode
+        //-------------------------
+
+        //Write header
+        head.push("created_at: " + getDateTime());
+        head.push("type: 'GET'");
+
+        //Push Head
+        head.push(results);
+
+        //Return the json with results
+        return res.json(head);
+    }
   }
  })
 });
