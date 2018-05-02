@@ -518,8 +518,6 @@ router.get('/streetlocation/:textpoint,:year/json', (req, res, next) => {
     
     //Set the bodyjson with the body of the request
     var street = JSON.parse(body);
-    
-    console.log(street)
 
     //Filter json places using the entering variables
     var street_filter = street.filter(el=>el.street_name == textpoint);
