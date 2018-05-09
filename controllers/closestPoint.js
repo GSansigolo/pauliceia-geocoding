@@ -2,7 +2,6 @@
 //point-> geometria do ponto
 
 //exports.closestPoint = function(line, point){
-
 function closestPoint(line, point){
 
     //tratar a string da geometria linha
@@ -10,10 +9,19 @@ function closestPoint(line, point){
     geomLine = geomLine.substr(0,geomLine.indexOf(")"));
 
     //tratar a string da geometria linha
-    var geomPoint = point.substr(point.indexOf("(")+2);
+    var geomPoint = point.substr(point.indexOf("(")+1);
     geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
 
-    alert("geomPoint: " + geomPoint + "\n \n" + "geomLine: " + geomLine);
+    //divide o endereço em x y
+    var coordinatesPoint = geomPoint.split(' ');
 
+    //divide a rua em grupo de pontos
+    var pointsLine = geomLine.split(',');
+
+    //logica
+    
+    //alerta para testar valores
+    alert("coordinatesPoint: " + coordinatesPoint + "\n \n" + "pointsLine: " + pointsLine);
+    
  	//return geomPoint, geomLine;
 }
