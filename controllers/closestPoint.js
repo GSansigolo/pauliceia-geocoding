@@ -8,7 +8,7 @@ function closestPoint(line, point){
     var geomLine = line.substr(line.indexOf("(")+2);
     geomLine = geomLine.substr(0,geomLine.indexOf(")"));
 
-    //tratar a string da geometria linha
+    //tratar a string da geometria ponto
     var geomPoint = point.substr(point.indexOf("(")+1);
     geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
 
