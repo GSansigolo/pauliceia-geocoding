@@ -399,22 +399,31 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
     request(urlList[i], function (error, response, body) {
       if (!error) {
 
+        //recive the data from the get call
         var bodyjson = JSON.parse(body);
-        results.push({address: textList[k], geom:  bodyjson[2][0].geom, url: urlList[k] });
-      
-      //Count the id results
+    
+        //handle the recived geom
+        var geomPoint = bodyjson[2][0].geom.substr(bodyjson[2][0].geom.indexOf("(")+1);
+        geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
+
+        //build the coordinates (x, y)
+        var x = parseFloat(geomPoint.split(' ')[0]);
+        var y = parseFloat(geomPoint.split(' ')[1]);
+
+        //Push
+        results.push({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
+
+      //Count
       k=k+1;
 
+      //stop the loop
       if (k >= urlList.length){
+
+        //build the geojson 
+        const results2 = GeoJSON.parse(results, {'Point': 'geom'});
         
-        // Stream results back one row at a time
-        head.push("created_at: " + getDateTime());
-        head.push("type: 'GET'");
-      
-        //Results
-        head.push(results);
-        
-        return res.json(head);
+        //return
+        return res.json(results2);
 
       }
 
