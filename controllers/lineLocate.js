@@ -51,18 +51,18 @@ function lineLocate(line, point){
         for (var i = 1; i < index+1; i++) {
             
             //insere as distancias no array 
-            distances[i] = getDistance(pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]);
-            distDesired = distDesired + distances[i];
+            distDesired = distDesired + getDistance(pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]);
 
             console.log(i+"-"+(i+1));
         }
 
         //soma as distancias com a distancia entre o entre o ultimo ponto e ponto buscado
-        distDesired = distDesired + getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[pointsLine.length-index].split(' ')[0], pointsLine[pointsLine.length-index].split(' ')[1]);
+        distDesired = distDesired + getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[index].split(' ')[0], pointsLine[index].split(' ')[1]);
 
         alert((distDesired)/(distTotal));
         //return (distDesired)/(distTotal)
     }
+
 }
 
 //FUNÇÕES AUXILIARES
