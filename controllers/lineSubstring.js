@@ -9,8 +9,37 @@ function lineSubstring(street, startfraction, endfraction){
     var geomStreet = street.substr(street.indexOf("(")+2);
     geomStreet = geomStreet.substr(0,geomStreet.indexOf(")"));
     
-    alert("street: "+ street+ "\n"+"startfraction: "+ startfraction + "\n" + "endfraction: " + endfraction);
-    
+    //divide a rua em grupo de pontos
+    var pointsLine = geomStreet.split(',');
+
+     //variaveis globais
+     var distances = [];
+     var frac = [];
+     var index = 0;
+     var distDesired = 0;
+     var distTotal = 0;
+     
+     //loop para somar as distancias
+     for (var i = 1; i < pointsLine.length; i++) {
+ 
+         //insere as distancias no array distances
+         distTotal = distTotal + getDistance(pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]);
+     }
+
+     //loop para preencher as distancias
+     for (var j = 1; j < pointsLine.length; j++) {
+
+         //loop para somar a distancia entre o ponto inicial e o ponto procurado
+         for (var k = 1; k < j+1; k++) {
+
+            //insere as distancias no array 
+            distDesired = distDesired + getDistance(pointsLine[(k-1)].split(' ')[0], pointsLine[(k-1)].split(' ')[1], pointsLine[(k)].split(' ')[0], pointsLine[(k)].split(' ')[1]);
+        }
+        console.log(j);
+        console.log(distDesired);
+        console.log(distTotal);
+        distDesire = 0;
+    }
 }
 
 //FUNÇÕES AUXILIARES
