@@ -569,6 +569,185 @@ router.get('/streetlocation/:textpoint,:year/json', (req, res, next) => {
  })
 });
 
+/*-----------------------------------------------+
+| closestPoint                                 |
++-----------------------------------------------*/
+router.get('/func/closestPoint/:line/:point', (req, res, next) => {
+
+  //Entering variables
+  const line = req.params.line;
+  const point = req.params.point;
+
+  //Results Variable
+  const results = [];
+
+  //Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    
+    //Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+
+    //Build the SQL Query
+    const SQL_Query_Select_List = "select ST_ClosestPoint($1, $2);";
+
+    //Execute SQL Query
+    const query = client.query(SQL_Query_Select_List,[line, point]);
+
+    //Push Results
+    query.on('row', (row) => {
+      results.push({results: row});
+    });
+
+    //After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+    //Resuts
+    return res.json(results);
+
+  });
+  });
+});
+
+/*-----------------------------------------------+
+| lineMerge                                 |
++-----------------------------------------------*/
+router.get('/func/lineMerge/:line', (req, res, next) => {
+
+  //Entering variables
+  const line = req.params.line;
+
+  //Results Variable
+  const results = [];
+
+  //Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    
+    //Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+
+    //Build the SQL Query
+    const SQL_Query_Select_List = "select ST_LineMerge($1);";
+
+    //Execute SQL Query
+    const query = client.query(SQL_Query_Select_List,[line]);
+
+    //Push Results
+    query.on('row', (row) => {
+      results.push({results: row});
+    });
+
+    //After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+    //Resuts
+    return res.json(results);
+
+
+  });
+  });
+});
+
+/*-----------------------------------------------+
+| lineLocate                                 |
++-----------------------------------------------*/
+router.get('/func/lineLocate/:line/:point', (req, res, next) => {
+
+  //Entering variables
+  const line = req.params.line;
+  const point = req.params.point;
+
+  //Results Variable
+  const results = [];
+
+  //Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    
+    //Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+
+    //Build the SQL Query
+    const SQL_Query_Select_List = "select ST_LineLocatePoint($1, $2);";
+
+    //Execute SQL Query
+    const query = client.query(SQL_Query_Select_List,[line, point]);
+
+    //Push Results
+    query.on('row', (row) => {
+      results.push({results: row});
+    });
+
+    //After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+    //Resuts
+    return res.json(results);
+
+
+  });
+  });
+});
+
+/*-----------------------------------------------+
+| lineSubString                                 |
++-----------------------------------------------*/
+router.get('/func/lineSubString/:line/:p1/:p2', (req, res, next) => {
+
+  //Entering variables
+  const line = req.params.line;
+  const p1 = req.params.p1;
+  const p2 = req.params.p2;
+
+  //Results Variable
+  const results = [];
+
+  //Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    
+    //Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+
+    //Build the SQL Query
+    const SQL_Query_Select_List = "select ST_LineSubstring(t($1, $2, $3);";
+
+    //Execute SQL Query
+    const query = client.query(SQL_Query_Select_List,[line, p1, p2]);
+
+    //Push Results
+    query.on('row', (row) => {
+      results.push({results: row});
+    });
+
+    //After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+    //Resuts
+    return res.json(results);
+
+
+  });
+  });
+});
+
 /*---------------------------------------------------+
 | Console Log                                        |
 +---------------------------------------------------*/
