@@ -18,7 +18,7 @@ function lineSubstring(street, startfraction, endfraction){
      var index = 0;
      var distDesired = 0;
      var distTotal = 0;
-     
+
      //loop para somar as distancias e 
      for (var i = 1; i < pointsLine.length; i++) {
  
@@ -30,7 +30,7 @@ function lineSubstring(street, startfraction, endfraction){
          
         }
 
-    //loop para calcular fracções
+    //loop para calcular frações
     for (var i = 0; i < distances.length; i++) {
 
         //variavel para calcular distancia até um ponto
@@ -46,9 +46,37 @@ function lineSubstring(street, startfraction, endfraction){
         //fração
         frac[i] = distPoint/distTotal;
     }
+    //loop para percorer as frações 
+    for (var i = 0; i < distances.length; i++) {
+        
+        //verifica se a fração é a buscada
+        if (frac[i] == startfraction){
+            
+            //adiciona as coordenadas da fração buscada no resultado
+            results = pointsLine[(i)].split(' ')[0] + ' '+ pointsLine[(i)].split(' ')[1];
+            
+            //loop para percorer o restante da linha
+            for (var j = i; j < distances.length; j++){
 
-    //montar uma rua onde começe no inicial e termine no final usando a propria rua dada como meio
+                //checa se a fração é a segunda buscada
+                if (frac[j] == endfraction){
 
+                    //checa se estamos no último ponto
+                    if (j == distances.length-1){
+
+                        //adiciona o ultimo ponto ao resultado
+                        results = results +', '+ pointsLine[(j+1)].split(' ')[0] + ' '+ pointsLine[(j+1)].split(' ')[1];;
+                    }
+                    //retorn resultado
+                    alert('LINESTRING('+results+')')
+                    //return('LINESTRING('+results+')')
+                }
+
+                //adiciona ponto ao resultado
+                results = results +', '+ pointsLine[(j+1)].split(' ')[0] + ' '+ pointsLine[(j+1)].split(' ')[1];
+            }
+        }
+    }
 }
 
 //FUNÇÕES AUXILIARES
