@@ -152,7 +152,7 @@ router.get('/places', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name as name_s, a.name as name_p, a.number, a.first_year as firstyear, a.last_year as lastyear, ST_AsText(a.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name as name_s, a.name as name_p, a.number, a.first_year as firstyear, a.last_year as lastyear, ST_AsText(a.geom) as geom, a.geom as the_geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -160,7 +160,7 @@ router.get('/places', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({street_name: row.name_s, place_name: row.name_p, place_number: row.number, place_firstyear: row.firstyear, place_lastyear: row.lastyear, place_geom: row.geom});
+      results.push({street_name: row.name_s, place_name: row.name_p, place_number: row.number, place_firstyear: row.firstyear, place_lastyear: row.lastyear, place_geom: row.geom, the_geom: row.the_geom});
     });
 
     //After all data is returned, close connection and return results
@@ -500,59 +500,33 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
 
           //Filter json streets using the entering variables
           var streets_filter = streets.filter(el=>el.street_name == textpoint);
-          //streets_filter = streets_filter.filter(el=>el.street_lastyear >= year);
-          //streets_filter = streets_filter.filter(el=>el.street_firstyear <= year);
           
-          //Set the url
-          url = webServiceAddress + '/api/geocoding/func/lineMerge/'+ streets_filter[0].the_geom;
-          console.log(url);
-
-          //Request the json with all places
-          request(url, function (error, response, body) {
-          if (!error) {
+          //Filter json places using the entering variables
+          places_filter = places.filter(el=>el.street_name == textpoint);
+          places_filter = places_filter.filter(el=>el.place_lastyear >= year);
+          places_filter = places_filter.filter(el=>el.place_firstyear <= year);
             
-            //Request the json with the line merged
-            var linemerge = JSON.parse(body);
+          //Declare array with numbers
+          const numbers = [];
 
-            //Set the request results to the json
-            linemerge = linemerge[0].results.st_linemerge
-
-            //Filter json places using the entering variables
-            places_filter = places.filter(el=>el.street_name == textpoint);
-            places_filter = places_filter.filter(el=>el.place_lastyear >= year);
-            places_filter = places_filter.filter(el=>el.place_firstyear <= year);
-
-            //Filter the json places to get the p1
-            var p1 = places_filter.filter(el=>el.place_number < number);
-            p1 = p1.filter(el=>el.place_number.max);
-
-            //Filter the json places to get the p2
-            var p2 = places_filter.filter(el=>el.place_number > number);
-            p2 = p2.filter(el=>el.place_number.min);
-
-            //a
-
-            //Organize the Json results
-            results.push({name: "Point Geolocated", geom: linemerge[0].results.st_linemerge});
-          
-            //Write header
-            head.push("created_at: " + getDateTime());
-            head.push("type: 'GET'");
-    
-            //Push Head
-            head.push(results);
-    
-            //Return the json with results
-            return res.json(head);  
-
-            }
-          })
+          //Loop to fill the array numbers
+          for(var i = 0; i < places_filter.length; i++){
+           numbers[i] = places_filter[i].place_number;
           }
-        })
+
+          //Filter the json places to get the p1
+          var p1 = places_filter.filter(el=>el.place_number < number);
+          p1 = p1.filter(el=>el.place_number == Math.min.apply(Math, numbers));
+          p1 = p1[0].the_geom;
+
+          //Filter the json places to get the p2
+          var p2 = places_filter.filter(el=>el.place_number > number);
+          p2 = p2.filter(el=>el.place_number == Math.max.apply(Math, numbers));
+          p2 = p2[0].the_geom;
+
     }
-  }
- })
-});
+ });
+
 
 /*--------------------------------------------------+
 | Streetlocation                                    |
