@@ -193,7 +193,7 @@ router.get('/streets', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, b.first_year as firstyear, b.last_year as lastyear, ST_astext(b.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name, b.first_year as firstyear, b.last_year as lastyear, ST_astext(b.geom) as geom, b.geom as as_geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -201,7 +201,7 @@ router.get('/streets', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({street_name: row.name, street_geom: row.geom, street_firstyear: row.firstyear, street_lastyear: row.lastyear});
+      results.push({street_name: row.name, street_geom: row.geom, the_geom: row.as_geom, street_firstyear: row.firstyear, street_lastyear: row.lastyear});
     });
 
     //After all data is returned, close connection and return results
@@ -488,15 +488,67 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
         //      Geocode
         //-------------------------
 
-        //Write header
-        head.push("created_at: " + getDateTime());
-        head.push("type: 'GET'");
+        //Set the url
+        url = webServiceAddress + '/api/geocoding/streets';
 
-        //Push Head
-        head.push(results);
+        //Request the json with all streets
+        request(url, function (error, response, body) {
+          if (!error) {
 
-        //Return the json with results
-        return res.json(head);
+          //Set the bodyjson with the body of the request
+          var streets = JSON.parse(body);
+
+          //Filter json streets using the entering variables
+          var streets_filter = streets.filter(el=>el.street_name == textpoint);
+          //streets_filter = streets_filter.filter(el=>el.street_lastyear >= year);
+          //streets_filter = streets_filter.filter(el=>el.street_firstyear <= year);
+          
+          //Set the url
+          url = webServiceAddress + '/api/geocoding/func/lineMerge/'+ streets_filter[0].the_geom;
+          console.log(url);
+
+          //Request the json with all places
+          request(url, function (error, response, body) {
+          if (!error) {
+            
+            //Request the json with the line merged
+            var linemerge = JSON.parse(body);
+
+            //Set the request results to the json
+            linemerge = linemerge[0].results.st_linemerge
+
+            //Filter json places using the entering variables
+            places_filter = places.filter(el=>el.street_name == textpoint);
+            places_filter = places_filter.filter(el=>el.place_lastyear >= year);
+            places_filter = places_filter.filter(el=>el.place_firstyear <= year);
+
+            //Filter the json places to get the p1
+            var p1 = places_filter.filter(el=>el.place_number < number);
+            p1 = p1.filter(el=>el.place_number.max);
+
+            //Filter the json places to get the p2
+            var p2 = places_filter.filter(el=>el.place_number > number);
+            p2 = p2.filter(el=>el.place_number.min);
+
+            //a
+
+            //Organize the Json results
+            results.push({name: "Point Geolocated", geom: linemerge[0].results.st_linemerge});
+          
+            //Write header
+            head.push("created_at: " + getDateTime());
+            head.push("type: 'GET'");
+    
+            //Push Head
+            head.push(results);
+    
+            //Return the json with results
+            return res.json(head);  
+
+            }
+          })
+          }
+        })
     }
   }
  })
@@ -652,7 +704,6 @@ router.get('/func/lineMerge/:line', (req, res, next) => {
     //Resuts
     return res.json(results);
 
-
   });
   });
 });
@@ -697,7 +748,6 @@ router.get('/func/lineLocate/:line/:point', (req, res, next) => {
     //Resuts
     return res.json(results);
 
-
   });
   });
 });
@@ -726,7 +776,7 @@ router.get('/func/lineSubString/:line/:p1/:p2', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select ST_LineSubstring(t($1, $2, $3);";
+    const SQL_Query_Select_List = "select ST_LineSubstring($1, $2, $3);";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List,[line, p1, p2]);
@@ -742,7 +792,6 @@ router.get('/func/lineSubString/:line/:p1/:p2', (req, res, next) => {
 
     //Resuts
     return res.json(results);
-
 
   });
   });
