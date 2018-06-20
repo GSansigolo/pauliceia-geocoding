@@ -23,7 +23,7 @@ client.connect();
 //line -> geometria do rua
 //point-> geometria do ponto
 
-exports.lineLocate = function(line, point){
+exports.closestPoint = function(line, point){ 
 
     //Results Variable
     var results;
@@ -39,7 +39,7 @@ exports.lineLocate = function(line, point){
       }
   
     //Build the SQL Query
-    const SQL_Query_Select_List = "select ST_LineLocatePoint($1, $2);";
+    const SQL_Query_Select_List = "select ST_ClosestPoint($1, $2);";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List,[line, point]);
@@ -57,5 +57,5 @@ exports.lineLocate = function(line, point){
       return results;
   
     });
-  });
+  }); 
 }

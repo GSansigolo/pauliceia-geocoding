@@ -20,11 +20,12 @@ const client = new pg.Client(connectionString);
 
 client.connect();
 
-//line -> geometria do rua
-//point-> geometria do ponto
+//street -> geometria da rua
+//startfraction-> porcentagem onde se inicia o trecho em relação a rua
+//endfraction-> porcentagem onde se termina o trecho em relação a rua
 
-exports.lineLocate = function(line, point){
-
+exports.lineSubstring = function(street, startfraction, endfraction){ 
+    
     //Results Variable
     var results;
   
@@ -38,11 +39,11 @@ exports.lineLocate = function(line, point){
         return res.status(500).json({success: false, data: err});
       }
   
-    //Build the SQL Query
-    const SQL_Query_Select_List = "select ST_LineLocatePoint($1, $2);";
-
-    //Execute SQL Query
-    const query = client.query(SQL_Query_Select_List,[line, point]);
+      //Build the SQL Query
+      const SQL_Query_Select_List = "select St_asText(ST_LineSubstring($1, $2, $3));";
+  
+      //Execute SQL Query
+      const query = client.query(SQL_Query_Select_List,[street, startfraction, endfraction]);
   
       //Push Results
       query.on('row', (row) => {
