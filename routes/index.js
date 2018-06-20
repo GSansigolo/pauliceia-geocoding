@@ -330,7 +330,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     /*--------------------------------------------------+
                     | If The Geom was found                             |
                     +--------------------------------------------------*/
-
+      
                       //Result
                       results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(row.geometry, row.nl, row.nf, row.num).point)+")"});
 
@@ -489,7 +489,7 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
         
         //append the new log into log.json
         obj = JSON.parse(data); //now it an object
-        obj.data.push({query: queryText, GET_status: 'SUCESS', type: 'GET', createdAt: getDateTime()}); //add some data
+        obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'GET', status: 'SUCESS'}); //add some data
         json = JSON.stringify(obj); //convert it back to json
         fs.writeFile('log.json', json, 'utf8'); // write it back 
       }});
@@ -528,9 +528,7 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           var streets_filter = streets.filter(el=>el.street_name == textpoint);
           
           //get the street and merge it into linestring
-         var linemerge = Merge.lineMerge(streets_filter[0].street_geom);
-
-          console.log(linemerge);
+          var linemerge = Merge.lineMerge(streets_filter[0].street_geom);
 
           //Filter json places using the entering variables
           places_filter = places.filter(el=>el.street_name == textpoint);
