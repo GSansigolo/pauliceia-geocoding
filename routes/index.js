@@ -12,6 +12,7 @@
   var GeoJSON = require('geojson');
   var postgeo = require("postgeo");
   var js2xmlparser = require("js2xmlparser");
+  var fs = require('fs');
   var Search = require('../controllers/searchPoint');
   var Fix = require('../controllers/closestPoint');
   var Locate = require('../controllers/lineLocate');
@@ -20,6 +21,7 @@
   var webServiceAddress = process.env.PORT ? "http://localhost:"+process.env.PORT : "http://localhost:3000";
   const request = require('request');
   var assert = require('assert');
+  var obj = [];
 
 /*--------------------------------------------------+
 | Connection                                        |
@@ -340,8 +342,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
                     done(); 
 
                     //Stream results back one row at a time
-                    head.push("created_at: " + getDateTime());
-                    head.push("type: 'GET'");
+                    head.push({createdAt:  getDateTime(), type: 'GET'});
 
                     //Push Head
                       head.push(results);
@@ -352,8 +353,8 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
             } else {
 
               //Stream results back one row at a time
-              head.push("created_at: " + getDateTime());
-              head.push("type: 'GET'");
+              head.push({createdAt:  getDateTime(), type: 'GET'});
+              
 
               //Push Head
               head.push(results);
@@ -472,12 +473,34 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
     //Check if only one result was found
     if (places_filter.length == 1){
 
+
+      //--------------------------
+      //      Log
+      //-------------------------
+
+      //build the serch query
+      var queryText = textpoint + ', ' + number + ', ' + year;
+
+      //use the fs to read the log
+      fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
+        if (err){
+            console.log(err);
+        } else {
+        
+        //append the new log into log.json
+        obj = JSON.parse(data); //now it an object
+        obj.data.push({query: queryText, GET_status: 'SUCESS', type: 'GET', createdAt: getDateTime()}); //add some data
+        json = JSON.stringify(obj); //convert it back to json
+        fs.writeFile('log.json', json, 'utf8'); // write it back 
+      }});
+
+      //-------------------------
+
       //Organize the Json results
       results.push({name: places_filter[0].place_name, geom: places_filter[0].place_geom});
 
       //Write header
-      head.push("created_at: " + getDateTime());
-      head.push("type: 'GET'");
+      head.push({createdAt:  getDateTime(), type: 'GET'});
 
       //Push Head
       head.push(results);
@@ -536,8 +559,8 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           results.push({geometry: streets_filter[0].street_geom, nf: p1[0].place_number, nl: p2[0].place_number, num: parseInt(number)});
 
           //Write header
-          head.push("created_at: " + getDateTime());
-          head.push("type: 'GET'");
+          head.push({createdAt:  getDateTime(), type: 'GET'});
+          
 
           //Push Head
           head.push(results);
@@ -545,12 +568,73 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           //Return the json with results
           return res.json(head);
               
-    }  
+          }  
         });
       }
     }
   });
 });
+
+/*-----------------------------------------------+
+| Log                                            |
++-----------------------------------------------*/
+router.get('/log', (req, res, next) => {
+  
+  const head = []
+
+  //use the fs to read the log
+  fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
+  if (err){
+    console.log(err);
+  } else {
+        
+  //append the new log into log.json
+  obj = JSON.parse(data); //now it an object
+  
+  //Write header
+  head.push({createdAt:  getDateTime(), type: 'GET'});
+
+  //Push Head
+  head.push(obj);
+          
+  //Return the json with results
+  return res.json(head);
+
+  }});
+});
+
+/*-----------------------------------------------+
+| Log--clean                                     |
++-----------------------------------------------*/
+router.get('/log--clean', (req, res, next) => {
+  
+  const head = []
+
+  //use the fs to read the log
+  fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
+  if (err){
+    console.log(err);
+  } else {
+        
+  //append the new log into log.json
+  obj = JSON.parse(data); //now it an object
+  obj = ({"data":[]}); //add some data
+  json = JSON.stringify(obj); //convert it back to json
+  fs.writeFile('log.json', json, 'utf8'); // write it back 
+
+  //Write header
+  head.push({createdAt:  getDateTime(), type: 'GET'});
+
+  //Push Head
+  head.push({Results: "Done"});
+          
+  //Return the json with results
+  return res.json(head);
+
+  }});
+});
+
+
 
 /*---------------------------------------------------+
 | Console Log                                        |

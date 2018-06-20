@@ -20,6 +20,7 @@
     "jade": "^1.11.0",
     "js-string-escape": "^1.0.1",
     "js2xmlparser": "^3.0.0",
+    "jsonfile": "^4.0.0",
     "mocha": "^3.5.3",
     "morgan": "^1.9.0",
     "pg": "^6.4.2",
