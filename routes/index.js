@@ -525,15 +525,15 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           //Filter the json places to get the p1
           var p1 = places_filter.filter(el=>el.place_number < number);
           p1 = p1.filter(el=>el.place_number == Math.min.apply(Math, numbers));
-          p1 = p1[0].the_geom;
+          p1_geom = p1[0].the_geom;
 
           //Filter the json places to get the p2
           var p2 = places_filter.filter(el=>el.place_number > number);
           p2 = p2.filter(el=>el.place_number == Math.max.apply(Math, numbers));
-          p2 = p2[0].the_geom;
+          p2_geom = p2[0].the_geom;
 
           //Organize the Json results
-          results.push({name: 'Point Geolocated'});
+          results.push({geometry: streets_filter[0].street_geom, nf: p1[0].place_number, nl: p2[0].place_number, num: parseInt(number)});
 
           //Write header
           head.push("created_at: " + getDateTime());
