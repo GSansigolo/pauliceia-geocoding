@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+	<meta charset="utf-8"/>
+	<html>
+	<head>
+		<script src="closestPoint.js"></script>
+	</head>
+		<body>
+			<h2>HTML Test - ClosestPoint</h2>
+			  line:<br>
+			  <input type="text" name="line" id="lineinput" value="MULTILINESTRING((1 1,2 2,3 3,4 4,5 5))">
+			  <br>
+			  point:<br>
+			  <input type="text" name="point" id="pointinput" value="POINT(4 2)">
+			  <br><br>
+			  <input type="submit" value="Submit" onclick="closestPoint(document.getElementById('lineinput').value, document.getElementById('pointinput').value);">
+		</body>
+	</html>

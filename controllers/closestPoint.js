@@ -1,61 +1,62 @@
-/*--------------------------------------------------+
-| Connection                                        |
-+-------------------------------------------------*/
-const pg = require('pg');
-
-const db_user = process.env.DATABASE_USER || "postgres";
-const db_pass = process.env.DATABASE_PASS || "teste";
-const db_host = process.env.DATABASE_HOST || "localhost";
-const db_name = process.env.DATABASE_NAME || "db_pauliceia";
-
-const connectionString = {
-  host: db_host,
-  port: 5432,
-  user: db_user,
-  database: db_name,
-  password: db_pass
-}
-
-const client = new pg.Client(connectionString);
-
-client.connect();
-
 //line -> geometria do rua
 //point-> geometria do ponto
 
-exports.closestPoint = function(line, point){ 
+//exports.closestPoint = function(line, point){
+function closestPoint(line, point){
 
-    //Results Variable
-    var results;
-  
-    //Get a Postgres client from the connection pool
-    pg.connect(connectionString, (err, client, done) => {
-      
-      //Handle connection errors
-      if(err) {
-        done();
-        console.log(err);
-        return res.status(500).json({success: false, data: err});
-      }
-  
-    //Build the SQL Query
-    const SQL_Query_Select_List = "select ST_ClosestPoint($1, $2);";
+    //tratar a string da geometria linha
+    var geomLine = line.substr(line.indexOf("(")+2);
+    geomLine = geomLine.substr(0,geomLine.indexOf(")"));
 
-    //Execute SQL Query
-    const query = client.query(SQL_Query_Select_List,[line, point]);
-  
-      //Push Results
-      query.on('row', (row) => {
-        results = row
-      });
-  
-      //After all data is returned, close connection and return results
-      query.on('end', () => {
-        done();
-  
-      //Resuts
-      return results;
-  
-    });
-  }); 
+    //tratar a string da geometria ponto
+    var geomPoint = point.substr(point.indexOf("(")+1);
+    geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
+
+    //variaveis globais
+    var distances = [];
+    var distTotal = 0;
+    var minDistance = 1000;
+
+    //divide o endereço em x y
+    var coordinates = geomPoint.split(' ');
+
+    //divide a rua em grupo de pontos
+    var pointsLine = geomLine.split(',');
+     
+    //loop para somar as distancias
+    for (var i = 1; i < pointsLine.length; i++) {
+
+        //insere as distancias no array distances
+        distances[i] = getDistance(pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]);
+        distTotal = distTotal + distances[i];
+
+        //descobre onde se encontre o endereço buscados
+        if (getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]) < minDistance) {
+        	minDistance = getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1])
+        	index = i;
+        }
+    }
+
+    //declara variavel P1
+    var P1 = [];
+    P1.x = geomPoint.split(' ')[0];
+    P1.y = geomPoint.split(' ')[1];
+    
+    //declara variavel P1
+    var P2 = [];
+    P2.x = pointsLine[(index-1)].split(' ')[0]
+    P2.y = pointsLine[(index-1)].split(' ')[1]
+    
+    //declara variavel P1
+    var P3 = [];
+    P3.x = pointsLine[(index)].split(' ')[0]
+    P3.y = pointsLine[(index)].split(' ')[1]
+    
+    //usar triangulo para descobrir a altura
+
+}
+
+//FUNÇÕES AUXILIARES
+var getDistance = function(x1, y1, x2, y2){
+    return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 }
