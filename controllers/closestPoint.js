@@ -53,7 +53,20 @@ function closestPoint(line, point){
     P3.y = pointsLine[(index)].split(' ')[1]
     
     //usar triangulo para descobrir a altura
-
+    
+    /*Vector AP = P - A:
+    Vector AB = B - A;
+    float ab2 = AB.x*AB.x + AB.y*AB.y;
+    float ap_ab = AP.x*AB.x + AP.y*AB.y;
+    float t = ap_ab / ab2;
+    if (segmentClamp)
+    {
+         if (t < 0.0f) t = 0.0f;
+         else if (t > 1.0f) t = 1.0f;
+    }
+    Vector Closest = A + AB * t;
+    return Closest;*/
+    
 }
 
 //FUNÇÕES AUXILIARES
