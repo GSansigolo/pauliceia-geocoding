@@ -38,22 +38,57 @@ function closestPoint(line, point){
     }
 
     //declara variavel P1
-    var P1 = [];
-    P1.x = geomPoint.split(' ')[0];
-    P1.y = geomPoint.split(' ')[1];
+    var P = [];
+    P.x = geomPoint.split(' ')[0];
+    P.y = geomPoint.split(' ')[1];
+    
+    console.log('P: '+P.x +' '+P.y);
+
+    //declara variavel P1
+    var A = [];
+    A.x = pointsLine[(index-1)].split(' ')[0]
+    A.y = pointsLine[(index-1)].split(' ')[1]
+
+    console.log('A: '+A.x +' '+A.y);
     
     //declara variavel P1
-    var P2 = [];
-    P2.x = pointsLine[(index-1)].split(' ')[0]
-    P2.y = pointsLine[(index-1)].split(' ')[1]
+    var B = [];
+    B.x = pointsLine[(index)].split(' ')[0]
+    B.y = pointsLine[(index)].split(' ')[1]
+
+    console.log('B: '+B.x +' '+B.y);
     
-    //declara variavel P1
-    var P3 = [];
-    P3.x = pointsLine[(index)].split(' ')[0]
-    P3.y = pointsLine[(index)].split(' ')[1]
+    //
     
-    //usar triangulo para descobrir a altura
+    var AP = [];
+    AP.x = P.x - A.x;
+    AP.y = P.y - A.y;
+
+    console.log('AP: '+AP.x +' '+AP.y);
+
+    var AB = [];
+    AB.x = B.x - A.x; 
+    AB.y = B.y - A.y;
+
+    console.log('AB: '+AB.x+' '+AB.y);
     
+    var AB2 = AB.x*AB.x + AB.y*AB.y;
+    var AP_AB = AP.x*AB.x + AP.y*AB.y;
+    var t = AP_AB / AB2;
+
+    console.log('AB2: '+AB2);
+    console.log('AP_AB: '+AP_AB);
+    console.log('t: '+t);
+    
+    var closestPoint = [];
+    //closestPoint.x = A.x + AB.x * t;
+    //closestPoint.y = A.y + AB.y * t;
+    
+    closestPoint.x = (A.x + AB.x * t)/10;
+    closestPoint.y = (A.y + AB.y * t)/10;
+
+    console.log(closestPoint);
+
     /*
     Vector A, Vector B, Vector P,
     
