@@ -54,7 +54,10 @@ function closestPoint(line, point){
     
     //usar triangulo para descobrir a altura
     
-    /*Vector AP = P - A:
+    /*
+    Vector A, Vector B, Vector P,
+    
+    Vector AP = P - A:
     Vector AB = B - A;
     float ab2 = AB.x*AB.x + AB.y*AB.y;
     float ap_ab = AP.x*AB.x + AP.y*AB.y;
@@ -66,7 +69,7 @@ function closestPoint(line, point){
     }
     Vector Closest = A + AB * t;
     return Closest;*/
-    
+
 }
 
 //FUNÇÕES AUXILIARES
