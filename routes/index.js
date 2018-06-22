@@ -1,3 +1,5 @@
+import { start } from 'repl';
+
 /* ----------------------------------------------------------------------------+
 |                                                                              |
 |                 Pauliceia Geoocoding API - Gabriel Sansigolo                 |
@@ -473,26 +475,25 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
     //Check if only one result was found
     if (places_filter.length == 1){
 
-
       //--------------------------
       //      Log
       //-------------------------
 
-      //build the serch query
-      var queryText = textpoint + ', ' + number + ', ' + year;
+        //build the serch query
+        var queryText = textpoint + ', ' + number + ', ' + year;
 
-      //use the fs to read the log
-      fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
-        if (err){
-            console.log(err);
-        } else {
-        
-        //append the new log into log.json
-        obj = JSON.parse(data); //now it an object
-        obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'GET', status: 'SUCESS'}); //add some data
-        json = JSON.stringify(obj); //convert it back to json
-        fs.writeFile('log.json', json, 'utf8'); // write it back 
-      }});
+        //use the fs to read the log
+        fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
+          if (err){
+              console.log(err);
+          } else {
+          
+            //append the new log into log.json
+            obj = JSON.parse(data); //now it an object
+            obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geolocation', status: 'SUCESS'}); //add some data
+            json = JSON.stringify(obj); //convert it back to json
+            fs.writeFile('log.json', json, 'utf8'); // write it back 
+        }});
 
       //-------------------------
 
@@ -553,19 +554,88 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           p2 = p2.filter(el=>el.place_number == Math.max.apply(Math, numbers));
           p2_geom = p2[0].the_geom;
 
-          //Organize the Json results
-          results.push({geometry: streets_filter[0].street_geom, nf: p1[0].place_number, nl: p2[0].place_number, num: parseInt(number)});
+          //check if the point can be geolocated
+          if(p2.length == 0 || p1.length == 0){
 
-          //Write header
-          head.push({createdAt:  getDateTime(), type: 'GET'});
-          
+             //Result
+             results.push({alert: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")", help: "Make sure the search is spelled correctly. (street, number, year)"});
+            
+            //--------------------------
+            //      Log
+            //-------------------------
 
-          //Push Head
-          head.push(results);
+              //build the serch query
+              var queryText = textpoint + ', ' + number + ', ' + year;
 
-          //Return the json with results
-          return res.json(head);
-              
+              //use the fs to read the log
+              fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
+                if (err){
+                    console.log(err);
+                } else {
+                
+                  //append the new log into log.json
+                 obj = JSON.parse(data); //now it an object
+                 obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'FAIL'}); //add some data
+                 json = JSON.stringify(obj); //convert it back to json
+                 fs.writeFile('log.json', json, 'utf8'); // write it back 
+              }});
+
+            //-------------------------
+         
+          } else {
+
+            //get the startfraction
+            var startfraction = Locate.lineLocate(linemerge, p1_geom);
+
+            //get the endfraction
+            var endfraction = Locate.lineLocate(linemerge, p2_geom);
+
+            //get the geom of lineSubString
+            var sublinestring = Create.lineSubstring(linemerge, startfraction, endfraction);
+            sublinestring = "LINESTRING("+ p1_geom + sublinestring + p2_geom +")";
+
+            //get the four variable to geocode
+            var geometry = sublinestring;
+            var nl =  p2[0].place_number;
+            var nf = p1[0].place_number;
+            var num = parseInt(number)
+
+            //Organize the Json results
+            results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, nf, nl, num).point)+")"});
+            
+            //--------------------------
+            //      Log
+            //-------------------------
+
+              //build the serch query
+              var queryText = textpoint + ', ' + number + ', ' + year;
+
+              //use the fs to read the log
+              fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
+                if (err){
+                    console.log(err);
+                } else {
+                
+                  //append the new log into log.json
+                  obj = JSON.parse(data); //now it an object
+                  obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'SUCESS'}); //add some data
+                  json = JSON.stringify(obj); //convert it back to json
+                  fs.writeFile('log.json', json, 'utf8'); // write it back 
+              }});
+
+            //-------------------------
+
+            }   
+
+            //Write header
+            head.push({createdAt:  getDateTime(), type: 'GET'});
+            
+            //Push Head
+            head.push(results);
+
+            //Return the json with results
+            return res.json(head);
+            
           }  
         });
       }
@@ -631,8 +701,6 @@ router.get('/log--clean', (req, res, next) => {
 
   }});
 });
-
-
 
 /*---------------------------------------------------+
 | Console Log                                        |

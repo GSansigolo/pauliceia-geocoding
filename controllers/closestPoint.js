@@ -1,8 +1,8 @@
 //line -> geometria do rua
 //point-> geometria do ponto
 
-//exports.closestPoint = function(line, point){
-function closestPoint(line, point){
+exports.closestPoint = function(line, point){
+//function closestPoint(line, point){
 
     //tratar a string da geometria linha
     var geomLine = line.substr(line.indexOf("(")+2);
@@ -41,37 +41,39 @@ function closestPoint(line, point){
     var P = [];
     P.x = geomPoint.split(' ')[0];
     P.y = geomPoint.split(' ')[1];
-    
-    console.log('P: '+P.x +' '+P.y);
 
     //declara variavel A
     var A = [];
     A.x = pointsLine[(index-1)].split(' ')[0];
     A.y = pointsLine[(index-1)].split(' ')[1];
 
-    console.log('A: '+A.x +' '+A.y);
     
     //declara variavel B
     var B = [];
     B.x = pointsLine[(index)].split(' ')[0];
     B.y = pointsLine[(index)].split(' ')[1];
-
-    console.log('B: '+B.x +' '+B.y);
     
-    var AP = getDistance(A.x, A.y, P.x, P.y);
-    console.log('AP: '+AP);
-   
-    var AC = (1/Math.sqrt(2)) * AP;
-    console.log('AC: '+AC);
-   
-    var AC2 = (1/Math.sqrt(2)) * AC;
-    console.log('AC2: '+AC2);
+    //declara variavel AP
+    var AP = [];
+    AP.x = P.x - A.x;
+    AP.y = P.y - A.y;
 
-    var closestPoint = [];
-    //closestPoint.x = parseFloat(A.x) - parseFloat(AC2);
-    //closestPoint.y = parseFloat(A.y) - parseFloat(AC2);
+    //declara variavel AB    
+    var AB = [];
+    AB.x = B.x - A.x;
+    AB.y = B.y - A.y;
 
-    console.log(closestPoint);
+    //declara variavel ab2, ap_ab e t
+    var ab2 = AB.x*AB.x + AB.y*AB.y;
+    var ap_ab = AP.x*AB.x + AP.y*AB.y;
+    var t = ap_ab / ab2;
+    
+    //calcula closestPoint usando primeiro ponto mais a distancia total vezes t
+    closestPoint.x = parseFloat(A.x) + parseFloat(AB.x) * parseFloat(t);
+    closestPoint.y = parseFloat(A.y) + parseFloat(AB.y) * parseFloat(t);
+
+    //alert("POINT("+closestPoint.x +" "+closestPoint.y+")");
+    return("POINT("+closestPoint.x +" "+closestPoint.y+")");
 
 }
 

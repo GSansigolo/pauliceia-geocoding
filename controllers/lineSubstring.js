@@ -2,8 +2,8 @@
 //startfraction-> porcentagem onde se inicia o trecho em relação a rua
 //endfraction-> porcentagem onde se termina o trecho em relação a rua
 
-//exports.lineSubstring = function(street, startfraction, endfraction){
-function lineSubstring(street, startfraction, endfraction){
+exports.lineSubstring = function(street, startfraction, endfraction){
+//function lineSubstring(street, startfraction, endfraction){
 
     //tratar a string da geometria linha
     var geomStreet = street.substr(street.indexOf("(")+2);
@@ -13,6 +13,7 @@ function lineSubstring(street, startfraction, endfraction){
     var pointsLine = geomStreet.split(',');
 
      //variaveis globais
+     var results = [];
      var distances = [];
      var frac = [];
      var index = 0;
@@ -28,7 +29,9 @@ function lineSubstring(street, startfraction, endfraction){
          //soma as distancias para criar o distTotal
          distTotal = distTotal + getDistance(pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]);
          
-        }
+    }
+    
+    distances[pointsLine.length] = distTotal;
 
     //loop para calcular frações
     for (var i = 0; i < distances.length; i++) {
@@ -46,36 +49,35 @@ function lineSubstring(street, startfraction, endfraction){
         //fração
         frac[i] = distPoint/distTotal;
     }
+    
+    frac[distances.length] = 1;
+    
     //loop para percorer as frações 
     for (var i = 0; i < distances.length; i++) {
+
+        //verifica o último ponto
+        if (frac[i] > endfraction){
+
+            //retorna resultado
+            return(results);
+            
+        } 
         
-        //verifica se a fração é a buscada
-        if (frac[i] == startfraction){
+        //verifica se o último ponto é o último
+        if (frac[i] == endfraction){
+
+            //retorna resultado
+            return(results);
             
+        }         
+
+        //busca o primeiro ponto
+        if (frac[i] > startfraction){
+
             //adiciona as coordenadas da fração buscada no resultado
-            results = pointsLine[(i)].split(' ')[0] + ' '+ pointsLine[(i)].split(' ')[1];
+            results.push(pointsLine[(i)].split(' ')[0] + ' '+ pointsLine[(i)].split(' ')[1]);
             
-            //loop para percorer o restante da linha
-            for (var j = i; j < distances.length; j++){
-
-                //checa se a fração é a segunda buscada
-                if (frac[j] == endfraction){
-
-                    //checa se estamos no último ponto
-                    if (j == distances.length-1){
-
-                        //adiciona o ultimo ponto ao resultado
-                        results = results +', '+ pointsLine[(j+1)].split(' ')[0] + ' '+ pointsLine[(j+1)].split(' ')[1];;
-                    }
-                    //retorn resultado
-                    alert('LINESTRING('+results+')')
-                    //return('LINESTRING('+results+')')
-                }
-
-                //adiciona ponto ao resultado
-                results = results +', '+ pointsLine[(j+1)].split(' ')[0] + ' '+ pointsLine[(j+1)].split(' ')[1];
-            }
-        }
+        } 
     }
 }
 
