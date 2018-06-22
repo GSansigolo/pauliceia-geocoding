@@ -59,24 +59,21 @@ exports.lineSubstring = function(street, startfraction, endfraction){
         if (frac[i] > endfraction){
 
             //retorna resultado
-            return(results);
-            
+            return(results + ", ");
         } 
         
         //verifica se o último ponto é o último
         if (frac[i] == endfraction){
-
+            
             //retorna resultado
             return(results);
-            
         }         
 
         //busca o primeiro ponto
         if (frac[i] > startfraction){
 
             //adiciona as coordenadas da fração buscada no resultado
-            results.push(pointsLine[(i)].split(' ')[0] + ' '+ pointsLine[(i)].split(' ')[1]);
-            
+            results.push(pointsLine[(i)].split(' ')[0] +' '+ pointsLine[(i)].split(' ')[1]);
         } 
     }
 }

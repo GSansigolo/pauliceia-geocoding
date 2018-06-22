@@ -4,6 +4,7 @@
 //num -> numero ponto desejado
 
 exports.getPoint = function(geometry, nf, nl, num){
+
     //validações dos dados
     if( isNaN(nf) || isNaN(nl) || isNaN(num) ) return { 
             point: null, error: "nf, nl and num are necessary be integers" 
@@ -42,7 +43,12 @@ exports.getPoint = function(geometry, nf, nl, num){
     var distDesired = distTotal*percNum;
 
     var indice = getInterval(distances, distDesired);    
-
+    
+    console.log('distDesired: '+ distDesired)
+    console.log('indice:' + indice)
+    console.log('points:' + points)
+    console.log('distances:' + distances)
+    
     return getRes(distDesired, indice, points, distances);
 }
 

@@ -3,9 +3,9 @@
 
 exports.lineLocate = function(line, point){
 //function lineLocate(line, point){
-    
+
     //tratar a string da geometria ponto
-    var geomPoint = closestPoint(line, point).substr(closestPoint(line, point).indexOf("(")+1);
+    var geomPoint = point.substr(point.indexOf("(")+1);
     geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
 
     //tratar a string da geometria linha
@@ -42,8 +42,8 @@ exports.lineLocate = function(line, point){
         //soma as distancias com a distancia entre o entre o ultimo ponto e ponto buscado
         distDesired = distDesired + getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[0].split(' ')[0], pointsLine[0].split(' ')[1]);
 
-        alert((distDesired)/(distTotal));
-        //return (distDesired)/(distTotal)
+        //alert((distDesired)/(distTotal));
+        return (distDesired)/(distTotal)
 
     }else{
     
@@ -53,7 +53,7 @@ exports.lineLocate = function(line, point){
             //insere as distancias no array 
             distDesired = distDesired + getDistance(pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]);
 
-            console.log(i+"-"+(i+1));
+            //console.log(i+"-"+(i+1));
         }
 
         //soma as distancias com a distancia entre o entre o ultimo ponto e ponto buscado
