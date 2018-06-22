@@ -31,8 +31,8 @@ function closestPoint(line, point){
         distTotal = distTotal + distances[i];
 
         //descobre onde se encontre o endereço buscados
-        if (getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]) < minDistance) {
-        	minDistance = getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1])
+        if (getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1]) < minDistance) {
+        	minDistance = getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1])
         	index = i;
         }
     }
@@ -46,63 +46,32 @@ function closestPoint(line, point){
 
     //declara variavel A
     var A = [];
-    A.x = pointsLine[(index-1)].split(' ')[0]
-    A.y = pointsLine[(index-1)].split(' ')[1]
+    A.x = pointsLine[(index-1)].split(' ')[0];
+    A.y = pointsLine[(index-1)].split(' ')[1];
 
     console.log('A: '+A.x +' '+A.y);
     
     //declara variavel B
     var B = [];
-    B.x = pointsLine[(index)].split(' ')[0]
-    B.y = pointsLine[(index)].split(' ')[1]
+    B.x = pointsLine[(index)].split(' ')[0];
+    B.y = pointsLine[(index)].split(' ')[1];
 
     console.log('B: '+B.x +' '+B.y);
     
-    //P = (4,2) 
-    //A = (2,2) 
-    //B = (3,3)
-    
-    var AP = [];
-    AP.x = P.x - A.x;
-    AP.y = P.y - A.y;
+    var AP = getDistance(A.x, A.y, P.x, P.y);
+    console.log('AP: '+AP);
+   
+    var AC = (1/Math.sqrt(2)) * AP;
+    console.log('AC: '+AC);
+   
+    var AC2 = (1/Math.sqrt(2)) * AC;
+    console.log('AC2: '+AC2);
 
-    console.log('AP: '+AP.x +' '+AP.y);
-
-    var AB = [];
-    AB.x = B.x - A.x; 
-    AB.y = B.y - A.y;
-
-    console.log('AB: '+AB.x+' '+AB.y);
-    
-    var AB2 = AB.x*AB.x + AB.y*AB.y;
-    var AP_AB = AP.x*AB.x + AP.y*AB.y;
-    var t = AP_AB / AB2;
-
-    console.log('AB2: '+AB2);
-    console.log('AP_AB: '+AP_AB);
-    console.log('t: '+t);
-    
     var closestPoint = [];
-    closestPoint.x = A.x + AB.x * t;
-    closestPoint.y = A.y + AB.y * t;
+    //closestPoint.x = parseFloat(A.x) - parseFloat(AC2);
+    //closestPoint.y = parseFloat(A.y) - parseFloat(AC2);
 
     console.log(closestPoint);
-
-    /*
-    Vector A, Vector B, Vector P,
-    
-    Vector AP = P - A:
-    Vector AB = B - A;
-    float ab2 = AB.x*AB.x + AB.y*AB.y;
-    float ap_ab = AP.x*AB.x + AP.y*AB.y;
-    float t = ap_ab / ab2;
-    if (segmentClamp)
-    {
-         if (t < 0.0f) t = 0.0f;
-         else if (t > 1.0f) t = 1.0f;
-    }
-    Vector Closest = A + AB * t;
-    return Closest;*/
 
 }
 
