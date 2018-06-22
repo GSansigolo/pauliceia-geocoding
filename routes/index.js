@@ -475,9 +475,9 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
     //Check if only one result was found
     if (places_filter.length == 1){
 
-      //--------------------------
-      //      Log
-      //-------------------------
+      /*--------------------+
+      | Log                 |
+      +--------------------*/
 
         //build the serch query
         var queryText = textpoint + ', ' + number + ', ' + year;
@@ -489,13 +489,13 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           } else {
           
             //append the new log into log.json
-            obj = JSON.parse(data); //now it an object
-            obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geolocation', status: 'SUCESS'}); //add some data
-            json = JSON.stringify(obj); //convert it back to json
-            fs.writeFile('log.json', json, 'utf8'); // write it back 
+            obj = JSON.parse(data); 
+            obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geolocation', status: 'SUCESS'});
+            json = JSON.stringify(obj); 
+            fs.writeFile('log.json', json, 'utf8'); 
         }});
 
-      //-------------------------
+      /*-------------------*/
 
       //Organize the Json results
       results.push({name: places_filter[0].place_name, geom: places_filter[0].place_geom});
@@ -511,9 +511,9 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
 
     } else {
 
-        //--------------------------
-        //      Geocode
-        //-------------------------
+      /*--------------------+
+      | Geocode             |
+      +--------------------*/
 
         //Set the url
         url = webServiceAddress + '/api/geocoding/streets';
@@ -558,11 +558,11 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           if(p2.length == 0 || p1.length == 0){
 
              //Result
-             results.push({alert: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")", help: "Make sure the search is spelled correctly. (street, number, year)"});
+             results.push({alert: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
             
-            //--------------------------
-            //      Log
-            //-------------------------
+            /*--------------------+
+            | Log                 |
+            +--------------------*/
 
               //build the serch query
               var queryText = textpoint + ', ' + number + ', ' + year;
@@ -573,14 +573,14 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
                     console.log(err);
                 } else {
                 
-                  //append the new log into log.json
-                 obj = JSON.parse(data); //now it an object
-                 obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'FAIL'}); //add some data
-                 json = JSON.stringify(obj); //convert it back to json
-                 fs.writeFile('log.json', json, 'utf8'); // write it back 
+                 //append the new log into log.json
+                 obj = JSON.parse(data);
+                 obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'FAIL'}); 
+                 json = JSON.stringify(obj); 
+                 fs.writeFile('log.json', json, 'utf8'); 
               }});
 
-            //-------------------------
+            /*-------------------*/
          
           } else {
 
@@ -603,9 +603,9 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
             //Organize the Json results
             results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, nf, nl, num).point)+")"});
             
-            //--------------------------
-            //      Log
-            //-------------------------
+            /*--------------------+
+            | Log                 |
+            +--------------------*/
 
               //build the serch query
               var queryText = textpoint + ', ' + number + ', ' + year;
@@ -617,13 +617,13 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
                 } else {
                 
                   //append the new log into log.json
-                  obj = JSON.parse(data); //now it an object
-                  obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'SUCESS'}); //add some data
-                  json = JSON.stringify(obj); //convert it back to json
-                  fs.writeFile('log.json', json, 'utf8'); // write it back 
+                  obj = JSON.parse(data);
+                  obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'SUCESS'}); 
+                  json = JSON.stringify(obj);
+                  fs.writeFile('log.json', json, 'utf8');
               }});
 
-            //-------------------------
+            /*-------------------*/
 
             }   
 
