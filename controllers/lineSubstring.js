@@ -59,7 +59,7 @@ exports.lineSubstring = function(street, startfraction, endfraction){
         if (frac[i] > endfraction){
 
             //retorna resultado
-            return(results + ", ");
+            return(results + ",");
         } 
         
         //verifica se o último ponto é o último

@@ -40,14 +40,10 @@ exports.getPoint = function(geometry, nf, nl, num){
 
     //porcentagem do numero e distancia que ele possue nessa rua
     var percNum = (num-nf)/(nl-nf);
+
     var distDesired = distTotal*percNum;
 
     var indice = getInterval(distances, distDesired);    
-    
-    console.log('distDesired: '+ distDesired)
-    console.log('indice:' + indice)
-    console.log('points:' + points)
-    console.log('distances:' + distances)
     
     return getRes(distDesired, indice, points, distances);
 }

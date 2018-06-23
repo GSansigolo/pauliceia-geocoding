@@ -2,8 +2,7 @@
 //point-> geometria do ponto
 
 exports.lineLocate = function(line, point){
-//function lineLocate(line, point){
-
+    
     //tratar a string da geometria ponto
     var geomPoint = point.substr(point.indexOf("(")+1);
     geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
@@ -35,31 +34,30 @@ exports.lineLocate = function(line, point){
         	index = i;
         }
     }
-
+        
     //checa se o dado se encontra no primeiro intervale
     if (index==1){
 
         //soma as distancias com a distancia entre o entre o ultimo ponto e ponto buscado
         distDesired = distDesired + getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[0].split(' ')[0], pointsLine[0].split(' ')[1]);
-
-        //alert((distDesired)/(distTotal));
+       
+        //retorna o resultado
         return (distDesired)/(distTotal)
 
     }else{
     
         //loop para somar a distancia entre o ponto inicial e o ponto procurado
-        for (var i = 1; i < index+1; i++) {
+        for (var i = 1; i < index; i++) {
             
             //insere as distancias no array 
             distDesired = distDesired + getDistance(pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]);
 
-            //console.log(i+"-"+(i+1));
         }
 
         //soma as distancias com a distancia entre o entre o ultimo ponto e ponto buscado
-        distDesired = distDesired + getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[index].split(' ')[0], pointsLine[index].split(' ')[1]);
-
-        //alert((distDesired)/(distTotal));
+        distDesired = distDesired + getDistance(geomPoint.split(' ')[0], geomPoint.split(' ')[1], pointsLine[index-1].split(' ')[0], pointsLine[index-1].split(' ')[1]);
+        
+        //retorna o resultado
         return (distDesired)/(distTotal)
     }
 

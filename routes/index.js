@@ -526,15 +526,13 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           //Filter json streets using the entering variables
           var streets_filter = streets.filter(el=>el.street_name == textpoint);
 
-          console.log("linemerge: "+ streets_filter[0].street_geom);
-
           //get the street and merge it into linestring
           var linemerge = (streets_filter[0].street_geom);
 
           //Filter json places using the entering variables
           places_filter = places.filter(el=>el.street_name == textpoint);
           //places_filter = places_filter.filter(el=>el.place_lastyear >= year);
-          //places_filter = places_filter.filter(el=>el.place_firstyear <= year);
+          places_filter = places_filter.filter(el=>el.place_firstyear <= year);
             
           //Declare array with numbers
           const numbers = [];
@@ -543,8 +541,6 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           for(var i = 0; i < places_filter.length; i++){
               numbers[i] = places_filter[i].place_number;
           }
-
-          console.log("numbers:" + numbers)
 
           //Filter the json places to get the p1
           var p1 = places_filter.filter(el=>el.place_number < number);
@@ -555,9 +551,8 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
             numbers_p1[i] = p1[i].place_number;
           }
 
+          //filter the p1
           p1 = p1.filter(el=>el.place_number == Math.max.apply(Math, numbers_p1));
-          console.log("p1_num: " +p1[0].place_number);
-          //console.log("p1_geom: " +p1_geom);
 
           //Filter the json places to get the p2
           var p2 = places_filter.filter(el=>el.place_number > number);
@@ -568,9 +563,8 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
             numbers_p2[i] = p2[i].place_number;
           }
 
+          //filter the p2
           p2 = p2.filter(el=>el.place_number == Math.min.apply(Math, numbers_p2));
-          console.log("p2_num: " +p2[0].place_number);
-          //console.log("p2_geom: " + p2_geom );
 
           //check if the point can be geolocated
           if(p2.length == 0 || p1.length == 0){
@@ -602,44 +596,48 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
          
           } else {
 
-            //define the geometry of P1 and P2
-            p1_geom = p1[0].place_geom;
-            p2_geom = p2[0].place_geom;
+            //set the geometry of the P1 and P2
+            var p1_geom = p1[0].place_geom;
+            var p2_geom = p2[0].place_geom;
             
+            console.log(p1_geom+", "+p2_geom);
+
             //get the startfraction
             var startfraction = Locate.lineLocate(linemerge, p1_geom);
-            console.log("startfraction:" + startfraction);
 
             //get the endfraction
             var endfraction = Locate.lineLocate(linemerge, p2_geom);
-            console.log("endfraction:" + endfraction);
-            
-            //get the geom of lineSubString
-            var sublinestring = Create.lineSubstring(linemerge, startfraction, endfraction);
+        
+            //check if end is bigger then start
+            if (endfraction > startfraction){
+
+              //get the geom of lineSubString
+              var sublinestring = Create.lineSubstring(linemerge, startfraction, endfraction);
+            } else {
+
+              //get the geom of lineSubString
+              var sublinestring = Create.lineSubstring(linemerge, endfraction, startfraction);
+            }
             
             //take the geom number of p1_geom
             p1_geom = p1_geom.substr(p1_geom.indexOf("(")+1);
             p1_geom =p1_geom.substr(0,p1_geom.indexOf(")"));
-            p1_geom = p1_geom +", ";
+            p1_geom = p1_geom +",";
 
             //take the geom number of p2_geom
             p2_geom = p2_geom.substr(p2_geom.indexOf("(")+1);
             p2_geom = p2_geom.substr(0,p2_geom.indexOf(")"));
 
             //build the street geom
-            var geometry  = ("LINESTRING("+ p1_geom + sublinestring + p2_geom +")");
-            console.log("sublinestring:" + geometry);
-            
+            var geometry  = ("MULTILINESTRING(("+ p1_geom + sublinestring + p2_geom +"))");
+           
             //get the four variable to geocode
             var nl =  p2[0].place_number;
             var nf = p1[0].place_number;
             var num = parseInt(number)
-            console.log("getPoint: "+ geometry+", "+nf+", "+nl+", "+num);
             
-            console.log(Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)));
-
             //Organize the Json results
-            results.push({name: "Point Geolocated", geom: ("POINT("+"a"+")")});
+            results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")")});
             
             /*--------------------+
             | Log                 |
