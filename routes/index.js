@@ -532,8 +532,8 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           //Filter json places using the entering variables
           places_filter = places.filter(el=>el.street_name == textpoint);
           //places_filter = places_filter.filter(el=>el.place_lastyear >= year);
-          places_filter = places_filter.filter(el=>el.place_firstyear <= year);
-            
+          //places_filter = places_filter.filter(el=>el.place_firstyear <= year);
+
           //Declare array with numbers
           const numbers = [];
 
@@ -544,11 +544,25 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
 
           //Filter the json places to get the p1
           var p1 = places_filter.filter(el=>el.place_number < number);
+
+          //define array numbers 1
           var numbers_p1 = [];
           
           //Loop to fill the array numbers
           for(var i = 0; i < p1.length; i++){
-            numbers_p1[i] = p1[i].place_number;
+            
+            //Check if the number is even if that so append it to the array numbers
+            if(number%2 == 0){
+              if(p1[i].place_number%2 == 0){
+                numbers_p1[i] = p1[i].place_number;
+              }
+
+            //Check if the number is odd if that so append it to the array numbers
+            } else {
+              if(p1[i].place_number%2 != 0){
+                numbers_p1[i] = p1[i].place_number;
+              }
+            }
           }
 
           //filter the p1
@@ -556,18 +570,32 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
 
           //Filter the json places to get the p2
           var p2 = places_filter.filter(el=>el.place_number > number);
+
+          //define array numbers 1-
           var numbers_p2 = [];
 
           //Loop to fill the array numbers
           for(var i = 0; i < p2.length; i++){
-            numbers_p2[i] = p2[i].place_number;
+            
+            //Check if the number is even if that so append it to the array numbers
+            if(number%2 == 0){
+              if(p2[i].place_number%2 == 0){
+                numbers_p2[i] = p2[i].place_number;
+              }
+
+            //Check if the number is odd if that so append it to the array numbers
+            } else {
+              if(p2[i].place_number%2 != 0){
+                numbers_p2[i] = p2[i].place_number;
+              }
+            }
           }
 
           //filter the p2
           p2 = p2.filter(el=>el.place_number == Math.min.apply(Math, numbers_p2));
 
           //check if the point can be geolocated
-          if(p2.length == 0 || p1.length == 0){
+          if(p2.length != 1 || p1.length != 1){
 
              //Result
              results.push({alert: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
@@ -599,8 +627,6 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
             //set the geometry of the P1 and P2
             var p1_geom = p1[0].place_geom;
             var p2_geom = p2[0].place_geom;
-            
-            console.log(p1_geom+", "+p2_geom);
 
             //get the startfraction
             var startfraction = Locate.lineLocate(linemerge, p1_geom);
