@@ -7,6 +7,8 @@
 /*--------------------------------------------------+
 | Var                                               |
 +--------------------------------------------------*/
+  var webServiceAddress = process.env.PORT ? "http://localhost:"+process.env.PORT : "http://localhost:3000";
+  //var webServiceAddress = "http://pauliceia.dpi.inpe.br";
   var express = require('express');
   var router = express.Router();
   var GeoJSON = require('geojson');
@@ -18,7 +20,6 @@
   var Locate = require('../controllers/lineLocate');
   var Merge = require('../controllers/lineMerge');
   var Create = require('../controllers/lineSubstring');
-  var webServiceAddress = process.env.PORT ? "http://localhost:"+process.env.PORT : "http://localhost:3000";
   const request = require('request');
   var assert = require('assert');
   var obj = [];
@@ -118,7 +119,7 @@ router.get('/placeslist', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by b.name;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -224,7 +225,7 @@ router.get('/streets', (req, res, next) => {
 /*--------------------------------------------------+
 | Geolocation                                       |
 +--------------------------------------------------*/
-router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {    
+router.get('/geolocation/:textpoint,:number,:year/json/old', (req, res, next) => {    
 
   //Results Variables
   const results = [];
@@ -440,7 +441,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 /*--------------------------------------------------+
 | New Geolocation                                   |
 +--------------------------------------------------*/
-router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) => {
+router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
   //Results variables
   const results = [];
@@ -532,7 +533,7 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
           //Filter json places using the entering variables
           places_filter = places.filter(el=>el.street_name == textpoint);
           //places_filter = places_filter.filter(el=>el.place_lastyear >= year);
-          //places_filter = places_filter.filter(el=>el.place_firstyear <= year);
+          places_filter = places_filter.filter(el=>el.place_firstyear <= year);
 
           //Declare array with numbers
           const numbers = [];
@@ -547,20 +548,23 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
 
           //define array numbers 1
           var numbers_p1 = [];
-          
+          var j = 0;
+
           //Loop to fill the array numbers
           for(var i = 0; i < p1.length; i++){
             
             //Check if the number is even if that so append it to the array numbers
             if(number%2 == 0){
               if(p1[i].place_number%2 == 0){
-                numbers_p1[i] = p1[i].place_number;
+                numbers_p1[j] = p1[i].place_number;
+                j++;
               }
 
             //Check if the number is odd if that so append it to the array numbers
             } else {
               if(p1[i].place_number%2 != 0){
-                numbers_p1[i] = p1[i].place_number;
+                numbers_p1[j] = p1[i].place_number;
+                j++;
               }
             }
           }
@@ -573,6 +577,7 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
 
           //define array numbers 1-
           var numbers_p2 = [];
+          j = 0;
 
           //Loop to fill the array numbers
           for(var i = 0; i < p2.length; i++){
@@ -580,17 +585,19 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
             //Check if the number is even if that so append it to the array numbers
             if(number%2 == 0){
               if(p2[i].place_number%2 == 0){
-                numbers_p2[i] = p2[i].place_number;
+                numbers_p2[j] = p2[i].place_number;
+                j++;
               }
 
             //Check if the number is odd if that so append it to the array numbers
             } else {
               if(p2[i].place_number%2 != 0){
-                numbers_p2[i] = p2[i].place_number;
+                numbers_p2[j] = p2[i].place_number;
+                j++;
               }
             }
           }
-
+        
           //filter the p2
           p2 = p2.filter(el=>el.place_number == Math.min.apply(Math, numbers_p2));
 
@@ -634,29 +641,39 @@ router.get('/geolocation/:textpoint,:number,:year/json/new', (req, res, next) =>
             //get the endfraction
             var endfraction = Locate.lineLocate(linemerge, p2_geom);
         
+
             //check if end is bigger then start
             if (endfraction > startfraction){
 
               //get the geom of lineSubString
               var sublinestring = Create.lineSubstring(linemerge, startfraction, endfraction);
+                  
             } else {
 
               //get the geom of lineSubString
               var sublinestring = Create.lineSubstring(linemerge, endfraction, startfraction);
+              
             }
             
             //take the geom number of p1_geom
             p1_geom = p1_geom.substr(p1_geom.indexOf("(")+1);
             p1_geom =p1_geom.substr(0,p1_geom.indexOf(")"));
-            p1_geom = p1_geom +",";
 
             //take the geom number of p2_geom
             p2_geom = p2_geom.substr(p2_geom.indexOf("(")+1);
             p2_geom = p2_geom.substr(0,p2_geom.indexOf(")"));
+            
+            if (sublinestring == ','){
 
-            //build the street geom
-            var geometry  = ("MULTILINESTRING(("+ p1_geom + sublinestring + p2_geom +"))");
-           
+              //build the street geom
+              var geometry  = ("MULTILINESTRING(("+ p1_geom+","+p2_geom +"))");
+
+            }else{
+              
+              //build the street geom
+              var geometry  = ("MULTILINESTRING(("+ p1_geom+","+sublinestring + p2_geom +"))");
+            }
+            
             //get the four variable to geocode
             var nl =  p2[0].place_number;
             var nf = p1[0].place_number;

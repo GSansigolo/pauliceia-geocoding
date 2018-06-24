@@ -22,7 +22,7 @@ exports.lineSubstring = function(street, startfraction, endfraction){
 
      //loop para somar as distancias e 
      for (var i = 1; i < pointsLine.length; i++) {
- 
+
          //insere as distancias no array distances
          distances[i-1] = getDistance(pointsLine[(i-1)].split(' ')[0], pointsLine[(i-1)].split(' ')[1], pointsLine[(i)].split(' ')[0], pointsLine[(i)].split(' ')[1]);
          
@@ -31,7 +31,7 @@ exports.lineSubstring = function(street, startfraction, endfraction){
          
     }
     
-    distances[pointsLine.length] = distTotal;
+    distances[pointsLine.length-1] = distTotal;
 
     //loop para calcular frações
     for (var i = 0; i < distances.length; i++) {
@@ -49,9 +49,7 @@ exports.lineSubstring = function(street, startfraction, endfraction){
         //fração
         frac[i] = distPoint/distTotal;
     }
-    
-    frac[distances.length] = 1;
-    
+
     //loop para percorer as frações 
     for (var i = 0; i < distances.length; i++) {
 
