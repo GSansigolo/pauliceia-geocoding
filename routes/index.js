@@ -398,8 +398,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
     urlList.push(url);
     textList.push(jsonObject[j][content]);
   }
-
-
+ 
   //Push all results
   for (i in urlList) {
     request(urlList[i], function (error, response, body) {
@@ -407,9 +406,9 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 
         //recive the data from the get call
         var bodyjson = JSON.parse(body);
-    
+
         //handle the recived geom
-        var geomPoint = bodyjson[2][0].geom.substr(bodyjson[2][0].geom.indexOf("(")+1);
+        var geomPoint = bodyjson[1][0].geom.substr(bodyjson[1][0].geom.indexOf("(")+1);
         geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
 
         //build the coordinates (x, y)
@@ -526,7 +525,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
           //Filter json streets using the entering variables
           var streets_filter = streets.filter(el=>el.street_name == textpoint);
-
+          
           //get the street and merge it into linestring
           var linemerge = (streets_filter[0].street_geom);
 
