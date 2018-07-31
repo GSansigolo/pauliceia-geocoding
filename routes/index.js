@@ -53,7 +53,7 @@ function getJsonUrl(url1) {
   request(url1, function (error, response, body) {
     if (!error) {
       var bodyjson = JSON.parse(body);
-      console.log(bodyjson[2][0].geom);
+      //console.log(bodyjson[2][0].geom);
       return bodyjson[2][0].geom
       } 
   });
@@ -407,16 +407,30 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
         //recive the data from the get call
         var bodyjson = JSON.parse(body);
 
-        //handle the recived geom
-        var geomPoint = bodyjson[1][0].geom.substr(bodyjson[1][0].geom.indexOf("(")+1);
-        geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
+        if (bodyjson[1][0].alert == "Point not found"){
 
-        //build the coordinates (x, y)
-        var x = parseFloat(geomPoint.split(' ')[0]);
-        var y = parseFloat(geomPoint.split(' ')[1]);
+          //build the coordinates (x, y)
+          var x = 0;
+          var y = 0;
 
-        //Push
-        results.push({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
+          //Push
+          results.push({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
+
+
+        } else {
+
+          //handle the recived geom
+          var geomPoint = bodyjson[1][0].geom.substr(bodyjson[1][0].geom.indexOf("(")+1);
+          geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
+
+          //build the coordinates (x, y)
+          var x = parseFloat(geomPoint.split(' ')[0]);
+          var y = parseFloat(geomPoint.split(' ')[1]);
+
+          //Push
+          results.push({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
+          
+      }
 
       //Count
       k=k+1;
