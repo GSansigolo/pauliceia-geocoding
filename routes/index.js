@@ -407,7 +407,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
         //recive the data from the get call
         var bodyjson = JSON.parse(body);
 
-        if (bodyjson[1][0].alert != "Point not found"){
+        if (bodyjson[1][0].name != "Point not found"){
 
           //handle the recived geom
           var geomPoint = bodyjson[1][0].geom.substr(bodyjson[1][0].geom.indexOf("(")+1);
@@ -419,7 +419,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 
           //Push
           results.push({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
-          
+          console.log({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
         }
 
       //Count
@@ -476,7 +476,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
     if (places_filter.length == 0){
 
       //Result
-      results.push({alert: "Point not found 1", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
+      results.push({name: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
       
       /*--------------------+
       | Log                 |
@@ -649,7 +649,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
           if(p2.length != 1 || p1.length != 1){
 
              //Result
-             results.push({alert: "Point not found 2", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
+             results.push({name: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
             
             /*--------------------+
             | Log                 |
