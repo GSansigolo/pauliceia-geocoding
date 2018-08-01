@@ -379,7 +379,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   var content = "";
 
   //Entering Variables
-  var jsonObject = JSON.parse(req.params.jsonquery);
+  var jsonObject = JSON.parse(decodeURIComponent(req.params.jsonquery));
   const sizeJson = Object.keys(jsonObject).length;
 
   //Count Variables
@@ -407,17 +407,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
         //recive the data from the get call
         var bodyjson = JSON.parse(body);
 
-        if (bodyjson[1][0].alert == "Point not found"){
-
-          //build the coordinates (x, y)
-          var x = 0;
-          var y = 0;
-
-          //Push
-          results.push({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
-
-
-        } else {
+        if (bodyjson[1][0].alert != "Point not found"){
 
           //handle the recived geom
           var geomPoint = bodyjson[1][0].geom.substr(bodyjson[1][0].geom.indexOf("(")+1);
@@ -430,7 +420,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
           //Push
           results.push({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
           
-      }
+        }
 
       //Count
       k=k+1;
@@ -480,6 +470,47 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
     //Filter json places using the entering variables
     var places_filter = places.filter(el=>el.street_name == textpoint);
+
+
+    //Check if the street is empty, year is less then 1869 ou higher then current year
+    if (places_filter.length == 0){
+
+      //Result
+      results.push({alert: "Point not found 1", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
+      
+      /*--------------------+
+      | Log                 |
+      +--------------------*/
+
+        //build the serch query
+        var queryText = textpoint + ', ' + number + ', ' + year;
+
+        //use the fs to read the log
+        fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
+          if (err){
+              console.log(err);
+          } else {
+          
+          //append the new log into log.json
+          obj = JSON.parse(data);
+          obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'FAIL'}); 
+          json = JSON.stringify(obj); 
+          fs.writeFile('log.json', json, 'utf8'); 
+        }});
+
+      /*-------------------*/
+
+      //Write header
+      head.push({createdAt:  getDateTime(), type: 'GET'});
+      
+      //Push Head
+      head.push(results);
+
+      //Return the json with results
+      return res.json(head);   
+
+    }
+
     places_filter = places_filter.filter(el=>el.place_number == number);
     places_filter = places_filter.filter(el=>el.place_lastyear >= year);
     places_filter = places_filter.filter(el=>el.place_firstyear <= year);
@@ -618,7 +649,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
           if(p2.length != 1 || p1.length != 1){
 
              //Result
-             results.push({alert: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
+             results.push({alert: "Point not found 2", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
             
             /*--------------------+
             | Log                 |
