@@ -434,10 +434,9 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
         //return
         return res.json(results2);
 
-      }
-
-    } 
-      });  
+        }
+      } 
+    });  
   }
 });
 
