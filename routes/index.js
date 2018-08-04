@@ -373,7 +373,6 @@ router.get('/geolocation/:textpoint,:number,:year/json/old', (req, res, next) =>
 router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 
   //Results Variables
-  const results = [];
   var urlList = [];
   var textList = [];
   var content = "";
@@ -381,10 +380,6 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   //Entering Variables
   var jsonObject = JSON.parse(decodeURIComponent(req.params.jsonquery));
   const sizeJson = Object.keys(jsonObject).length;
-
-  //Count Variables
-  var k = 0;
-  const head = [];
 
   //Read all the Json
   for(index in jsonObject)
@@ -400,45 +395,44 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
   }
  
   //Push all results
-  for (i in urlList) {
-    request(urlList[i], function (error, response, body) {
-      if (!error) {
-
-        //recive the data from the get call
-        var bodyjson = JSON.parse(body);
-
-        if (bodyjson[1][0].name != "Point not found"){
-
-          //handle the recived geom
-          var geomPoint = bodyjson[1][0].geom.substr(bodyjson[1][0].geom.indexOf("(")+1);
-          geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
-
-          //build the coordinates (x, y)
-          var x = parseFloat(geomPoint.split(' ')[0]);
-          var y = parseFloat(geomPoint.split(' ')[1]);
-
-          //Push
-          results.push({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
-          console.log({street: textList[k].split(',')[0],number: textList[k].split(',')[1].replace(" ", ""), year: textList[k].split(',')[2].replace(" ", ""),geom: [x,y]});
-        }
-
-      //Count
-      k=k+1;
-
-      //stop the loop
-      if (k >= urlList.length){
-
-        //build the geojson 
-        const results2 = GeoJSON.parse(results, {'Point': 'geom'});
+  var promises = urlList.map( (url, i) => {
+    return new Promise( resolve => {
+        console.log(url)
+        request(url, (error, _, body) => {
+          if (!error) {
+            //recive the data from the get call
+            var bodyjson = JSON.parse(body);
         
-        //return
-        return res.json(results2);
+            if (bodyjson[1][0].name != "Point not found"){
+        
+              //handle the recived geom
+              var geomPoint = bodyjson[1][0].geom.substr(bodyjson[1][0].geom.indexOf("(")+1);
+              geomPoint = geomPoint.substr(0,geomPoint.indexOf(")"));
+        
+              //build the coordinates (x, y)
+              var x = parseFloat(geomPoint.split(' ')[0]);
+              var y = parseFloat(geomPoint.split(' ')[1]);
+              
+              resolve({street: textList[i].split(',')[0],number: textList[i].split(',')[1].replace(" ", ""), year: textList[i].split(',')[2].replace(" ", ""),geom: [x,y]})
+            
+            } else {
+              resolve('erro')
+            }
+          } else {
+            resolve('erro')
+          }
+        })
+        
+    })
+  })
 
-        }
-      } 
-    });  
-  }
-});
+  Promise.all(promises).then( resultsPromise => {
+    const results = resultsPromise.filter( result => result != 'erro')
+    const resultGeoJSON = GeoJSON.parse(results, {'Point': 'geom'})
+    res.json(resultGeoJSON)
+  })
+
+})
 
 /*--------------------------------------------------+
 | New Geolocation                                   |
