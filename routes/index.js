@@ -470,28 +470,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
       //Result
       results.push({name: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
-      
-      /*--------------------+
-      | Log                 |
-      +--------------------*/
 
-        //build the serch query
-        var queryText = textpoint + ', ' + number + ', ' + year;
-
-        //use the fs to read the log
-        fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
-          if (err){
-              console.log(err);
-          } else {
-          
-          //append the new log into log.json
-          obj = JSON.parse(data);
-          obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'FAIL'}); 
-          json = JSON.stringify(obj); 
-          fs.writeFile('log.json', json, 'utf8'); 
-        }});
-
-      /*-------------------*/
 
       //Write header
       head.push({createdAt:  getDateTime(), type: 'GET'});
@@ -510,28 +489,6 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
     //Check if only one result was found
     if (places_filter.length == 1){
-
-      /*--------------------+
-      | Log                 |
-      +--------------------*/
-
-        //build the serch query
-        var queryText = textpoint + ', ' + number + ', ' + year;
-
-        //use the fs to read the log
-        fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
-          if (err){
-              console.log(err);
-          } else {
-          
-            //append the new log into log.json
-            obj = JSON.parse(data); 
-            obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geolocation', status: 'SUCESS'});
-            json = JSON.stringify(obj); 
-            fs.writeFile('log.json', json, 'utf8'); 
-        }});
-
-      /*-------------------*/
 
       //Organize the Json results
       results.push({name: places_filter[0].place_name, geom: places_filter[0].place_geom});
@@ -644,27 +601,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
              //Result
              results.push({name: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
             
-            /*--------------------+
-            | Log                 |
-            +--------------------*/
-
-              //build the serch query
-              var queryText = textpoint + ', ' + number + ', ' + year;
-
-              //use the fs to read the log
-              fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
-                if (err){
-                    console.log(err);
-                } else {
-                
-                 //append the new log into log.json
-                 obj = JSON.parse(data);
-                 obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'FAIL'}); 
-                 json = JSON.stringify(obj); 
-                 fs.writeFile('log.json', json, 'utf8'); 
-              }});
-
-            /*-------------------*/
+            
          
           } else {
 
@@ -719,27 +656,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
             //Organize the Json results
             results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")")});
             
-            /*--------------------+
-            | Log                 |
-            +--------------------*/
-
-              //build the serch query
-              var queryText = textpoint + ', ' + number + ', ' + year;
-
-              //use the fs to read the log
-              fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
-                if (err){
-                    console.log(err);
-                } else {
-                
-                  //append the new log into log.json
-                  obj = JSON.parse(data);
-                  obj.data.push({id: parseInt(obj.data.length), createdAt: getDateTime() , query: queryText, type: 'Geocode', status: 'SUCESS'}); 
-                  json = JSON.stringify(obj);
-                  fs.writeFile('log.json', json, 'utf8');
-              }});
-
-            /*-------------------*/
+            
 
             }   
 
@@ -759,64 +676,6 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
   });
 });
 
-/*-----------------------------------------------+
-| Log                                            |
-+-----------------------------------------------*/
-router.get('/log', (req, res, next) => {
-  
-  const head = []
-
-  //use the fs to read the log
-  fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
-  if (err){
-    console.log(err);
-  } else {
-        
-  //append the new log into log.json
-  obj = JSON.parse(data); //now it an object
-  
-  //Write header
-  head.push({createdAt:  getDateTime(), type: 'GET'});
-
-  //Push Head
-  head.push(obj);
-          
-  //Return the json with results
-  return res.json(head);
-
-  }});
-});
-
-/*-----------------------------------------------+
-| Log--clean                                     |
-+-----------------------------------------------*/
-router.get('/log--clean', (req, res, next) => {
-  
-  const head = []
-
-  //use the fs to read the log
-  fs.readFile('log.json', 'utf8', function readFileCallback(err, data){
-  if (err){
-    console.log(err);
-  } else {
-        
-  //append the new log into log.json
-  obj = JSON.parse(data); //now it an object
-  obj = ({"data":[]}); //add some data
-  json = JSON.stringify(obj); //convert it back to json
-  fs.writeFile('log.json', json, 'utf8'); // write it back 
-
-  //Write header
-  head.push({createdAt:  getDateTime(), type: 'GET'});
-
-  //Push Head
-  head.push({Results: "Done"});
-          
-  //Return the json with results
-  return res.json(head);
-
-  }});
-});
 
 /*---------------------------------------------------+
 | Console Log                                        |
