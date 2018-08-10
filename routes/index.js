@@ -20,6 +20,7 @@
   var Locate = require('../controllers/lineLocate');
   var Merge = require('../controllers/lineMerge');
   var Create = require('../controllers/lineSubstring');
+  var Calculate = require('../controllers/confidenceRate');
   const request = require('request');
   var assert = require('assert');
   var obj = [];
@@ -631,12 +632,14 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
             
             //take the geom number of p1_geom
             p1_geom = p1_geom.substr(p1_geom.indexOf("(")+1);
-            p1_geom =p1_geom.substr(0,p1_geom.indexOf(")"));
+            p1_geom = p1_geom.substr(0,p1_geom.indexOf(")"));
+            var p1_g = p1_geom;
 
             //take the geom number of p2_geom
             p2_geom = p2_geom.substr(p2_geom.indexOf("(")+1);
             p2_geom = p2_geom.substr(0,p2_geom.indexOf(")"));
-            
+            var p2_g = p2_geom;
+
             if (sublinestring == ','){
 
               //build the street geom
@@ -654,10 +657,8 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
             var num = parseInt(number)
             
             //Organize the Json results
-            results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")")});
+            results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")"), confidenceRate: Calculate.confidenceRate(p1_g, p2_g, year)});
             
-            
-
             }   
 
             //Write header
