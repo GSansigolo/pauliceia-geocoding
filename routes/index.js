@@ -449,7 +449,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
   //Entering variables
   const textpoint = req.params.textpoint;
-  const year = req.params.year.replace(" ", "");;
+  const year = req.params.year.replace(" ", "");
   const number = req.params.number.replace(" ", "");
 
  //Set the url
@@ -646,9 +646,18 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
               var geometry  = ("MULTILINESTRING(("+ p1_geom+","+p2_geom +"))");
 
             }else{
+              if(!sublinestring){
+
+                //build the street geom
+                var geometry  = ("MULTILINESTRING(("+ p1_geom+","+ p2_geom +"))");
               
-              //build the street geom
-              var geometry  = ("MULTILINESTRING(("+ p1_geom+","+sublinestring + p2_geom +"))");
+              }else{
+              
+                //build the street geom
+                var geometry  = ("MULTILINESTRING(("+ p1_geom+","+sublinestring + p2_geom +"))");
+              
+              }
+             
             }
             
             //get the four variable to geocode
@@ -656,7 +665,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
             var nf = p1[0].place_number;
             var num = parseInt(number)
 
-            console.log(p1_g.split(" "), p2_g.split(" "), year)
+            console.log(nl, nf, num, geometry)
 
             //Organize the Json results
             results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")"), confidenceRate: Calculate.confidenceRateCode(p1_g.split(" "), p2_g.split(" "), year)});
