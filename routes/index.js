@@ -492,7 +492,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
     if (places_filter.length == 1){
 
       //Organize the Json results
-      results.push({name: places_filter[0].place_name, geom: places_filter[0].place_geom});
+      results.push({name: places_filter[0].place_name, geom: places_filter[0].place_geom, confidenceRate: Calculate.confidenceRateLocate(year)});
 
       //Write header
       head.push({createdAt:  getDateTime(), type: 'GET'});
@@ -655,9 +655,11 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
             var nl =  p2[0].place_number;
             var nf = p1[0].place_number;
             var num = parseInt(number)
-            
+
+            console.log(p1_g.split(" "), p2_g.split(" "), year)
+
             //Organize the Json results
-            results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")"), confidenceRate: Calculate.confidenceRate(p1_g, p2_g, year)});
+            results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")"), confidenceRate: Calculate.confidenceRateCode(p1_g.split(" "), p2_g.split(" "), year)});
             
             }   
 
