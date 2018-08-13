@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "async": "^2.5.0",
+    "bayes": "0.0.7",
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
     "cookie-parser": "^1.4.3",

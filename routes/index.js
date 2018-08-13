@@ -20,6 +20,7 @@
   var Locate = require('../controllers/lineLocate');
   var Merge = require('../controllers/lineMerge');
   var Create = require('../controllers/lineSubstring');
+  var Match = require('../controllers/neuralNetwork');
   var Calculate = require('../controllers/confidenceRate');
   const request = require('request');
   var assert = require('assert');
@@ -448,7 +449,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
   var url;
 
   //Entering variables
-  const textpoint = req.params.textpoint;
+  const textpoint = Match.neuralNetwork(req.params.textpoint);
   const year = req.params.year.replace(" ", "");
   const number = req.params.number.replace(" ", "");
 
