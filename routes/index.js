@@ -20,7 +20,7 @@
   var Locate = require('../controllers/lineLocate');
   var Merge = require('../controllers/lineMerge');
   var Create = require('../controllers/lineSubstring');
-  var Match = require('../controllers/neuralNetwork');
+  var Match = require('../controllers/machineLearning');
   var Calculate = require('../controllers/confidenceRate');
   const request = require('request');
   var assert = require('assert');
@@ -442,14 +442,14 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
 
   //Results variables
-  const results = [];
-  const head = [];
+  let results = [];
+  let head = [];
 
   //Develop variables
-  var url;
+  let url;
 
-  //Entering variables
-  const textpoint = Match.neuralNetwork(req.params.textpoint);
+  //Entering variables  
+  const textpoint =  req.params.textpoint; // Match.machineLearning(req.params.textpoint);
   const year = req.params.year.replace(" ", "");
   const number = req.params.number.replace(" ", "");
 
@@ -466,13 +466,11 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
     //Filter json places using the entering variables
     var places_filter = places.filter(el=>el.street_name == textpoint);
 
-
     //Check if the street is empty, year is less then 1869 ou higher then current year
     if (places_filter.length == 0){
 
       //Result
       results.push({name: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
-
 
       //Write header
       head.push({createdAt:  getDateTime(), type: 'GET'});
