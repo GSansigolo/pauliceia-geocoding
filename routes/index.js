@@ -14,13 +14,12 @@
   var GeoJSON = require('geojson');
   var postgeo = require("postgeo");
   var js2xmlparser = require("js2xmlparser");
-  var fs = require('fs');
   var Search = require('../controllers/searchPoint');
   var Fix = require('../controllers/closestPoint');
   var Locate = require('../controllers/lineLocate');
   var Merge = require('../controllers/lineMerge');
   var Create = require('../controllers/lineSubstring');
-  var Match = require('../controllers/machineLearning');
+  var Match = require('../controllers/neuralNetwork');
   var Calculate = require('../controllers/confidenceRate');
   const request = require('request');
   var assert = require('assert');
@@ -211,6 +210,46 @@ router.get('/streets', (req, res, next) => {
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
       results.push({street_name: row.name, street_geom: row.geom, street_firstyear: row.firstyear, street_lastyear: row.lastyear});
+    });
+
+    //After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+
+    //Resuts
+    return res.json(results);
+
+  });
+  });
+});
+
+/*-----------------------------------------------+
+| Train Dataset                                 |
++-----------------------------------------------*/
+router.get('/train', (req, res, next) => {
+
+  //Results Variable
+  const results = [];
+
+  //Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    
+    //Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+
+    //Build the SQL Query
+    const SQL_Query_Select_List = "select b.name, b.first_year as firstyear, b.last_year as lastyear, ST_astext(b.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+
+    //Execute SQL Query
+    const query = client.query(SQL_Query_Select_List);
+
+    //Push Results
+    query.on('row', (row) => {
+      results.push({input: row.name, output: row.name});
     });
 
     //After all data is returned, close connection and return results
@@ -449,7 +488,8 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
   let url;
 
   //Entering variables  
-  const textpoint =  req.params.textpoint; // Match.machineLearning(req.params.textpoint);
+  const textpoint =  req.params.textpoint; 
+  const textpoint2 = Match.neuralNetwork(req.params.textpoint);
   const year = req.params.year.replace(" ", "");
   const number = req.params.number.replace(" ", "");
 
