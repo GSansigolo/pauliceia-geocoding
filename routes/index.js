@@ -226,7 +226,7 @@ router.get('/streets', (req, res, next) => {
 /*-----------------------------------------------+
 | Train Dataset                                 |
 +-----------------------------------------------*/
-router.get('/train', (req, res, next) => {
+router.get('/traindataset', (req, res, next) => {
 
   //Results Variable
   const results = [];

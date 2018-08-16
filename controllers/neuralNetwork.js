@@ -6,7 +6,7 @@ let limdu = require('limdu');
 exports.neuralNetwork = function(streetName){
 
     //use the fs to read the serialized classifier's state
-    fs.readFile('train.json', 'utf8', function readFileCallback(err, data){
+    fs.readFile('traindataset.json', 'utf8', function readFileCallback(err, data){
         if (err){    
             console.log(err);
         } else {
