@@ -18,7 +18,7 @@ exports.confidenceRateCode = function(p1, p2, year){
     var distRel = getDistance(pointRef[0], pointRef[1], firstYear, pointRef[0], pointRef[1], year);
 
     //coenficent
-    var confidenceRate = (distRel+meanDist)/total;
+    var confidenceRate = (distRel+meanDist)/total; //  (((distRel+meanDist)/total)-0.9)*10;
 
     //return the rate
     return confidenceRate

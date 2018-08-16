@@ -249,7 +249,13 @@ router.get('/traindataset', (req, res, next) => {
 
     //Push Results
     query.on('row', (row) => {
-      results.push({input: row.name, output: row.name});
+    
+      results.push({input:row.name, output: row.name});
+      results.push({input:row.name.replace("rua", ""), output: row.name});
+      results.push({input:row.name.replace("avenida", ""), output: row.name});
+      results.push({input:row.name.replace("rua", "r."), output: row.name});
+      results.push({input:row.name.replace("avenida", "av."), output: row.name});
+      results.push({input:row.name.replace("avenida", "avevida"), output: row.name});
     });
 
     //After all data is returned, close connection and return results
@@ -274,7 +280,7 @@ router.get('/geolocation/:textpoint,:number,:year/json/old', (req, res, next) =>
 
   //Entering Variables
   const textpoint = req.params.textpoint;
-  const year = req.params.year.replace(" ", "");;
+  const year = req.params.year.replace(" ", "");
   const number = req.params.number.replace(" ", "");
 
   //Get a Postgres client from the connection pool
