@@ -484,7 +484,7 @@ router.get('/multiplegeolocation/:jsonquery/json', (req, res, next) => {
 /*--------------------------------------------------+
 | New Geolocation                                   |
 +--------------------------------------------------*/
-router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
+router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res, next) {
 
   //Results variables
   let results = [];
@@ -494,8 +494,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
   let url;
 
   //Entering variables  
-  const textpoint =  req.params.textpoint; 
-  const textpoint2 = Match.neuralNetwork(req.params.textpoint);
+  let textpoint = await Match.neuralNetwork(req.params.textpoint);
   const year = req.params.year.replace(" ", "");
   const number = req.params.number.replace(" ", "");
 
@@ -708,9 +707,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', (req, res, next) => {
             //get the four variable to geocode
             var nl =  p2[0].place_number;
             var nf = p1[0].place_number;
-            var num = parseInt(number)
-
-            console.log(nl, nf, num, geometry)
+            var num = parseInt(number);
 
             //Organize the Json results
             results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")"), confidenceRate: Calculate.confidenceRateCode(p1_g.split(" "), p2_g.split(" "), year)});
