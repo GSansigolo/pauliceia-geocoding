@@ -1,13 +1,46 @@
 /**
- * @api {get} /api/geocoding/multiplegeolocation/:jsonquery/json 4 - Multi Geolocation
- * @apiGroup Functions
+ * @api {get} /api/geocoding/multiplegeolocation/:jsonquery/json 2 - Multi Geolocation
+ * @apiGroup Routes
  * 
- * @apiParam {json} jsonquery Json with the list of address
+ * @apiParam {json} jsonquery Decoded json with the list of address
  * 
- * @apiSuccess (Sucess 200) {String} address The searched address.
- * @apiSuccess (Sucess 200) {String} geom  Geometry of the searched address.
- * @apiSuccess (Sucess 200) {String} url  Url that generate the <code>geom</code> of the searched address. 
+ * @apiSuccess (Sucess 200) {Json} geometry Json build with <code>type</code> and <code>coordinates</code>
+ * @apiSuccess (Sucess 200) {Json} properties Json build with <code>street</code>,  <code>number</code> and <code>year</code>
  *
  * @apiSuccessExample {json} Success-Response:
- *   ["created_at: 17:02:50 17/01/2018","type: 'GET'",[{"address":"rua quinze de novembro, 38, 1900","geom":"POINT(-46.634287297440025 -23.546309616811836)","url":"http://localhost:3000/api/geolocation/rua quinze de novembro, 38, 1900/json"},{"address":"rua quinze de novembro, 38, 1901","geom":"POINT(-46.634287297440025 -23.546309616811836)","url":"http://localhost:3000/api/geolocation/rua quinze de novembro, 38, 1901/json"}]]
+ *   {
+ *    "type": "FeatureCollection",
+ *    "features": [
+ *     {
+ *     "type": "Feature",
+ *     "geometry": {
+ *       "type": "Point",
+ *       "coordinates": [
+ *         -46.6531396058257,
+ *         -23.5465662154437
+ *       ]
+ *     },
+ *     "properties": {
+ *       "street": "avenida tiradentes",
+ *       "number": "17",
+ *       "year": "1931"
+ *     }
+ *   },
+ *   {
+ *     "type": "Feature",
+ *     "geometry": {
+ *       "type": "Point",
+ *       "coordinates": [
+ *         -46.6222783584245,
+ *         -23.5349383778133
+ *       ]
+ *     },
+ *     "properties": {
+ *       "street": "avenida vautier",
+ *       "number": "54",
+ *       "year": "1937"
+ *     }
+ *   }
+  ]
+}
  */ 

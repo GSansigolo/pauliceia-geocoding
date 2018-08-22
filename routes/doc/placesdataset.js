@@ -1,6 +1,6 @@
 /**
- * @api {get} /api/geocoding/places 5 - Places Dataset
- * @apiGroup Functions
+ * @api {get} /api/geocoding/places 3 - Places Dataset
+ * @apiGroup Routes
  * 
  * @apiSuccess (Sucess 200) {String} street_name String with the name of the street where this address are.
  * @apiSuccess (Sucess 200) {String} place_name String with the name of the place.
@@ -12,20 +12,20 @@
  * @apiSuccessExample {json} Success-Response:
  *   [
  *      {
- *          "street_name":"rua caio prado",
- *          "place_name":null,
- *          "place_number":1,
- *          "place_firstyear":1930,
- *          "place_lastyear":1930,
- *          "place_geom":"POINT(-46.6489132401614 -23.548082948768)"
+ *          "street_name":" rua caio prado",
+ *          "place_name": null,
+ *          "place_number": 1,
+ *          "place_firstyear": 1930,
+ *          "place_lastyear": 1930,
+ *          "place_geom": "POINT(-46.6489132401614 -23.548082948768)"
  *      },
  *      {
- *          "street_name":"rua albuquerque lins",
- *          "place_name":"Grupo Escolar Barra Funda",
- *          "place_number":1,
- *          "place_firstyear":1931,
- *          "place_lastyear":1931,
- *          "place_geom":"POINT(-46.652674610004 -23.5313864330752)"}
+ *          "street_name": "rua albuquerque lins",
+ *          "place_name": "Grupo Escolar Barra Funda",
+ *          "place_number": 1,
+ *          "place_firstyear": 1931,
+ *          "place_lastyear": 1931,
+ *          "place_geom": "POINT(-46.652674610004 -23.5313864330752)"}
  *      ...
  *  ]
  * 
