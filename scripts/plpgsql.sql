@@ -1,3 +1,7 @@
+--(a) Corrigir as coordenadas (x,y) de todos os places que estão
+--no sistema métrico. Exemplo: o place de número 200 deve estar a
+--200 metros do início da rua.
+
 CREATE OR REPLACE FUNCTION update_geometry(input_p integer) 
     RETURNS text
 AS
@@ -20,3 +24,9 @@ $BODY$
 LANGUAGE plpgsql;
 
 SELECT update_geometry(622);
+
+--(b) Corrigir as coordenadas (x,y) de todos os places que não estão
+--no sistema métrico e que estão na mesma localização dos places
+--do item (a), levando em consideração números ímpares e pares
+--nas mesmas localizações
+       
