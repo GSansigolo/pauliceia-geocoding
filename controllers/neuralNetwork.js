@@ -30,12 +30,24 @@ exports.neuralNetwork = function(streetName){
                     featureExtractor: WordExtractor
                 });
         
-                // Train and test:
+                // Train and test
                 intentClassifier.trainBatch(JSON.parse(data));
-                    
-                // Return the matched name
-                resolve(intentClassifier.classify(streetName))
-    
+                
+                // Debug
+                console.log("\ninput: ", [streetName])
+                console.log("output: ", intentClassifier.classify(streetName))
+                console.log("")
+
+                // Check if street was classified
+                if(!intentClassifier.classify(streetName)){
+
+                    // Return the searched name
+                    resolve(streetName)
+                } else {
+
+                    // Return the matched name
+                    resolve(intentClassifier.classify(streetName))
+                }
             }
         }) 
     })
