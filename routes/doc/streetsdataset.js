@@ -2,10 +2,10 @@
  * @api {get} /api/geocoding/streets 4 - Streets Dataset
  * @apiGroup Routes
  * 
- * @apiSuccess (Sucess 200) {String} street_name String with the name of the street.
- * @apiSuccess (Sucess 200) {String} street_geom  String with the geometry of the street.
- * @apiSuccess (Sucess 200) {Number} street_firstyear Number with the first date of the street.
- * @apiSuccess (Sucess 200) {Number} street_lastyear Number with the last date of the street.
+ * @apiSuccess (Success 200) {String} street_name String with the name of the street.
+ * @apiSuccess (Success 200) {String} street_geom  String with the geometry of the street.
+ * @apiSuccess (Success 200) {Number} street_firstyear Number with the first date of the street.
+ * @apiSuccess (Success 200) {Number} street_lastyear Number with the last date of the street.
  *
  * @apiSuccessExample {json} Success-Response:
  *

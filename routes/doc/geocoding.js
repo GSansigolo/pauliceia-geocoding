@@ -6,8 +6,8 @@
  * @apiParam {Number} number Number of the address
  * @apiParam {number} year Year of the searched address
  * 
- * @apiSuccess (Sucess 200) {String} name Name of the searched address
- * @apiSuccess (Sucess 200) {String} geom  Geometry of the searched address
+ * @apiSuccess (Success 200) {String} name Name of the searched address
+ * @apiSuccess (Succeess 200) {String} geom  Geometry of the searched address
  *
  * @apiSuccessExample {json} Success-Response:
  *    [

@@ -2,12 +2,12 @@
  * @api {get} /api/geocoding/places 3 - Places Dataset
  * @apiGroup Routes
  * 
- * @apiSuccess (Sucess 200) {String} street_name String with the name of the street where this address are.
- * @apiSuccess (Sucess 200) {String} place_name String with the name of the place.
- * @apiSuccess (Sucess 200) {Number} place_number Number with the place address.
- * @apiSuccess (Sucess 200) {Number} place_firstyear Number with the place first year.
- * @apiSuccess (Sucess 200) {Number} place_lastyear  Number with the place last year.
- * @apiSuccess (Sucess 200) {String} place_geom  String with the geometry of the place.
+ * @apiSuccess (Success 200) {String} street_name String with the name of the street where this address are.
+ * @apiSuccess (Success 200) {String} place_name String with the name of the place.
+ * @apiSuccess (Success 200) {Number} place_number Number with the place address.
+ * @apiSuccess (Success 200) {Number} place_firstyear Number with the place first year.
+ * @apiSuccess (Success 200) {Number} place_lastyear  Number with the place last year.
+ * @apiSuccess (Success 200) {String} place_geom  String with the geometry of the place.
  * 
  * @apiSuccessExample {json} Success-Response:
  *   [
