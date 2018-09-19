@@ -21,7 +21,8 @@
   var Create = require('../controllers/lineSubstring');
   var Match = require('../controllers/neuralNetwork');
   var Calculate = require('../controllers/confidenceRate');
-  const request = require('request');
+  var request = require('request');
+  var shpwrite = require('shp-write');
   var assert = require('assert');
   var obj = [];
 
@@ -701,7 +702,6 @@ router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res
                 var geometry  = ("MULTILINESTRING(("+ p1_geom+","+sublinestring + p2_geom +"))");
               
               }
-             
             }
             
             //get the four variable to geocode

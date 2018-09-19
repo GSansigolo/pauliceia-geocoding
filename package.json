@@ -31,6 +31,7 @@
     "request-promise": "^4.2.2",
     "serialization": "^0.2.0",
     "serve-favicon": "^2.4.5",
+    "shp-write": "^0.3.2",
     "supertest": "^3.0.0",
     "supervisor": "^0.12.0"
   },
