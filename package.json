@@ -1,11 +1,12 @@
-{
+  {
   "name": "Pauliceia-GeocodingAPI",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "supervisor ./bin/www",
     "test": "mocha test",
-    "apidoc": "apidoc -i routes/doc -o public/apidoc"
+    "apidoc": "apidoc -i routes/doc -o public/apidoc",
+    "docker": "npm install && npm start"
   },
   "dependencies": {
     "async": "^2.5.0",
