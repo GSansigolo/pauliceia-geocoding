@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/geocoding/places 3 - Places Dataset
+ * @api {get} /api/geocoding/places 2 - Places Dataset
  * @apiGroup Routes
  * 
  * @apiSuccess (Success 200) {String} street_name String with the name of the street where this address are.

@@ -4,7 +4,7 @@ let limdu = require('limdu');
 
 //function machineLearning
 exports.neuralNetwork = function(streetName){
-
+    let inputName = streetName;
     //use the fs to read the serialized classifier's state
     return new Promise(resolve => {
         fs.readFile('traindataset.json', 'utf8', function readFileCallback(err, data){
@@ -39,10 +39,10 @@ exports.neuralNetwork = function(streetName){
                 console.log("")
 
                 // Check if street was classified
-                if(!intentClassifier.classify(streetName)){
+                if(intentClassifier.classify(streetName) == ''){
 
                     // Return the searched name
-                    resolve(streetName)
+                    resolve(inputName)
                 } else {
 
                     // Return the matched name
