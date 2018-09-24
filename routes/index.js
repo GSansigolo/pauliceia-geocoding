@@ -93,7 +93,7 @@ router.get('/placeslist', (req, res, next) => {
 
     //Push Results
     query.on('row', (row) => {
-      results.push(row.name +', '+ row.number+', '+ row.year);
+      results.push(row.name +', '+ parseInt(row.number)+', '+ row.year);
     });
 
     //After all data is returned, close connection and return results

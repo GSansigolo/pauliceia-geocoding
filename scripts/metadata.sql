@@ -1,23 +1,22 @@
-/*               metadata            */
-
 /* Create a "metadata" holder table */
 
-    CREATE TABLE metadata (
+    CREATE TABLE geocode_metadata (
         tname text, 
         created timestamptz, 
+        ttype text,
         column_details json
     );
 
 /* Insert into "metadata" holder table */
 
-    INSERT INTO metadata 
-        SELECT 'tb_places', now(), '{"name_column":"name", "number_column":"number", "firstYear_column":"first_year", "lastYear_column":"last_year", "geom_column":"geom"}';
+    INSERT INTO geocode_metadata 
+        SELECT 'places_pilot_area', now(), 'places', '{"joinStreet_column": "street_id", "placeNumber_column":"number", "firstYear_column":"first_year", "lastYear_column":"last_year"}';
 
 /* Insert into "metadata" holder table */
 
-    INSERT INTO metadata 
-        SELECT 'tb_places2', now(), '{"name_column":"name", "number_column":"number", "firstYear_column":"first_year", "lastYear_column":"last_year", "geom_column":"geom"}';
+    INSERT INTO geocode_metadata
+        SELECT 'streets_pilot_area', now(), 'streets', '{"streetId_column": "id", "streetName_column":"name"}';
 
 /* View the "metadata" holder table */
 
-    SELECT * FROM metadata ;
+    SELECT * FROM geocode_metadata ;
