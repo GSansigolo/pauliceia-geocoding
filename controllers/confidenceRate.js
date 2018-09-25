@@ -26,18 +26,8 @@ exports.confidenceRateCode = function(p1, p2, year){
 
 exports.confidenceRateLocate = function(year){
     
-    //define references
-    var firstYear = 1860;
-    var lastYear = 1940;
-    
-    //variable
-    var total = lastYear-firstYear;
-
-    //calculate confidenceRate
-    var confidenceRate = 0.8+(0.17-((lastYear-year)*(0.17/total)));
-
     //return the rate
-    return confidenceRate
+    return 1
 
 }
 

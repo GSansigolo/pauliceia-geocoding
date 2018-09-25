@@ -7,8 +7,8 @@
 /*--------------------------------------------------+
 | Var                                               |
 +--------------------------------------------------*/
-  var webServiceAddress = process.env.PORT ? "http://localhost:"+process.env.PORT : "http://localhost:3000";
-  //var webServiceAddress = "http://pauliceia.dpi.inpe.br";
+  //var webServiceAddress = process.env.PORT ? "http://localhost:"+process.env.PORT : "http://localhost:3000";
+  var webServiceAddress = "http://pauliceia.dpi.inpe.br";
   var express = require('express');
   var router = express.Router();
   var GeoJSON = require('geojson');
@@ -86,14 +86,15 @@ router.get('/placeslist', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year from streets_pilot_area as b join places_pilot_area as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by b.name;";
-
+    //const SQL_Query_Select_List = "select b.name, a.number, a.first_year as year from streets_pilot_area as b join places_pilot_area as a on a.id_street = b.gid where a.first_year >= 1 and a.last_year >= 1 order by b.name;";
+    const SQL_Query_Select_List = "select b.name, a.number::float, a.first_year::integer as year from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.gid::integer where a.number::float >= 1 and  a.first_year::integer is not null and  b.name is not null order by b.name;";
+    
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
 
     //Push Results
     query.on('row', (row) => {
-      results.push(row.name +', '+ parseInt(row.number)+', '+ row.year);
+      results.push(row.name +', '+ row.number+', '+ row.year);
     });
 
     //After all data is returned, close connection and return results
@@ -126,7 +127,8 @@ router.get('/places', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name as name_s, a.name as name_p, a.number, a.first_year as firstyear, a.last_year as lastyear, ST_AsText(a.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name as name_s, a.name as name_p, a.number::float, a.first_year::integer as firstyear, a.last_year::integer as lastyear, ST_AsText(a.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.gid::integer order by number;";
+    //const SQL_Query_Select_List = "select b.gid, b.name as name_s, a.name as name_p, a.number, a.first_year as firstyear, a.last_year as lastyear, ST_AsText(a.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street = b.gid where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -134,7 +136,7 @@ router.get('/places', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({street_name: row.name_s, place_name: row.name_p, place_number: row.number, place_firstyear: row.firstyear, place_lastyear: row.lastyear, place_geom: row.geom});
+      results.push({id_street: row.gid, street_name: row.name_s, place_name: row.name_p, place_number: row.number, place_firstyear: row.firstyear, place_lastyear: row.lastyear, place_geom: row.geom});
     });
 
     //After all data is returned, close connection and return results
@@ -166,8 +168,9 @@ router.get('/streets', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
 
-    //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, b.first_year as firstyear, b.last_year as lastyear, ST_astext(b.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    //Build the SQL Query ::float
+    const SQL_Query_Select_List = "select b.name, b.first_year::integer as firstyear, b.last_year::integer as lastyear, ST_astext(b.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.gid::integer order by number;";
+    //const SQL_Query_Select_List = "select b.name, b.first_year as firstyear, b.last_year as lastyear, ST_astext(b.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street = b.gid where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
@@ -208,20 +211,19 @@ router.get('/traindataset', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name, b.first_year as firstyear, b.last_year as lastyear, ST_astext(b.geom) as geom from tb_street as b join tb_places as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
+    const SQL_Query_Select_List = "select b.name, b.first_year::integer as firstyear, b.last_year::integer as lastyear, ST_astext(b.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.gid::integer where b.name is not null order by number;";
 
     //Execute SQL Query
     const query = client.query(SQL_Query_Select_List);
 
     //Push Results
     query.on('row', (row) => {
-    
       results.push({input:row.name, output: row.name});
-      results.push({input:row.name.replace("rua", ""), output: row.name});
-      results.push({input:row.name.replace("avenida", ""), output: row.name});
-      results.push({input:row.name.replace("rua", "r."), output: row.name});
-      results.push({input:row.name.replace("avenida", "av."), output: row.name});
-      results.push({input:row.name.replace("avenida", "avevida"), output: row.name});
+      //results.push({input:row.name.replace("rua", ""), output: row.name});
+      //results.push({input:row.name.replace("avenida", ""), output: row.name});
+      //results.push({input:row.name.replace("rua", "r."), output: row.name});
+      //results.push({input:row.name.replace("avenida", "av."), output: row.name});
+      //results.push({input:row.name.replace("avenida", "avevida"), output: row.name});
     });
 
     //After all data is returned, close connection and return results
@@ -269,7 +271,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res
     if (places_filter.length == 0){
 
       //Result
-      results.push({name: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
+      results.push({name: "Point not found 1", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
 
       //Write header
       head.push({createdAt:  getDateTime(), type: 'GET'});
