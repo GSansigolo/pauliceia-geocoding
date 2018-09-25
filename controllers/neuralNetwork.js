@@ -50,9 +50,7 @@ exports.neuralNetwork = function(streetName){
                 }
             }
         }) 
-    })
-    
+    })   
 }
-
 
   
