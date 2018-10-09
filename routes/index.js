@@ -7,8 +7,8 @@
 /*--------------------------------------------------+
 | Var                                               |
 +--------------------------------------------------*/
-  //var webServiceAddress = process.env.PORT ? "http://localhost:"+process.env.PORT : "http://localhost:3000";
-  var webServiceAddress = "http://pauliceia.dpi.inpe.br";
+  var webServiceAddress = process.env.PORT ? "http://localhost:"+process.env.PORT : "http://localhost:3000";
+  //var webServiceAddress = "http://pauliceia.dpi.inpe.br";
   var express = require('express');
   var router = express.Router();
   var GeoJSON = require('geojson');
@@ -85,7 +85,7 @@ router.get('/placeslist', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name as name_s, a.name as name_p, a.number::float, a.first_year::integer as firstyear, a.last_year::integer as lastyear, ST_AsText(a.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.id::integer where a.number::float > 1 and b.name IS NOT NULL order by b.name;";
+    const SQL_Query_Select_List = "select a.id as places_id, b.name as name_s, a.name as name_p, a.number::float, a.first_year::integer as firstyear, a.last_year::integer as lastyear, ST_AsText(a.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.id::integer where a.number::float > 1 and b.name IS NOT NULL order by number;";
     //const SQL_Query_Select_List = "select b.name, a.number::float, a.first_year::integer as year from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.id::integer where a.number::float >= 1 and  a.first_year::integer is not null and  b.name is not null order by b.name;";
     
     //Execute SQL Query
@@ -131,7 +131,7 @@ router.get('/places', (req, res, next) => {
     }
 
     //Build the SQL Query
-    const SQL_Query_Select_List = "select b.name as name_s, a.name as name_p, a.number::float, a.first_year::integer as firstyear, a.last_year::integer as lastyear, ST_AsText(a.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.id::integer order by number;";
+    const SQL_Query_Select_List = "select a.id as places_id, b.name as name_s, a.name as name_p, a.number::float, a.first_year::integer as firstyear, a.last_year::integer as lastyear, ST_AsText(a.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.id::integer order by number;";
     //const SQL_Query_Select_List = "select b.id, b.name as name_s, a.name as name_p, a.number, a.first_year as firstyear, a.last_year as lastyear, ST_AsText(a.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
@@ -140,9 +140,9 @@ router.get('/places', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       if (!row.firstyear){
-        results.push({street_name: row.name_s, place_name: row.name_p, place_number: row.number, place_firstyear: 1800, place_lastyear: row.lastyear, place_geom: row.geom});
+        results.push({places_id: row.places_id, street_name: row.name_s, place_name: row.name_p, place_number: row.number, place_firstyear: 1800, place_lastyear: row.lastyear, place_geom: row.geom});
       } else {
-        results.push({street_name: row.name_s, place_name: row.name_p, place_number: row.number, place_firstyear: row.firstyear, place_lastyear: 2000, place_geom: row.geom});
+        results.push({places_id: row.places_id, street_name: row.name_s, place_name: row.name_p, place_number: row.number, place_firstyear: row.firstyear, place_lastyear: 2000, place_geom: row.geom});
       }
 
     });
@@ -177,7 +177,7 @@ router.get('/streets', (req, res, next) => {
     }
 
     //Build the SQL Query ::float
-    const SQL_Query_Select_List = "select b.name, b.first_year::integer as firstyear, b.last_year::integer as lastyear, ST_astext(b.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.id::integer order by number;";
+    const SQL_Query_Select_List = "select b.id, b.name, b.first_year::integer as firstyear, b.last_year::integer as lastyear, ST_astext(b.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street::integer = b.id::integer order by number;";
     //const SQL_Query_Select_List = "select b.name, b.first_year as firstyear, b.last_year as lastyear, ST_astext(b.geom) as geom from streets_pilot_area as b join places_pilot_area as a on a.id_street = b.id where a.first_year >= 1 and a.last_year >= 1 order by number;";
 
     //Execute SQL Query
@@ -186,7 +186,7 @@ router.get('/streets', (req, res, next) => {
     //Push Results
     query.on('row', (row) => {
       //results.push(row.name +', '+ row.number+', '+ row.year);
-      results.push({street_name: row.name, street_geom: row.geom, street_firstyear: row.firstyear, street_lastyear: row.lastyear});
+      results.push({id: row.id, street_name: row.name, street_geom: row.geom, street_firstyear: row.firstyear, street_lastyear: row.lastyear});
     });
 
     //After all data is returned, close connection and return results
@@ -229,12 +229,12 @@ router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res
 
     //Filter json places using the entering variables
     var places_filter = places.filter(el=>el.street_name == textpoint);
-    console.log(places_filter)
+    //console.log(places_filter)
 
     //Check if the street is empty, year is less than 1869 ou higher than current year
     if (places_filter.length == 1 && places_filter[0].place_number == 0){
       //Result
-      results.push({name: "Point not found", alertMsg: "Não encontramos pontos nesse logradouro, refente ao ano buscado ("+ textpoint +", "+ number +", "+ year + ")"});
+      results.push({name: "Point not found", alertMsg: "Não encontramos pontos nesse logradouro referentes ao ano buscado ("+ textpoint +", "+ number +", "+ year + ")"});
 
       //Write header
       head.push({createdAt:  getDateTime(), type: 'GET'});
@@ -247,15 +247,14 @@ router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res
     }
 
     places_filter = places_filter.filter(el=>el.place_number == number);
-
-    places_filter = places_filter.filter(el=>el.place_lastyear > year);
+    places_filter = places_filter.filter(el=>el.place_lastyear >= year);
     places_filter = places_filter.filter(el=>el.place_firstyear <= year);
 
     //Check if only one result was found
     if (places_filter.length == 1){
 
       //Organize the Json results
-      results.push({name: places_filter[0].place_name, geom: places_filter[0].place_geom, confidenceRate: Calculate.confidenceRateLocate(year)});
+      results.push({name: places_filter[0].place_name, geom: places_filter[0].place_geom, confidence: 1});
 
       //Write header
       head.push({createdAt:  getDateTime(), type: 'GET'});
@@ -293,13 +292,13 @@ router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res
           places_filter = places_filter.filter(el=>el.place_lastyear > year);
           places_filter = places_filter.filter(el=>el.place_firstyear <= year);
           
-          //Very big number
+          //Big number
           places_filter.sort( (a, b) => {
             return parseInt(a.place_number) - parseInt(b.place_number)
           })
           if(parseInt(places_filter[places_filter.length-1].place_number) < number) {
             //Result
-            results.push({name: "Very big number", alertMsg: "O número ("+number+") buscado é muito grande para os dados desse ano, o maior número dessa rua é o "+parseInt(places_filter[places_filter.length-1].place_number)});
+            results.push({name: "Point not found", alertMsg: "O número ["+number+"] é maior do que o último número cadastrado nessa rua ["+parseInt(places_filter[places_filter.length-1].place_number)+"]" });
 
             //Write header
             head.push({createdAt:  getDateTime(), type: 'GET'});
@@ -381,7 +380,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res
           if(p2.length != 1 || p1.length != 1){
 
              //Result
-             results.push({name: "Point not found", alertMsg: "System did not find ("+ textpoint +", "+ number +", "+ year + ")"});
+             results.push({name: "Point not found", alertMsg: "Não encontramos pontos nesse logradouro referentes ao ano buscado ("+ textpoint +", "+ number +", "+ year + ")"});
             
             
          
@@ -446,7 +445,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res
             var num = parseInt(number);
 
             //Organize the Json results
-            results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")"), confidenceRate: Calculate.confidenceRateCode(p1_g.split(" "), p2_g.split(" "), year)});
+            results.push({name: "Point Geolocated", geom: ("POINT("+Search.getPoint(geometry, parseInt(nf), parseInt(nl), parseInt(num)).point+")"), confidence: Calculate.confidenceRateCode(p1_g.split(" "), p2_g.split(" "), year)});
             
             }   
 
