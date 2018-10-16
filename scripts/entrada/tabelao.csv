@@ -1,7 +1,0 @@
-id_da rua,Id_ponto,logradouro,numero,metragem,numero original,data_inicial (DD/MM/AAAA),data_final (DD/MM/AAAA),fonte,autor_da_alimentacao,Data
-62,1-62,rua aureliano coutinho,1,True,1,,29/06/36,"Livro de Emplacamento n. 21, p. 178",abc,2017-12-12
-62,1-62,rua aureliano coutinho,171,False,171,,29/06/36,"Livro de Emplacamento n. 21, p. 178",abc,2017-12-12
-62,1-62,rua aureliano coutinho,45,False,45,30/06/36,22/12/42,"Livro de Emplacamento n. 21, p. 178",abc,2017-12-19
-283,2-283,alameda barao de piracicaba,15,True,15,23/07/30,,"Livro de Emplacamento n.17, p.72-73",abc,2017-12-14
-283,2-283,alameda barao de piracicaba,1,False,1,23/07/30,,"Livro de Emplacamento n.17, p.72",abc,2017-12-14
-192,3-192,rua dos clerigos,16,True,16,,22/07/30,"Livro de Emplacamento n.17, p.72",abc,2017-12-14

@@ -9,7 +9,6 @@ CREATE OR REPLACE FUNCTION saboya_geometry(streetId integer, numberPlace Float)
 AS
 $BODY$
 DECLARE 
-	inputPlaceId integer;
 	zeroGeom text;
 	streetGeom text;
 	oldGeomPlace text;
@@ -18,10 +17,8 @@ DECLARE
 	newGeom text;
 	newStreetGeom text;
 BEGIN
-	inputPlaceId := (SELECT places.id AS inputPlaceId FROM places_pilot_area AS places INNER JOIN streets_pilot_area AS street ON places.id_street = street.id WHERE places.number = numberPlace AND street.id = streetId);
-	zeroGeom := (SELECT places.geom FROM places_pilot_area AS places INNER JOIN streets_pilot_area AS street ON places.id_street = street.id WHERE places.number = 0 AND street.id = streetId);
+	zeroGeom := (SELECT places.geom FROM places_pilot_area AS places INNER JOIN streets_pilot_area AS street ON places.id_street = street.id WHERE places.number = 0 AND street.id = streetId ORDER BY date DESC LIMIT 1);
 	streetGeom := (SELECT  ST_LineMerge(geom) FROM streets_pilot_area WHERE id = streetId);
-	oldGeomPlace := (SELECT geom FROM  places_pilot_area WHERE id = inputPlaceId);
 	streetSize := (SELECT ST_Length(ST_Transform(geom, 29100)) FROM streets_pilot_area where id = streetId);
 	startPoint := (SELECT  ST_StartPoint(ST_LineMerge(geom)) FROM streets_pilot_area WHERE id = streetId);
 	IF zeroGeom = startPoint THEN
@@ -33,7 +30,7 @@ BEGIN
 	IF newGeom IS NOT NULL THEN
 		RETURN st_astext(newGeom);
 	ELSE
-		RETURN st_astext(oldGeomPlace);
+		RETURN NULL;
 	END IF;
 END;
 $BODY$
