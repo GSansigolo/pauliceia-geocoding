@@ -9,7 +9,7 @@ con = psycopg2.connect(host="localhost",database="db_pauliceia", user="postgres"
 cur = con.cursor()
 
 #Dataframe Open
-df = pd.read_csv('entrada/TABELAO_PARCIAL1110.csv')
+df = pd.read_csv('entrada/PARCIAL2410_TABELAO.csv')
 
 #Create new collumns
 df.loc[:,'cord'] = 'null'
@@ -21,52 +21,51 @@ df.loc[:,'last_month'] = np.NaN
 df.loc[:,'last_year'] = np.NaN
 
 #id_dict
-id_dict = {}
-
+id_dict = []
 #For loop
 for i in range(0,len(df)):
-    if(str(df['metragem'][i]) != str(df['numero'][i])):
-        j = id_dict['old_id']
+    if(df['Id_ponto'][i] in id_dict):
         print(i)
-        sql = 'SELECT saboya_geometry('+str(df['id_da rua'][i])+', '+str(df['metragem'][i])+') AS saboya_geometry;'
+        sql = 'SELECT saboya_geometry('+str(int(df['id_da rua'][i]))+', '+str(df['metragem'][i])+') AS saboya_geometry;'
         print(sql)
         cur.execute(sql)
         recset = cur.fetchall()
         geom = str(recset).replace("[('","").replace("',)]","")
         df['cord'][i] = geom.replace("POINT","")
-        if (pd.notna(df['data inicial'][i])):
-            df['first_day'][i] = df['data inicial'][i].split('/')[0]
-            df['first_month'][i] = df['data inicial'][i].split('/')[1]
-            df['first_year'][i] = df['data inicial'][i].split('/')[2]
-        if (pd.notna(df['data_final'][i])):        
-            df['last_day'][i] = df['data inicial'][j].split('/')[0]
-            df['last_month'][i] = df['data inicial'][j].split('/')[1]
-            df['last_year'][i] = df['data inicial'][j].split('/')[2]
+        if (pd.notna(df['Data inicial'][i])):
+            df['first_day'][i] = df['Data inicial'][i].split('/')[0]
+            df['first_month'][i] = df['Data inicial'][i].split('/')[1]
+            df['first_year'][i] = df['Data inicial'][i].split('/')[2]
+        if (pd.notna(df['Data_final'][i])):        
+            df['last_day'][i] = df['Data inicial'][j].split('/')[0]
+            df['last_month'][i] = df['Data inicial'][j].split('/')[1]
+            df['last_year'][i] = int(df['Data inicial'][j].split('/')[2]) - 1
         df['fonte'][i] = df['fonte'][i]
     else:
         print(i)
-        id_dict['old_id'] = i
-        sql = 'SELECT saboya_geometry('+str(df['id_da rua'][i])+', '+str(df['metragem'][i])+') AS saboya_geometry;'
+        id_dict.append(df['Id_ponto'][i])
+        j = i
+        sql = 'SELECT saboya_geometry('+str(int(df['id_da rua'][i]))+', '+str(df['metragem'][i])+') AS saboya_geometry;'
         print(sql)
         cur.execute(sql)
         recset = cur.fetchall()
         geom = str(recset).replace("[('","").replace("',)]","")
         df['cord'][i] = geom.replace("POINT","")
-        if (pd.notna(df['data inicial'][i])):
-            df['first_day'][i] = df['data inicial'][i].split('/')[0]
-            df['first_month'][i] = df['data inicial'][i].split('/')[1]
-            df['first_year'][i] = df['data inicial'][i].split('/')[2]
-        if (pd.notna(df['data_final'][i])):        
-            df['last_day'][i] = df['data_final'][i].split('/')[0]
-            df['last_month'][i] = df['data_final'][i].split('/')[1]
-            df['last_year'][i] = df['data_final'][i].split('/')[2]
+        if (pd.notna(df['Data inicial'][i])):
+            df['first_day'][i] = df['Data inicial'][i].split('/')[0]
+            df['first_month'][i] = df['Data inicial'][i].split('/')[1]
+            df['first_year'][i] = df['Data inicial'][i].split('/')[2]
+        if (pd.notna(df['Data_final'][i])):        
+            df['last_day'][i] = df['Data_final'][i].split('/')[0]
+            df['last_month'][i] = df['Data_final'][i].split('/')[1]
+            df['last_year'][i] = df['Data_final'][i].split('/')[2]
         df['fonte'][i] = df['fonte'][i]
 
 #Drop columns
-df = df.drop(['logradouro', 'metragem','sistema metrico','data_final', 'data inicial', 'Id_ponto'], axis=1)
+df = df.drop(['logradouro', 'metragem','Data_final', 'Data inicial', 'Id_ponto'], axis=1)
 
 #Rename columns
-df = df.rename(columns={'id_da rua': 'id_street', 'numero': 'number', 'numero original':'original_n', 'fonte':'source', 'autor_da_alimentacao':'author', 'Data':'date'})
+df = df.rename(columns={'id_da rua': 'id_street', 'numero': 'number', 'numero original':'original_n', 'fonte':'source', 'autor_da_alimentação':'author', 'Data':'date'})
 
 #Print
 print(df.tail())
