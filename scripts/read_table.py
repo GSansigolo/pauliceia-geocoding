@@ -9,7 +9,7 @@ con = psycopg2.connect(host="localhost",database="db_pauliceia", user="postgres"
 cur = con.cursor()
 
 #Dataframe Open
-df = pd.read_csv('entrada/PARCIAL2410_TABELAO.csv')
+df = pd.read_csv('entrada/TABELAO_23-11.csv')
 
 #Create new collumns
 df.loc[:,'cord'] = 'null'
@@ -25,7 +25,6 @@ id_dict = []
 #For loop
 for i in range(0,len(df)):
     if(df['Id_ponto'][i] in id_dict):
-        print(i)
         sql = 'SELECT saboya_geometry('+str(int(df['id_da rua'][i]))+', '+str(df['metragem'][i])+') AS saboya_geometry;'
         print(sql)
         cur.execute(sql)
@@ -42,7 +41,6 @@ for i in range(0,len(df)):
             df['last_year'][i] = int(df['Data inicial'][j].split('/')[2]) - 1
         df['fonte'][i] = df['fonte'][i]
     else:
-        print(i)
         id_dict.append(df['Id_ponto'][i])
         j = i
         sql = 'SELECT saboya_geometry('+str(int(df['id_da rua'][i]))+', '+str(df['metragem'][i])+') AS saboya_geometry;'
