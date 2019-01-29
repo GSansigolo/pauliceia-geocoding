@@ -3021,8 +3021,6 @@ id_da rua,Id_ponto,metragem,logradouro,numero,numero original,Data inicial,Data_
 45,45-1053,1053.6,Avenida São João,251,251,10/01/1911,05/04/1933,"Livro de Emplacamento, n.19A, p.40; n.17, p.11, p.14, p.68; n.8, p.161; n.8, p.99",Cintia,26/11/2018
 45,45-1053,1053.6,Avenida São João,235,235,14/05/1908,30/09/1911,"Livro de Emplacamento, n.19A, p.40; n.17, p.11, p.14, p.68; n.8, p.161; n.8, p.99",Cintia,26/11/2018
 45,45-1053,1053.6,Avenida São João,189,189,13/05/1908,13/05/1908,"Livro de Emplacamento, n.19A, p.40; n.17, p.11, p.14, p.68; n.8, p.161; n.8, p.99",Cintia,26/11/2018
-45,45-1781,1781.8,Avenida São João,1781,1781,05/05/1933,,"Livro de Emplacamento, n.19A, p.40; n.17, p.11, p.14, p.68; n.8, p.161; n.8, p.99",Cintia,26/11/2018
-45,45-1781,1781.8,Avenida São João,453,453,05/04/1933,05/04/1933,"Livro de Emplacamento, n.19A, p.40; n.17, p.11, p.14, p.68; n.8, p.161; n.8, p.99",Cintia,26/11/2018
 45,45-16,16.3,Avenida São João,16,16,05/05/1933,,"Livro de Emplacamento, n.19A, p.40; n.17, p.11, p.14, p.68; n.8, p.161; n.8, p.99",Cintia,26/11/2018
 45,45-16,16.3,Avenida São João,2,2,14/05/1908,05/04/1933,"Livro de Emplacamento, n.19A, p.40; n.17, p.11, p.14, p.68; n.8, p.161; n.8, p.99",Cintia,26/11/2018
 45,45-694,694.3,Avenida São João,694,694,05/05/1933,,"Livro de Emplacamento, n.19A, p.40; n.17, p.11, p.14, p.68; n.8, p.161; n.8, p.99",Cintia,26/11/2018
@@ -3165,33 +3163,22 @@ id_da rua,Id_ponto,metragem,logradouro,numero,numero original,Data inicial,Data_
 219,219-116,115,Rua Jose Paulino,"6,1",6A,21/05/1908,21/05/1908,"Livro de Emplamento, n.25, p.131; n.16, p.2; n.5, p.78; n.5, p.58; n.5, p.47",Cintia,12/05/2018
 274,274-43,44.2,Rua das Olarias,43,43,08/01/1938,,"Livro de Emplacamento, n.25, p.77; n.7, p.78",Cintia,12/05/2018
 274,274-43,44.2,Rua das Olarias,72,72,31/07/1938,31/07/1938,"Livro de Emplacamento, n.25, p.77; n.7, p.78",Cintia,12/05/2018
-274,274-209,208.8,Rua das Olarias,209,209,08/01/1938,,"Livro de Emplacamento, n.25, p.77; n.7, p.78",Cintia,12/05/2018
-274,274-209,208.8,Rua das Olarias,44,44,31/07/1938,31/07/1938,"Livro de Emplacamento, n.25, p.77; n.7, p.78",Cintia,12/05/2018
 274,274-16,16.1,Rua das Olarias,16,16,08/01/1938,,"Livro de Emplacamento, n.25, p.77; n.7, p.78",Cintia,12/05/2018
 274,274-16,16.1,Rua das Olarias,39,39,31/07/1938,31/07/1938,"Livro de Emplacamento, n.25, p.77; n.7, p.78",Cintia,12/05/2018
-274,274-202,201.7,Rua das Olarias,202,202,08/01/1938,,"Livro de Emplacamento, n.25, p.77; n.7, p.78",Cintia,12/05/2018
-274,274-202,201.7,Rua das Olarias,17,17,31/07/1938,31/07/1938,"Livro de Emplacamento, n.25, p.77; n.7, p.78",Cintia,12/05/2018
 114,114-79,79.9,Rua Barata Ribeiro,79,79,05/11/1940,,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-79,79.9,Rua Barata Ribeiro,9,9,29/11/1927,05/10/1940,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-105,105,Rua Barata Ribeiro,105,105,05/11/1940,,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
-114,114-105,105,Rua Barata Ribeiro,15,15,29/11/1927,05/10/1940,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
+114,114-105,105,Rua Barata Ribeiro,15,105,29/11/1927,05/10/1940,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-105,105,Rua Barata Ribeiro,17,17,12/05/1914,28/11/1927,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-105,105,Rua Barata Ribeiro,48,48 tinta,12/04/1914,12/04/1914,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-255,255.5,Rua Barata Ribeiro,255,255,05/11/1940,,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-255,255.5,Rua Barata Ribeiro,55,55,12/05/1914,05/10/1940,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-255,255.5,Rua Barata Ribeiro,53,53,12/04/1914,12/04/1914,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
-114,114-535,535.1,Rua Barata Ribeiro,535,535,05/11/1940,,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
-114,114-535,535.1,Rua Barata Ribeiro,103,103,29/11/1927,05/10/1940,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
-114,114-535,535.1,Rua Barata Ribeiro,97,97,28/11/1927,28/11/1927,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-40,40.3,Rua Barata Ribeiro,40,40,05/11/1940,,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-40,40.3,Rua Barata Ribeiro,10,10,12/05/1914,05/10/1940,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-198,198.5,Rua Barata Ribeiro,198,198,05/11/1940,,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-198,198.5,Rua Barata Ribeiro,44,44,29/11/1927,05/10/1940,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 114,114-198,198.5,Rua Barata Ribeiro,34,34,12/05/1914,28/11/1927,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
-114,114-504,503.8,Rua Barata Ribeiro,504,504,05/11/1940,,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
-114,114-504,503.8,Rua Barata Ribeiro,118,118,29/11/1927,05/10/1940,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
-114,114-504,503.8,Rua Barata Ribeiro,108,108,12/05/1914,28/11/1927,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
-114,114-504,503.8,Rua Barata Ribeiro,7,7,12/04/1914,12/04/1914,"Livro de Emplacamento, n.27, p.92; n.11, p.41; n.2, p.36",Cintia,12/05/2018
 93,93-79,79.7,Rua São Luiz,79,79,11/12/1935,,"Livro de Emplacamento, n.20, p.172; n.14, p.65; m.9, p.55; n.8, p.150; n.8, p.136",Cintia,12/05/2018
 93,93-79,79.7,Rua São Luiz,16,16,26/01/1909,11/11/1935,"Livro de Emplacamento, n.20, p.172; n.14, p.65; m.9, p.55; n.8, p.150; n.8, p.136",Cintia,12/05/2018
 93,93-117,117,Rua São Luiz,117,117,11/12/1935,,"Livro de Emplacamento, n.20, p.172; n.14, p.65; m.9, p.55; n.8, p.150; n.8, p.136",Cintia,12/05/2018
@@ -3348,9 +3335,6 @@ id_da rua,Id_ponto,metragem,logradouro,numero,numero original,Data inicial,Data_
 72,72-149,148.6,Rua Quirino de Andrade,149,149,09/06/1936,,"Livro de Emplacamento, n.21, p.225; n.17, p.99",Cintia,21/01/2018
 72,72-149,148.6,Rua Quirino de Andrade,25,25,27/09/1930,09/05/1936,"Livro de Emplacamento, n.21, p.225; n.17, p.99",Cintia,21/01/2018
 72,72-149,148.6,Rua Quirino de Andrade,"45,1",45A,26/09/1930,26/09/1930,"Livro de Emplacamento, n.21, p.225; n.17, p.99",Cintia,21/01/2018
-72,72-243,242.5,Rua Quirino de Andrade,243,243,09/06/1936,,"Livro de Emplacamento, n.21, p.225; n.17, p.99",Cintia,21/01/2018
-72,72-243,242.5,Rua Quirino de Andrade,57,57,27/09/1930,09/05/1936,"Livro de Emplacamento, n.21, p.225; n.17, p.99",Cintia,21/01/2018
-72,72-243,242.5,Rua Quirino de Andrade,75,75,26/09/1930,26/09/1930,"Livro de Emplacamento, n.21, p.225; n.17, p.99",Cintia,21/01/2018
 71,71-47,46.1,Rua Coronel Xavier de Toledo,47,47,28/12/1938,,"Livro de Emplacamento, n.26, p.31; n.10, p.70; n.10, p.66",Cintia,21/01/2018
 71,71-47,46.1,Rua Coronel Xavier de Toledo,3,3,19/02/1909,27/12/1938,"Livro de Emplacamento, n.26, p.31; n.10, p.70; n.10, p.66",Cintia,21/01/2018
 71,71-101,101.8,Rua Coronel Xavier de Toledo,101,101,28/12/1938,,"Livro de Emplacamento, n.26, p.31; n.10, p.70; n.10, p.66",Cintia,21/01/2018
@@ -3400,9 +3384,6 @@ id_da rua,Id_ponto,metragem,logradouro,numero,numero original,Data inicial,Data_
 181,181-95,96,Rua Carvalho,95,95,02/07/1939,,"Livro de Emplacamento; n.26, p.76; n.15, p.110",Cintia,21/01/2018
 181,181-95,96,Rua Carvalho,182,182,06/03/1929,02/06/1939,"Livro de Emplacamento; n.26, p.76; n.15, p.110",Cintia,21/01/2018
 181,181-95,96,Rua Carvalho,140,140,06/02/1929,06/02/1929,"Livro de Emplacamento; n.26, p.76; n.15, p.110",Cintia,21/01/2018
-181,181-469,469.7,Rua Carvalho,469,469,02/07/1939,,"Livro de Emplacamento; n.26, p.76; n.15, p.110",Cintia,21/01/2018
-181,181-469,469.7,Rua Carvalho,84,84,06/03/1929,02/06/1939,"Livro de Emplacamento; n.26, p.76; n.15, p.110",Cintia,21/01/2018
-181,181-469,469.7,Rua Carvalho,86,86,06/02/1929,06/02/1929,"Livro de Emplacamento; n.26, p.76; n.15, p.110",Cintia,21/01/2018
 181,181-785,785.2,Rua Carvalho,785,785,02/07/1939,,"Livro de Emplacamento; n.26, p.76; n.15, p.110",Cintia,21/01/2018
 181,181-785,785.2,Rua Carvalho,12,12,06/03/1929,02/06/1939,"Livro de Emplacamento; n.26, p.76; n.15, p.110",Cintia,21/01/2018
 181,181-785,785.2,Rua Carvalho,4,4,06/02/1929,06/02/1929,"Livro de Emplacamento; n.26, p.76; n.15, p.110",Cintia,21/01/2018
@@ -4121,9 +4102,6 @@ id_da rua,Id_ponto,metragem,logradouro,numero,numero original,Data inicial,Data_
 45,45-1327,1326.80,avenida sao joao,357,357,01/10/1933,04/05/1933,"Livro de emplacamento 8, p 164; 8, p. 105",Vitoria Martins,28/01/2019
 45,45-1327,1326.80,avenida sao joao,337,337,14/05/1908,30/10/1933,"Livro de emplacamento 8, p 164; 8, p. 105",Vitoria Martins,28/01/2019
 45,45-1327,1326.80,avenida sao joao,291,291,13/05/1908,13/05/1908,"Livro de emplacamento 8, p. 105",Vitoria Martins,28/01/2019
-45,45-1781,1781.80,avenida sao joao,1781,1781,05/05/1933,,"Livro de emplacamento 19, p. 43",Vitoria Martins,28/01/2019
-45,45-1781,1781.80,avenida sao joao,453,453,01/10/1911,04/05/1933,"Livro de emplacamento 19, p. 43; 8, p. 164",Vitoria Martins,28/01/2019
-45,45-1781,1781.80,avenida sao joao,427,427,30/10/1933,30/10/1933,"Livro de emplacamento 8, p. 164",Vitoria Martins,28/01/2019
 45,45-16,16.30,avenida sao joao,16,16,05/05/1933,,"Livro de emplacamento 19, p. 44",Vitoria Martins,28/01/2019
 45,45-16,16.30,avenida sao joao,2,2,14/05/1908,04/05/1933,"Livro de emplacamento 19, p. 44; 8, p. 99",Vitoria Martins,28/01/2019
 45,45-284,283.30,avenida sao joao,248,248,05/05/1933,,"Livro de emplacamento 19, p. 44",Vitoria Martins,28/01/2019
