@@ -9,7 +9,7 @@ con = psycopg2.connect(host="localhost",database="db_pauliceia", user="postgres"
 cur = con.cursor()
 
 #Dataframe Open
-df = pd.read_csv('entrada/TABELAO_28-01-19.csv')
+df = pd.read_csv('entrada/TABELAO_10-05-2019.csv')
 
 #Create new collumns
 df.loc[:,'cord'] = 'null'
