@@ -1,3 +1,7 @@
+"""
+     1) FIRST OF ALL: REMOVE TABLE places_pilot_area2 MANUALLY FROM DATABASE
+"""
+
 #Imports
 import pandas as pd
 import numpy as np
@@ -10,8 +14,9 @@ cur = con.cursor()
 
 #Dataframe Open
 df = pd.read_csv('entrada/TABELAO_10-05-2019.csv')
+o = 0
 
-#Create new collumns
+#Create new columns
 df.loc[:,'cord'] = 'null'
 df.loc[:,'first_day'] = np.NaN
 df.loc[:,'first_month'] = np.NaN
@@ -22,14 +27,17 @@ df.loc[:,'last_year'] = np.NaN
 
 #id_dict
 id_dict = []
+
 #For loop
 for i in range(0,len(df)):
+    o = o + 1
     if(df['Id_ponto'][i] in id_dict):
         sql = 'SELECT saboya_geometry('+str(int(df['id_da rua'][i]))+', '+str(df['metragem'][i])+') AS saboya_geometry;'
-        print(sql)
+        print(str(o) + ": " + sql)
         cur.execute(sql)
         recset = cur.fetchall()
         geom = str(recset).replace("[('","").replace("',)]","")
+        #print(geom)
         df['cord'][i] = geom.replace("POINT","")
         if (pd.notna(df['Data inicial'][i])):
             df['first_day'][i] = df['Data inicial'][i].split('/')[0]
@@ -44,10 +52,11 @@ for i in range(0,len(df)):
         id_dict.append(df['Id_ponto'][i])
         j = i
         sql = 'SELECT saboya_geometry('+str(int(df['id_da rua'][i]))+', '+str(df['metragem'][i])+') AS saboya_geometry;'
-        print(sql)
+        print(str(o) + ": " + sql)
         cur.execute(sql)
         recset = cur.fetchall()
         geom = str(recset).replace("[('","").replace("',)]","")
+        #print(geom)
         df['cord'][i] = geom.replace("POINT","")
         if (pd.notna(df['Data inicial'][i])):
             df['first_day'][i] = df['Data inicial'][i].split('/')[0]
@@ -64,9 +73,10 @@ df = df.drop(['logradouro', 'metragem','Data_final', 'Data inicial', 'Id_ponto']
 
 #Rename columns
 df = df.rename(columns={'id_da rua': 'id_street', 'numero': 'number', 'numero original':'original_n', 'fonte':'source', 'autor_da_alimentação':'author', 'Data':'date'})
+df = df[df.cord != '[(None,)]']
 
 #Print
-print(df.tail())
+print("\n", df.tail())
 
 #Save df
 df.to_csv('saida/new.csv')
