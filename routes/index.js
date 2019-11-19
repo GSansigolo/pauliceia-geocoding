@@ -288,10 +288,10 @@ router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res
 
             let id_street = places_filter[0].id_street;
 
-            places_filter = places_filter.filter(el => el.place_lastyear >= year);
             places_filter = places_filter.filter(el => el.place_firstyear <= year);
+            places_filter = places_filter.filter(el => el.place_lastyear >= year);
             places_filter = places_filter.filter(el => el.place_number == number);
-            
+
             /*--------------------+
             | Geolocation         |
             +--------------------*/
@@ -375,7 +375,7 @@ router.get('/geolocation/:textpoint,:number,:year/json', async function(req, res
 
                         //Organize the Json results
                         results.push({
-                            name: "Point Geolocated",
+                            name: "Point Geolocated S",
                             geom: row.saboya_geometry,
                             confidence: 0.9,
                             status: 1
