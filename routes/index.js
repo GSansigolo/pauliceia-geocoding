@@ -145,7 +145,19 @@ router.get('/places', (req, res, next) => {
 
         //Push Results
         query.on('row', (row) => {
-            if (!row.firstyear) {
+            if (!row.firstyear && !row.lastyear) {
+             results.push({
+                    places_id: row.places_id,
+                    id_street: row.id_street,
+                    street_name: row.name_s,
+                    place_name: '',
+                    place_number: row.number,
+                    place_firstyear: row.firstyear,
+                    place_lastyear: row.lastyear,
+                    place_geom: row.geom
+                });
+            }
+            else if (!row.firstyear){
                 results.push({
                     places_id: row.places_id,
                     id_street: row.id_street,
@@ -156,7 +168,8 @@ router.get('/places', (req, res, next) => {
                     place_lastyear: row.lastyear,
                     place_geom: row.geom
                 });
-            } else {
+            } 
+            else {
                 results.push({
                     places_id: row.places_id,
                     id_street: row.id_street,
